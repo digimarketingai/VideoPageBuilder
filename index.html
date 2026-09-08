@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>张飞饮料店 · Website Creator</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --editor-bg: #f3f4f7;
+      --editor-panel: #ffffff;
+      --editor-text: #202432;
+      --editor-muted: #697082;
+      --editor-border: #e2e5ec;
+      --editor-accent: #b82336;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background: var(--editor-bg);
+      color: var(--editor-text);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      outline-offset: 3px;
+    }
+
+    .app-header {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 24px;
+      background: white;
+      border-bottom: 1px solid var(--editor-border);
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .app-subtitle {
+      margin: 6px 0 0;
+      color: var(--editor-muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 9px 13px;
+      border: 1px solid var(--editor-border);
+      border-radius: 9px;
+      background: white;
+      color: var(--editor-text);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .button:hover {
+      background: #f7f7fa;
+    }
+
+    .button.primary {
+      color: white;
+      background: var(--editor-accent);
+      border-color: var(--editor-accent);
+    }
+
+    .button.primary:hover {
+      filter: brightness(.94);
+    }
+
+    .button.danger {
+      color: #b42336;
+      background: #fff4f5;
+      border-color: #f0cbd1;
+    }
+
+    .button.small {
+      min-height: 30px;
+      padding: 6px 9px;
+      font-size: 11px;
+    }
+
+    .button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .app-layout {
+      display: grid;
+      grid-template-columns: 410px minmax(0, 1fr);
+      height: calc(100dvh - 89px);
+      min-height: 540px;
+    }
+
+    .editor {
+      overflow: auto;
+      padding: 18px;
+      border-right: 1px solid var(--editor-border);
+    }
+
+    .notice {
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      background: #fff8e8;
+      color: #72551b;
+      border: 1px solid #ecdcb8;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    details.editor-section {
+      margin-bottom: 12px;
+      background: white;
+      border: 1px solid var(--editor-border);
+      border-radius: 13px;
+      overflow: hidden;
+    }
+
+    details.editor-section > summary {
+      padding: 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .section-content {
+      padding: 0 16px 17px;
+    }
+
+    .field {
+      display: block;
+      margin: 0 0 13px;
+    }
+
+    .field > span {
+      display: block;
+      margin-bottom: 6px;
+      color: #525a6b;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .field input:not([type="color"]),
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 10px 11px;
+      color: var(--editor-text);
+      background: #fcfcfe;
+      border: 1px solid #dce0e8;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 84px;
+      line-height: 1.6;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--editor-accent);
+    }
+
+    .field input[type="color"] {
+      width: 100%;
+      height: 40px;
+      padding: 3px;
+      border: 1px solid var(--editor-border);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .helper {
+      color: var(--editor-muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .upload-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 68px;
+      margin: 12px 0;
+      padding: 15px;
+      border: 1px dashed #c7cbd5;
+      border-radius: 10px;
+      background: #fafafd;
+      color: #626a7c;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .upload-label:hover {
+      border-color: var(--editor-accent);
+      color: var(--editor-accent);
+    }
+
+    .upload-label input {
+      display: none;
+    }
+
+    .media-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .media-item {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 10px;
+      padding: 8px;
+      border: 1px solid var(--editor-border);
+      border-radius: 9px;
+      align-items: center;
+    }
+
+    .media-item img,
+    .media-item video {
+      width: 58px;
+      height: 58px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #eee;
+    }
+
+    .media-name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+      font-size: 11px;
+    }
+
+    .media-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .drink-editor {
+      margin: 12px 0;
+      padding: 13px;
+      border: 1px solid var(--editor-border);
+      border-radius: 11px;
+      background: #fcfcfe;
+    }
+
+    .drink-editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .drink-editor-header h3 {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .drink-editor-header .actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .preview-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: #e8ebf1;
+      overflow: hidden;
+    }
+
+    .preview-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 18px;
+      border-bottom: 1px solid #d9dde5;
+      background: #f9fafc;
+    }
+
+    .preview-label {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .preview-tools {
+      display: flex;
+      gap: 6px;
+    }
+
+    .preview-tools .active {
+      color: var(--editor-accent);
+      border-color: var(--editor-accent);
+      background: #fff3f5;
+    }
+
+    .preview-stage {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      min-height: 0;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    #preview {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      border: 0;
+      background: #fff;
+      box-shadow: 0 10px 45px #20243216;
+      border-radius: 12px;
+      transition: width .2s ease;
+    }
+
+    #preview.mobile {
+      width: 390px;
+      max-width: 100%;
+    }
+
+    .preview-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px;
+      color: var(--editor-muted);
+      font-size: 11px;
+      background: #f9fafc;
+    }
+
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translate(-50%, 15px);
+      max-width: calc(100vw - 32px);
+      padding: 13px 20px;
+      color: white;
+      background: #222735;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px #0002;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      z-index: 100;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    #toast.visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (min-width: 1600px) {
+      .app-layout {
+        grid-template-columns: 460px minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .app-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .app-layout {
+        grid-template-columns: 350px minmax(0, 1fr);
+        height: calc(100dvh - 135px);
+      }
+
+      .preview-stage {
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app-header {
+        padding: 16px;
+      }
+
+      .app-layout {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+      }
+
+      .editor {
+        overflow: visible;
+        border-right: 0;
+      }
+
+      .preview-panel {
+        height: 760px;
+        border-top: 1px solid var(--editor-border);
+      }
+
+      .preview-toolbar {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div>
+      <h1 class="app-title">张飞饮料店 · Website Creator</h1>
+      <p class="app-subtitle">
+        Customize your drinks, prices, photos & videos · Export your website
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <button class="button" id="saveProject" type="button">
+        Save project
+      </button>
+
+      <button class="button" id="loadProject" type="button">
+        Load project
+      </button>
+
+      <button class="button" id="resetProject" type="button">
+        Reset
+      </button>
+
+      <button class="button primary" id="exportWebsite" type="button">
+        ↓ Export website
+      </button>
+    </div>
+  </header>
+
+  <main class="app-layout">
+    <aside class="editor" id="editor"></aside>
+
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <span class="preview-label">LIVE WEBSITE PREVIEW</span>
+
+        <div class="preview-tools">
+          <button
+            class="button small active"
+            id="desktopPreview"
+            type="button"
+          >
+            Desktop
+          </button>
+
+          <button
+            class="button small"
+            id="mobilePreview"
+            type="button"
+          >
+            Mobile
+          </button>
+
+          <button
+            class="button small"
+            id="refreshPreview"
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-stage">
+        <iframe
+          id="preview"
+          title="Drink shop website preview"
+          sandbox="allow-scripts"
+          allow="fullscreen"
+        ></iframe>
+      </div>
+
+      <div class="preview-footer">
+        <span id="previewStatus" role="status">Ready</span>
+        <span>Save your project before closing.</span>
+      </div>
+    </section>
+  </main>
+
+  <input
+    id="projectFile"
+    type="file"
+    accept=".json,application/json"
+    hidden
+  >
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    // ============================================================
+    // UTILITIES
+    // ============================================================
+
+    function uid() {
+      return (
+        "drink-" +
+        Date.now().toString(36) +
+        "-" +
+        Math.random().toString(36).slice(2, 9)
+      );
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function newDish(values = {}) {
+      return Object.assign({
+        id: uid(),
+        icon: "🥤",
+        nameEn: "Your New Drink",
+        nameZh: "你的新饮品",
+        price: "",
+        descriptionEn:
+          "Introduce this drink: its flavor, ingredients, " +
+          "and any available size, sweetness, or ice options.",
+        descriptionZh:
+          "介绍这杯饮品的口味、配料，以及实际提供的杯型、甜度或冰量选项。",
+        media: []
+      }, values);
+    }
+
+    // ============================================================
+    // DEFAULT SHOP CONTENT
+    // Sample drinks and prices: replace with your actual menu.
+    // ============================================================
+
+    let state = {
+      nameEn: "Zhang Fei Drinks",
+      nameZh: "张飞饮料店",
+
+      eyebrowEn: "BOLD SIPS · GOOD COMPANY",
+      eyebrowZh: "大口畅饮 · 快乐相聚",
+
+      titleEn: "Big flavor. Instant refreshment.",
+      titleZh: "豪气一口，清爽上头。",
+
+      descriptionEn:
+        "Take a break, grab a drink, and make yourself at home. " +
+        "From bright fruit teas to creamy milk teas, " +
+        "find a little happiness in your next cup.",
+
+      descriptionZh:
+        "忙里偷闲，来张飞喝一杯。" +
+        "清爽果茶、香浓奶茶，总有一杯合你心意。" +
+        "约上好友，大口畅饮，把平凡的一天喝出好心情。",
+
+      heroButtonEn: "Take a look around",
+      heroButtonZh: "看看店里",
+
+      menuButtonEn: "Find your next drink",
+      menuButtonZh: "选一杯心头好",
+
+      menuTitleEn: "Bold drinks. Happy moments.",
+      menuTitleZh: "杯杯有性格，口口好心情。",
+
+      menuDescriptionEn:
+        "Feeling fruity, creamy, or simply refreshed? " +
+        "Explore the drinks below and flip a card for the details.",
+
+      menuDescriptionZh:
+        "今天想喝清爽的，还是香浓的？" +
+        "看看下面的饮品，翻转卡片，找到属于你的那一杯。",
+
+      detailsEn: "Meet your drink",
+      detailsZh: "看看这杯",
+
+      backEn: "Back to the drink",
+      backZh: "返回饮品",
+
+      previousEn: "Previous",
+      previousZh: "上一张 / 段",
+
+      nextEn: "Next",
+      nextZh: "下一张 / 段",
+
+      closingEn: "Bring your friends. Find your favorite.",
+      closingZh: "有空来坐坐，有伴来喝喝。",
+
+      footerEn:
+        "Zhang Fei Drinks · A little refreshment. A little togetherness.",
+
+      footerZh:
+        "张飞饮料店 · 一杯好心情，一起慢慢喝。",
+
+      accent: "#b82336",
+      gold: "#f2cb86",
+      background: "#fffaf2",
+      ink: "#292323",
+
+      defaultLanguage: "both",
+      heroIcon: "🧋",
+      heroMedia: [],
+
+      dishes: [
+        newDish({
+          icon: "🍋",
+          nameEn: "Bold Lemon Tea",
+          nameZh: "豪气柠檬茶",
+          price: "¥12",
+
+          descriptionEn:
+            "Bright lemon meets fragrant tea for a crisp, lively sip. " +
+            "A refreshing pick for an afternoon break or a catch-up with friends.",
+
+          descriptionZh:
+            "柠檬的清香与茶香相遇，酸甜爽口，喝出利落好心情。" +
+            "午后歇一歇，或与好友聊聊天，都适合来上一杯。",
+
+          media: []
+        }),
+
+        newDish({
+          icon: "🧋",
+          nameEn: "Hero's Pearl Milk Tea",
+          nameZh: "好汉珍珠奶茶",
+          price: "¥15",
+
+          descriptionEn:
+            "Fragrant tea, creamy milk, and chewy tapioca pearls. " +
+            "A comforting classic with a playful bite in every sip.",
+
+          descriptionZh:
+            "茶香融入奶香，搭配颗颗有嚼劲的珍珠。" +
+            "熟悉的经典滋味，让每一口都多一点满足。",
+
+          media: []
+        }),
+
+        newDish({
+          icon: "🍑",
+          nameEn: "Peachy Oolong",
+          nameZh: "桃气乌龙",
+          price: "¥14",
+
+          descriptionEn:
+            "Soft peach notes meet the mellow character of oolong tea. " +
+            "Fruity, fragrant, and made for taking your time.",
+
+          descriptionZh:
+            "桃香轻轻入茶，乌龙韵味悠悠回荡。" +
+            "一口果香，一口茶香，陪你把匆忙的节奏放慢一点。",
+
+          media: []
+        })
+      ]
+    };
+
+    const DEFAULT_STATE = clone(state);
+
+    let dirty = false;
+    let previewTimer;
+    let toastTimer;
+
+    const editor = document.getElementById("editor");
+    const preview = document.getElementById("preview");
+    const previewStatus = document.getElementById("previewStatus");
+
+    // ============================================================
+    // EXPORTED WEBSITE STYLES
+    // ============================================================
+
+    const WEBSITE_CSS = `
+      :root {
+        --accent: #b82336;
+        --gold: #f2cb86;
+        --background: #fffaf2;
+        --ink: #292323;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--ink);
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button, a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button:focus-visible,
+      a:focus-visible {
+        outline: 3px solid var(--gold);
+        outline-offset: 5px;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 72px));
+        margin-inline: auto;
+      }
+
+      .site-header {
+        border-bottom: 1px solid #30232312;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 100px;
+        gap: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        min-width: 0;
+      }
+
+      .brand-symbol {
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 46px;
+        height: 46px;
+        background: var(--accent);
+        color: var(--gold);
+        border-radius: 13px 13px 13px 3px;
+        font-size: 28px;
+        transform: rotate(-5deg);
+      }
+
+      .brand-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .brand-copy .zh {
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 2px;
+      }
+
+      .brand-copy .en {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+      }
+
+      .language-switch {
+        display: flex;
+        gap: 3px;
+        padding: 4px;
+        border: 1px solid #30232318;
+        border-radius: 30px;
+        flex-shrink: 0;
+      }
+
+      .language-switch button {
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        padding: 8px 10px;
+        border-radius: 22px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .language-switch button.active {
+        background: var(--accent);
+        color: white;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.08fr 1fr;
+        align-items: center;
+        gap: 55px;
+        padding-block: 75px 85px;
+      }
+
+      .eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px 12px;
+        color: var(--accent);
+        font-size: 10px;
+        line-height: 1.6;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        margin-bottom: 22px;
+      }
+
+      h1 {
+        margin: 0 0 24px;
+        line-height: 1.08;
+        letter-spacing: -2px;
+        overflow-wrap: anywhere;
+      }
+
+      h1 .zh {
+        display: block;
+        font-size: clamp(35px, 4.8vw, 66px);
+        line-height: 1.2;
+        margin-bottom: 13px;
+        font-weight: 900;
+        letter-spacing: -1px;
+      }
+
+      h1 .en {
+        display: block;
+        font-size: clamp(35px, 4.5vw, 62px);
+        font-weight: 900;
+      }
+
+      .description {
+        max-width: 550px;
+        opacity: .75;
+        line-height: 1.85;
+        font-size: 14px;
+        overflow-wrap: anywhere;
+      }
+
+      .description .zh,
+      .description .en {
+        display: block;
+        white-space: pre-line;
+      }
+
+      .description .zh {
+        margin-bottom: 9px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 11px;
+        margin-top: 28px;
+      }
+
+      .site-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px 9px;
+        border: 1px solid #30232320;
+        border-radius: 10px;
+        padding: 14px 18px;
+        background: transparent;
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .site-button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .site-button:hover {
+        filter: brightness(.95);
+      }
+
+      .hero-visual {
+        position: relative;
+        min-width: 0;
+        padding: 18px 0 0 18px;
+        scroll-margin-top: 20px;
+      }
+
+      .hero-visual::before {
+        content: "";
+        position: absolute;
+        inset: 0 18px 18px 0;
+        border: 1px solid var(--accent);
+        border-radius: 130px 24px 24px 24px;
+        opacity: .3;
+        pointer-events: none;
+      }
+
+      .gallery {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        background: #f0e1cd;
+      }
+
+      .hero-visual .gallery {
+        height: 480px;
+        border-radius: 120px 22px 22px 22px;
+      }
+
+      .gallery-stage {
+        height: 100%;
+      }
+
+      .slide {
+        width: 100%;
+        height: 100%;
+      }
+
+      .slide[hidden] {
+        display: none !important;
+      }
+
+      .slide img,
+      .slide video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .slide video {
+        background: #211c1c;
+      }
+
+      .placeholder {
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        background:
+          radial-gradient(circle at 24% 20%, #ffffff88, transparent 40%),
+          linear-gradient(140deg, var(--gold), #ebc8b3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .placeholder::before,
+      .placeholder::after {
+        content: "";
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        border: 1px solid #ffffff88;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .placeholder::before {
+        right: -110px;
+        top: -110px;
+      }
+
+      .placeholder::after {
+        left: -125px;
+        bottom: -125px;
+      }
+
+      .placeholder-icon {
+        display: block;
+        font-size: 130px;
+        line-height: 1.2;
+        filter: drop-shadow(0 15px 10px #5e301c18);
+        transform: rotate(-10deg);
+      }
+
+      .placeholder-brand {
+        text-align: center;
+        padding: 0 20px;
+        position: relative;
+      }
+
+      .placeholder-brand .zh {
+        display: block;
+        font-size: 25px;
+        font-weight: 900;
+        letter-spacing: 4px;
+        margin-bottom: 7px;
+      }
+
+      .placeholder-brand .en {
+        display: block;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+
+      .gallery-controls {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        right: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .gallery-controls button {
+        pointer-events: auto;
+        border: 1px solid #ffffff70;
+        border-radius: 30px;
+        padding: 8px 11px;
+        color: #222;
+        background: #ffffffed;
+        box-shadow: 0 3px 12px #0001;
+        font-size: 10px;
+        font-weight: 700;
+        max-width: 44%;
+      }
+
+      .gallery-controls button span + span {
+        margin-left: 4px;
+      }
+
+      .gallery-count {
+        padding: 5px 8px;
+        border-radius: 20px;
+        color: white;
+        background: #211c1c80;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+
+      .section-rule {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--accent);
+      }
+
+      .section-rule::before,
+      .section-rule::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: currentColor;
+        opacity: .18;
+      }
+
+      .section-rule span {
+        font-size: 22px;
+      }
+
+      .menu-section {
+        padding-block: 65px 80px;
+        scroll-margin-top: 20px;
+      }
+
+      .section-heading {
+        max-width: 700px;
+        margin: 0 auto 40px;
+        text-align: center;
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        overflow-wrap: anywhere;
+      }
+
+      h2 .zh {
+        display: block;
+        font-size: clamp(26px, 3.1vw, 39px);
+        line-height: 1.4;
+        margin-bottom: 7px;
+      }
+
+      h2 .en {
+        display: block;
+        font-size: clamp(23px, 2.8vw, 36px);
+        line-height: 1.2;
+        letter-spacing: -.8px;
+      }
+
+      .section-heading .description {
+        margin-inline: auto;
+      }
+
+      .drink-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .drink-card {
+        min-width: 0;
+        padding: 12px;
+        border: 1px solid #30232315;
+        border-radius: 20px;
+        background: #ffffff70;
+        box-shadow: 0 8px 24px #34221d05;
+      }
+
+      .flip-shell {
+        height: 290px;
+        perspective: 1200px;
+      }
+
+      .flip-inner {
+        position: relative;
+        height: 100%;
+        transition: transform .65s cubic-bezier(.2,.7,.2,1);
+        transform-style: preserve-3d;
+      }
+
+      .drink-card.flipped .flip-inner {
+        transform: rotateY(180deg);
+      }
+
+      .card-face {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: 12px;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .card-front .gallery {
+        height: 100%;
+      }
+
+      .card-front .placeholder-icon {
+        font-size: 100px;
+      }
+
+      .card-front .placeholder-brand {
+        display: none;
+      }
+
+      .card-back {
+        transform: rotateY(180deg);
+        background: var(--accent);
+        color: white;
+        padding: 23px;
+        overflow: auto;
+      }
+
+      .card-back h3 {
+        margin: 0 0 16px;
+      }
+
+      .card-back h3 .zh,
+      .card-back h3 .en {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 18px;
+      }
+
+      .card-back .description {
+        font-size: 13px;
+        opacity: .92;
+      }
+
+      .card-back .back-icon {
+        display: block;
+        font-size: 30px;
+        margin-bottom: 14px;
+      }
+
+      .drink-info {
+        padding: 19px 9px 9px;
+      }
+
+      .drink-title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .drink-title {
+        min-width: 0;
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .drink-title .zh {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 20px;
+      }
+
+      .drink-title .en {
+        display: block;
+        font-size: 12px;
+        line-height: 1.5;
+        opacity: .7;
+      }
+
+      .price {
+        color: var(--accent);
+        font-weight: 900;
+        font-size: 20px;
+        overflow-wrap: anywhere;
+        max-width: 45%;
+        text-align: right;
+      }
+
+      .flip-button {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px 8px;
+        width: 100%;
+        margin-top: 18px;
+        padding: 13px 0 3px;
+        border: 0;
+        border-top: 1px solid #30232315;
+        color: var(--accent);
+        background: transparent;
+        text-align: left;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .flip-button::after {
+        content: "↗";
+        margin-left: auto;
+        font-size: 18px;
+      }
+
+      .drink-card.flipped .flip-button::after {
+        content: "↶";
+      }
+
+      .closing {
+        padding: 55px 24px;
+        background: var(--accent);
+        color: white;
+        text-align: center;
+        border-radius: 25px;
+        margin-bottom: 50px;
+        overflow-wrap: anywhere;
+      }
+
+      .closing-icon {
+        display: block;
+        font-size: 36px;
+        margin-bottom: 16px;
+      }
+
+      .closing .zh {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--gold);
+        font-size: clamp(24px, 3vw, 38px);
+        font-weight: 900;
+        line-height: 1.4;
+      }
+
+      .closing .en {
+        display: block;
+        font-size: clamp(19px, 2.5vw, 30px);
+        font-weight: 800;
+        line-height: 1.4;
+      }
+
+      footer {
+        padding: 0 24px 35px;
+        text-align: center;
+        font-size: 11px;
+        line-height: 1.9;
+        opacity: .6;
+      }
+
+      footer .zh,
+      footer .en {
+        display: block;
+      }
+
+      body[data-language="en"] .zh {
+        display: none !important;
+      }
+
+      body[data-language="zh"] .en {
+        display: none !important;
+      }
+
+      @media (max-width: 1000px) {
+        .container {
+          width: calc(100% - 44px);
+        }
+
+        .hero {
+          gap: 28px;
+          padding-block: 50px 60px;
+        }
+
+        .hero-visual .gallery {
+          height: 410px;
+        }
+
+        .drink-grid {
+          gap: 15px;
+        }
+
+        .flip-shell {
+          height: 260px;
+        }
+
+        .card-back {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-copy {
+          max-width: 620px;
+        }
+
+        h1 .zh,
+        h1 .en {
+          font-size: clamp(38px, 7vw, 58px);
+        }
+
+        .hero-visual {
+          max-width: 580px;
+          width: 100%;
+          margin: 8px auto 0;
+        }
+
+        .hero-visual .gallery {
+          height: 440px;
+        }
+
+        .drink-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 520px) {
+        .container {
+          width: calc(100% - 32px);
+        }
+
+        .navigation {
+          min-height: 88px;
+          gap: 8px;
+        }
+
+        .brand {
+          gap: 8px;
+        }
+
+        .brand-symbol {
+          width: 36px;
+          height: 40px;
+          font-size: 24px;
+        }
+
+        .brand-copy .zh {
+          font-size: 15px;
+          letter-spacing: 1px;
+        }
+
+        .brand-copy .en {
+          font-size: 8px;
+          letter-spacing: .6px;
+        }
+
+        .language-switch button {
+          padding: 7px 6px;
+          font-size: 10px;
+        }
+
+        .hero {
+          padding-top: 37px;
+        }
+
+        h1 .zh,
+        h1 .en {
+          font-size: 39px;
+        }
+
+        .description {
+          font-size: 13px;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .hero-visual .gallery {
+          height: 365px;
+        }
+
+        .placeholder-icon {
+          font-size: 110px;
+        }
+
+        .drink-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .flip-shell {
+          height: 305px;
+        }
+
+        .menu-section {
+          padding-block: 45px 50px;
+        }
+
+        .closing {
+          margin-bottom: 30px;
+          padding: 40px 20px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    `;
+
+    // ============================================================
+    // STANDALONE WEBSITE RENDERER
+    // This function is embedded in the exported HTML.
+    // Keep it independent of editor variables.
+    // ============================================================
+
+    function renderWebsite(data) {
+      const escape = value =>
+        String(value ?? "").replace(/[&<>"']/g, character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[character]);
+
+      function bilingual(en, zh) {
+        return (
+          '<span class="zh" lang="zh-CN">' + escape(zh) + "</span>" +
+          '<span class="en" lang="en">' + escape(en) + "</span>"
+        );
+      }
+
+      function placeholder(icon) {
+        return `
+          <div class="placeholder">
+            <span class="placeholder-icon" aria-hidden="true">
+              ${escape(icon)}
+            </span>
+
+            <div class="placeholder-brand">
+              ${bilingual(data.nameEn, data.nameZh)}
+            </div>
+          </div>
+        `;
+      }
+
+      function gallery(media, icon, title) {
+        const items = Array.isArray(media) ? media : [];
+
+        if (!items.length) {
+          return '<div class="gallery">' + placeholder(icon) + "</div>";
+        }
+
+        const slides = items.map((item, index) => {
+          const content = item.type === "video"
+            ? `
+              <video
+                src="${escape(item.src)}"
+                controls
+                playsinline
+                preload="metadata"
+                aria-label="${escape(item.name || title)}"
+              ></video>
+            `
+            : `
+              <img
+                src="${escape(item.src)}"
+                alt="${escape(item.name || title)}"
+                loading="lazy"
+              >
+            `;
+
+          return `
+            <div class="slide" ${index ? "hidden" : ""}>
+              ${content}
+            </div>
+          `;
+        }).join("");
+
+        const controls = items.length > 1
+          ? `
+            <div class="gallery-controls">
+              <button
+                type="button"
+                data-step="-1"
+                aria-label="${escape(data.previousEn || data.previousZh)}"
+              >
+                ${bilingual(data.previousEn, data.previousZh)}
+              </button>
+
+              <span class="gallery-count" aria-live="polite">
+                1 / ${items.length}
+              </span>
+
+              <button
+                type="button"
+                data-step="1"
+                aria-label="${escape(data.nextEn || data.nextZh)}"
+              >
+                ${bilingual(data.nextEn, data.nextZh)}
+              </button>
+            </div>
+          `
+          : "";
+
+        return `
+          <div class="gallery" data-gallery data-index="0">
+            <div class="gallery-stage">${slides}</div>
+            ${controls}
+          </div>
+        `;
+      }
+
+      const rootStyle = document.documentElement.style;
+
+      rootStyle.setProperty("--accent", data.accent);
+      rootStyle.setProperty("--gold", data.gold);
+      rootStyle.setProperty("--background", data.background);
+      rootStyle.setProperty("--ink", data.ink);
+
+      document.title = [data.nameZh, data.nameEn].filter(Boolean).join(" · ");
+
+      document.getElementById("site").innerHTML = `
+        <header class="site-header">
+          <div class="container navigation">
+            <a class="brand" href="#home">
+              <span class="brand-symbol" aria-hidden="true">
+                ${escape(data.heroIcon)}
+              </span>
+
+              <span class="brand-copy">
+                ${bilingual(data.nameEn, data.nameZh)}
+              </span>
+            </a>
+
+            <nav class="language-switch" aria-label="Language">
+              <button type="button" data-language-choice="both">
+                中 / EN
+              </button>
+              <button type="button" data-language-choice="zh">
+                中文
+              </button>
+              <button type="button" data-language-choice="en">
+                EN
+              </button>
+            </nav>
+          </div>
+        </header>
+
+        <main id="home">
+          <section class="hero container">
+            <div class="hero-copy">
+              <div class="eyebrow">
+                ${bilingual(data.eyebrowEn, data.eyebrowZh)}
+              </div>
+
+              <h1>${bilingual(data.titleEn, data.titleZh)}</h1>
+
+              <div class="description">
+                ${bilingual(data.descriptionEn, data.descriptionZh)}
+              </div>
+
+              <div class="hero-actions">
+                <a class="site-button primary" href="#menu">
+                  ${bilingual(data.menuButtonEn, data.menuButtonZh)}
+                  <span aria-hidden="true">↗</span>
+                </a>
+
+                <a class="site-button" href="#shop-gallery">
+                  ${bilingual(data.heroButtonEn, data.heroButtonZh)}
+                </a>
+              </div>
+            </div>
+
+            <div class="hero-visual" id="shop-gallery">
+              ${gallery(
+                data.heroMedia,
+                data.heroIcon,
+                data.nameEn || data.nameZh
+              )}
+            </div>
+          </section>
+
+          <div class="container section-rule" aria-hidden="true">
+            <span>✦</span>
+          </div>
+
+          <section class="menu-section container" id="menu">
+            <div class="section-heading">
+              <h2>
+                ${bilingual(data.menuTitleEn, data.menuTitleZh)}
+              </h2>
+
+              <div class="description">
+                ${bilingual(
+                  data.menuDescriptionEn,
+                  data.menuDescriptionZh
+                )}
+              </div>
+            </div>
+
+            <div class="drink-grid">
+              ${data.dishes.map((dish, index) => `
+                <article class="drink-card">
+                  <div class="flip-shell">
+                    <div class="flip-inner">
+                      <div class="card-face card-front">
+                        ${gallery(
+                          dish.media,
+                          dish.icon,
+                          dish.nameEn || dish.nameZh
+                        )}
+                      </div>
+
+                      <div
+                        class="card-face card-back"
+                        id="drink-details-${index}"
+                        aria-hidden="true"
+                        inert
+                      >
+                        <span class="back-icon" aria-hidden="true">
+                          ${escape(dish.icon)}
+                        </span>
+
+                        <h3>
+                          ${bilingual(dish.nameEn, dish.nameZh)}
+                        </h3>
+
+                        <div class="description">
+                          ${bilingual(
+                            dish.descriptionEn,
+                            dish.descriptionZh
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="drink-info">
+                    <div class="drink-title-row">
+                      <h3 class="drink-title">
+                        ${bilingual(dish.nameEn, dish.nameZh)}
+                      </h3>
+
+                      ${dish.price
+                        ? '<span class="price">' +
+                          escape(dish.price) +
+                          "</span>"
+                        : ""
+                      }
+                    </div>
+
+                    <button
+                      type="button"
+                      class="flip-button"
+                      aria-expanded="false"
+                      aria-controls="drink-details-${index}"
+                    >
+                      ${bilingual(data.detailsEn, data.detailsZh)}
+                    </button>
+                  </div>
+                </article>
+              `).join("")}
+            </div>
+          </section>
+
+          <section class="closing container">
+            <span class="closing-icon" aria-hidden="true">
+              ${escape(data.heroIcon)}
+            </span>
+
+            ${bilingual(data.closingEn, data.closingZh)}
+          </section>
+        </main>
+
+        <footer>
+          ${bilingual(data.footerEn, data.footerZh)}
+        </footer>
+      `;
+
+      function setLanguage(language) {
+        const selected = ["both", "en", "zh"].includes(language)
+          ? language
+          : "both";
+
+        document.body.dataset.language = selected;
+        document.documentElement.lang = selected === "en" ? "en" : "zh-CN";
+
+        document.querySelectorAll("[data-language-choice]").forEach(button => {
+          const active = button.dataset.languageChoice === selected;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+      }
+
+      setLanguage(data.defaultLanguage);
+
+      document.querySelectorAll("[data-language-choice]").forEach(button => {
+        button.addEventListener("click", () => {
+          setLanguage(button.dataset.languageChoice);
+        });
+      });
+
+      document.querySelectorAll("[data-gallery]").forEach(element => {
+        const slides = Array.from(element.querySelectorAll(".slide"));
+        const count = element.querySelector(".gallery-count");
+
+        element.querySelectorAll("[data-step]").forEach(button => {
+          button.addEventListener("click", () => {
+            const current = Number(element.dataset.index);
+            const next =
+              (current + Number(button.dataset.step) + slides.length) %
+              slides.length;
+
+            slides[current].querySelectorAll("video").forEach(video => {
+              video.pause();
+            });
+
+            slides.forEach((slide, index) => {
+              slide.hidden = index !== next;
+            });
+
+            element.dataset.index = String(next);
+
+            if (count) {
+              count.textContent = (next + 1) + " / " + slides.length;
+            }
+          });
+        });
+      });
+
+      document.querySelectorAll(".drink-card").forEach(card => {
+        const button = card.querySelector(".flip-button");
+        const front = card.querySelector(".card-front");
+        const back = card.querySelector(".card-back");
+
+        button.addEventListener("click", () => {
+          const flipped = card.classList.toggle("flipped");
+
+          button.setAttribute("aria-expanded", String(flipped));
+          front.setAttribute("aria-hidden", String(flipped));
+          back.setAttribute("aria-hidden", String(!flipped));
+
+          front.toggleAttribute("inert", flipped);
+          back.toggleAttribute("inert", !flipped);
+
+          button.innerHTML = flipped
+            ? bilingual(data.backEn, data.backZh)
+            : bilingual(data.detailsEn, data.detailsZh);
+
+          if (flipped) {
+            front.querySelectorAll("video").forEach(video => video.pause());
+          }
+        });
+      });
+    }
+
+    // ============================================================
+    // CREATE COMPLETE EXPORTABLE HTML
+    // ============================================================
+
+    function createDocument(project) {
+      // Escape "<" so user text cannot terminate the embedded script.
+      const serialized = JSON.stringify(project)
+        .replace(/</g, "\\u003c")
+        .replace(/\u2028/g, "\\u2028")
+        .replace(/\u2029/g, "\\u2029");
+
+      const title = escapeHTML(
+        [project.nameZh, project.nameEn].filter(Boolean).join(" · ")
+      );
+
+      const description = escapeHTML(
+        [project.descriptionEn, project.descriptionZh]
+          .filter(Boolean)
+          .join(" ")
+      );
+
+      const language = project.defaultLanguage === "en" ? "en" : "zh-CN";
+
+      return (
+        "<!DOCTYPE html>\n" +
+        '<html lang="' + language + '">\n' +
+        "<head>\n" +
+        '<meta charset="UTF-8">\n' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+        '<meta name="description" content="' + description + '">\n' +
+        '<meta name="theme-color" content="' + escapeHTML(project.accent) + '">\n' +
+        "<title>" + title + "</title>\n" +
+        "<style>" + WEBSITE_CSS + "</style>\n" +
+        "</head>\n" +
+        "<body>\n" +
+        '<div id="site"></div>\n' +
+        "<noscript>Please enable JavaScript to view this website.</noscript>\n" +
+        "<script>\n" +
+        "(" + renderWebsite.toString() + ")(" + serialized + ");\n" +
+        "<" + "/script>\n" +
+        "</body>\n" +
+        "</html>"
+      );
+    }
+
+    // ============================================================
+    // EDITOR FIELD BUILDERS
+    // ============================================================
+
+    function field(key, label, options = {}) {
+      const object = options.dish || state;
+      const value = escapeHTML(object[key]);
+
+      const binding = options.dish
+        ? 'data-dish="' + escapeHTML(options.dish.id) +
+          '" data-key="' + escapeHTML(key) + '"'
+        : 'data-field="' + escapeHTML(key) + '"';
+
+      let control;
+
+      if (options.type === "textarea") {
+        control = `<textarea ${binding} rows="3">${value}</textarea>`;
+      } else if (options.type === "select") {
+        control = `
+          <select ${binding}>
+            ${options.options.map(([optionValue, optionLabel]) => `
+              <option
+                value="${escapeHTML(optionValue)}"
+                ${object[key] === optionValue ? "selected" : ""}
+              >
+                ${escapeHTML(optionLabel)}
+              </option>
+            `).join("")}
+          </select>
+        `;
+      } else {
+        control = `
+          <input
+            type="${options.type || "text"}"
+            ${binding}
+            value="${value}"
+          >
+        `;
+      }
+
+      return `
+        <label class="field">
+          <span>${escapeHTML(label)}</span>
+          ${control}
+        </label>
+      `;
+    }
+
+    function pair(base, englishLabel, chineseLabel, type = "text") {
+      return (
+        field(base + "En", englishLabel, { type }) +
+        field(base + "Zh", chineseLabel, { type })
+      );
+    }
+
+    function section(id, title, content, open = false) {
+      return `
+        <details class="editor-section" data-section="${id}" ${open ? "open" : ""}>
+          <summary>${title}</summary>
+          <div class="section-content">${content}</div>
+        </details>
+      `;
+    }
+
+    function mediaEditor(media, owner) {
+      return `
+        <label class="upload-label">
+          ＋ Upload photos / videos · 上传图片或视频
+          <input
+            type="file"
+            accept="image/*,video/*"
+            multiple
+            data-upload="${escapeHTML(owner)}"
+          >
+        </label>
+
+        <div class="media-list">
+          ${media.map((item, index) => `
+            <div class="media-item">
+              ${item.type === "video"
+                ? `<video
+                    src="${escapeHTML(item.src)}"
+                    muted
+                    playsinline
+                    preload="metadata"
+                    aria-label="${escapeHTML(item.name)}"
+                   ></video>`
+                : `<img
+                    src="${escapeHTML(item.src)}"
+                    alt="${escapeHTML(item.name)}"
+                   >`
+              }
+
+              <div>
+                <div class="media-name" title="${escapeHTML(item.name)}">
+                  ${escapeHTML(item.name || "Uploaded media")}
+                </div>
+
+                <div class="media-actions">
+                  <button
+                    class="button small"
+                    type="button"
+                    data-action="media-up"
+                    data-owner="${escapeHTML(owner)}"
+                    data-index="${index}"
+                    ${index === 0 ? "disabled" : ""}
+                    aria-label="Move media up"
+                  >↑</button>
+
+                  <button
+                    class="button small"
+                    type="button"
+                    data-action="media-down"
+                    data-owner="${escapeHTML(owner)}"
+                    data-index="${index}"
+                    ${index === media.length - 1 ? "disabled" : ""}
+                    aria-label="Move media down"
+                  >↓</button>
+
+                  <button
+                    class="button small danger"
+                    type="button"
+                    data-action="media-delete"
+                    data-owner="${escapeHTML(owner)}"
+                    data-index="${index}"
+                  >Remove</button>
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function drinkEditor(dish, index) {
+      return `
+        <div class="drink-editor">
+          <div class="drink-editor-header">
+            <h3>Drink ${index + 1} · 饮品</h3>
+
+            <div class="actions">
+              <button
+                type="button"
+                class="button small"
+                data-action="drink-up"
+                data-id="${escapeHTML(dish.id)}"
+                ${index === 0 ? "disabled" : ""}
+                aria-label="Move drink up"
+              >↑</button>
+
+              <button
+                type="button"
+                class="button small"
+                data-action="drink-down"
+                data-id="${escapeHTML(dish.id)}"
+                ${index === state.dishes.length - 1 ? "disabled" : ""}
+                aria-label="Move drink down"
+              >↓</button>
+
+              <button
+                type="button"
+                class="button small danger"
+                data-action="drink-delete"
+                data-id="${escapeHTML(dish.id)}"
+              >Delete</button>
+            </div>
+          </div>
+
+          <div class="two-columns">
+            ${field("icon", "Placeholder emoji · 图标", { dish })}
+            ${field("price", "Price · 价格", { dish })}
+          </div>
+
+          ${field("nameEn", "Drink name — English", { dish })}
+          ${field("nameZh", "饮品名称 — 中文", { dish })}
+
+          ${field("descriptionEn", "Drink description — English", {
+            dish,
+            type: "textarea"
+          })}
+
+          ${field("descriptionZh", "饮品介绍 — 中文", {
+            dish,
+            type: "textarea"
+          })}
+
+          <p class="helper">
+            Add drink photos or videos. Multiple uploads create a gallery.
+          </p>
+
+          ${mediaEditor(dish.media, dish.id)}
+        </div>
+      `;
+    }
+
+    // ============================================================
+    // EDITOR RENDERING
+    // ============================================================
+
+    function renderEditor() {
+      const openSections = new Set(
+        Array.from(editor.querySelectorAll("details[open]"))
+          .map(element => element.dataset.section)
+      );
+
+      const firstRender = !editor.children.length;
+      const scrollTop = editor.scrollTop;
+
+      editor.innerHTML = `
+        <div class="notice">
+          <strong>张飞饮料店 · Zhang Fei Drinks</strong><br>
+          The default drinks, recipes, and prices are editable examples.
+          Replace them with your actual menu before publishing.<br>
+          示例饮品与价格仅供编辑参考，请替换为实际菜单。
+        </div>
+
+        ${section(
+          "brand",
+          "01 · Brand & appearance / 品牌与外观",
+          `
+            ${pair("name", "Drink shop name — English", "饮料店名称 — 中文")}
+
+            ${field("heroIcon", "Brand / placeholder emoji · 品牌图标")}
+
+            <div class="two-columns">
+              ${field("accent", "Brand red / accent", { type: "color" })}
+              ${field("gold", "Gold / secondary", { type: "color" })}
+              ${field("background", "Page background", { type: "color" })}
+              ${field("ink", "Text color", { type: "color" })}
+            </div>
+
+            ${field("defaultLanguage", "Default website language · 默认语言", {
+              type: "select",
+              options: [
+                ["both", "Chinese + English / 中英双语"],
+                ["zh", "Chinese / 中文"],
+                ["en", "English"]
+              ]
+            })}
+          `,
+          true
+        )}
+
+        ${section(
+          "hero",
+          "02 · Hero section / 首页内容",
+          `
+            ${pair("eyebrow", "Eyebrow — English", "顶部短句 — 中文")}
+            ${pair("title", "Main headline — English", "主标题 — 中文")}
+            ${pair(
+              "description",
+              "Introduction — English",
+              "首页介绍 — 中文",
+              "textarea"
+            )}
+            ${pair("menuButton", "Menu button — English", "菜单按钮 — 中文")}
+            ${pair("heroButton", "Gallery button — English", "店铺展示按钮 — 中文")}
+          `
+        )}
+
+        ${section(
+          "hero-media",
+          "03 · Shop photos & videos / 店铺图片与视频",
+          `
+            <p class="helper">
+              Upload your shop interior, signature drinks, or a short video.
+              The first item appears first. Without uploads, a branded
+              illustration is displayed.
+            </p>
+
+            <p class="helper">
+              Uploaded media is embedded in the exported HTML.
+              Large videos make the file larger and the preview slower.
+              Browser playback depends on the uploaded video format.
+            </p>
+
+            ${mediaEditor(state.heroMedia, "hero")}
+          `
+        )}
+
+        ${section(
+          "menu",
+          "04 · Menu introduction / 菜单标题",
+          `
+            ${pair("menuTitle", "Menu heading — English", "菜单标题 — 中文")}
+            ${pair(
+              "menuDescription",
+              "Menu introduction — English",
+              "菜单介绍 — 中文",
+              "textarea"
+            )}
+          `
+        )}
+
+        ${section(
+          "drinks",
+          "05 · Drinks, prices & media / 饮品与价格",
+          `
+            <p class="helper">
+              Each drink has an editable price, bilingual text, and its own
+              photo/video gallery. Flip the preview cards to read details.
+            </p>
+
+            <div id="dishEditors">
+              ${state.dishes.map(drinkEditor).join("")}
+            </div>
+
+            <button
+              class="button primary"
+              type="button"
+              data-action="drink-add"
+              style="width:100%"
+            >
+              ＋ Add drink / 添加饮品
+            </button>
+          `,
+          true
+        )}
+
+        ${section(
+          "labels",
+          "06 · Buttons & gallery labels / 按钮文字",
+          `
+            ${pair("details", "Card details button — English", "查看详情 — 中文")}
+            ${pair("back", "Card back button — English", "返回饮品 — 中文")}
+            ${pair("previous", "Previous media — English", "上一张 / 段 — 中文")}
+            ${pair("next", "Next media — English", "下一张 / 段 — 中文")}
+          `
+        )}
+
+        ${section(
+          "footer",
+          "07 · Closing & footer / 结尾与页脚",
+          `
+            ${pair("closing", "Closing headline — English", "结尾标语 — 中文")}
+            ${pair(
+              "footer",
+              "Footer text — English",
+              "页脚文字 — 中文",
+              "textarea"
+            )}
+          `
+        )}
+
+        <p class="helper">
+          <strong>Save project:</strong> downloads an editable JSON backup,
+          including uploaded media.<br>
+          <strong>Export website:</strong> downloads the finished standalone
+          website as an HTML file.<br>
+          Your changes are not automatically saved when you close this page.
+        </p>
+      `;
+
+      if (!firstRender) {
+        editor.querySelectorAll("details").forEach(element => {
+          element.open = openSections.has(element.dataset.section);
+        });
+      }
+
+      editor.scrollTop = scrollTop;
+    }
+
+    // ============================================================
+    // LIVE PREVIEW
+    // ============================================================
+
+    function updatePreview() {
+      clearTimeout(previewTimer);
+      previewStatus.textContent = "Updating preview…";
+      preview.srcdoc = createDocument(state);
+    }
+
+    function markChanged() {
+      dirty = true;
+      previewStatus.textContent = "Unsaved changes · Updating…";
+      clearTimeout(previewTimer);
+      previewTimer = setTimeout(updatePreview, 450);
+    }
+
+    preview.addEventListener("load", () => {
+      previewStatus.textContent = dirty
+        ? "Preview updated · Unsaved project changes"
+        : "Preview updated";
+    });
+
+    // ============================================================
+    // EDITOR INPUT EVENTS
+    // ============================================================
+
+    editor.addEventListener("input", event => {
+      const target = event.target;
+
+      if (target.dataset.field) {
+        state[target.dataset.field] = target.value;
+        markChanged();
+        return;
+      }
+
+      if (target.dataset.dish && target.dataset.key) {
+        const dish = state.dishes.find(item => item.id === target.dataset.dish);
+
+        if (dish) {
+          dish[target.dataset.key] = target.value;
+          markChanged();
+        }
+      }
+    });
+
+    function getMedia(owner) {
+      if (owner === "hero") {
+        return state.heroMedia;
+      }
+
+      return state.dishes.find(dish => dish.id === owner)?.media;
+    }
+
+    function moveItem(array, index, direction) {
+      const destination = index + direction;
+
+      if (
+        !array ||
+        index < 0 ||
+        index >= array.length ||
+        destination < 0 ||
+        destination >= array.length
+      ) {
+        return;
+      }
+
+      [array[index], array[destination]] =
+        [array[destination], array[index]];
+    }
+
+    editor.addEventListener("click", event => {
+      const button = event.target.closest("button[data-action]");
+
+      if (!button) {
+        return;
+      }
+
+      const action = button.dataset.action;
+      const id = button.dataset.id;
+      const index = state.dishes.findIndex(dish => dish.id === id);
+
+      if (action === "drink-add") {
+        state.dishes.push(newDish());
+      } else if (action === "drink-delete") {
+        if (!confirm("Delete this drink and its media? / 删除此饮品及其媒体？")) {
+          return;
+        }
+
+        if (index >= 0) {
+          state.dishes.splice(index, 1);
+        }
+      } else if (action === "drink-up") {
+        moveItem(state.dishes, index, -1);
+      } else if (action === "drink-down") {
+        moveItem(state.dishes, index, 1);
+      } else if (action.startsWith("media-")) {
+        const media = getMedia(button.dataset.owner);
+        const mediaIndex = Number(button.dataset.index);
+
+        if (!media) {
+          return;
+        }
+
+        if (action === "media-delete") {
+          media.splice(mediaIndex, 1);
+        } else {
+          moveItem(media, mediaIndex, action === "media-up" ? -1 : 1);
+        }
+      } else {
+        return;
+      }
+
+      renderEditor();
+      markChanged();
+    });
+
+    // ============================================================
+    // PHOTO & VIDEO UPLOADS
+    // ============================================================
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(
+          new Error("Could not read " + file.name)
+        );
+
+        reader.readAsDataURL(file);
+      });
+    }
+
+    editor.addEventListener("change", async event => {
+      const input = event.target.closest("input[data-upload]");
+
+      if (!input) {
+        return;
+      }
+
+      const files = Array.from(input.files || []);
+
+      if (!files.length) {
+        return;
+      }
+
+      const owner = input.dataset.upload;
+      const projectAtStart = state;
+      const mediaAtStart = getMedia(owner);
+
+      if (!mediaAtStart) {
+        return;
+      }
+
+      const supportedFiles = files.filter(file =>
+        file.type.startsWith("image/") ||
+        file.type.startsWith("video/")
+      );
+
+      if (!supportedFiles.length) {
+        toast("Please select image or video files.");
+        input.value = "";
+        return;
+      }
+
+      const totalSize = supportedFiles.reduce(
+        (total, file) => total + file.size,
+        0
+      );
+
+      if (
+        totalSize > 30 * 1024 * 1024 &&
+        !confirm(
+          "These uploads exceed 30 MB. Embedded videos and photos can " +
+          "make previews and exports slow. Continue?"
+        )
+      ) {
+        input.value = "";
+        return;
+      }
+
+      input.disabled = true;
+      previewStatus.textContent = "Reading uploads…";
+
+      let added = 0;
+      let failed = 0;
+
+      for (const file of supportedFiles) {
+        try {
+          const src = await readFileAsDataURL(file);
+
+          // Ignore an upload if its project or drink was removed while reading.
+          if (
+            state !== projectAtStart ||
+            getMedia(owner) !== mediaAtStart
+          ) {
+            return;
+          }
+
+          mediaAtStart.push({
+            name: file.name,
+            type: file.type.startsWith("video/") ? "video" : "image",
+            src
+          });
+
+          added++;
+        } catch (error) {
+          console.error(error);
+          failed++;
+        }
+      }
+
+      renderEditor();
+      markChanged();
+
+      toast(
+        added + " file(s) added." +
+        (failed ? " " + failed + " could not be read." : "")
+      );
+    });
+
+    // ============================================================
+    // DOWNLOADS & PROJECT IMPORT
+    // ============================================================
+
+    function download(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    }
+
+    function filenameBase() {
+      return (
+        state.nameEn
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "") ||
+        "zhang-fei-drinks"
+      );
+    }
+
+    function normalizeMedia(value) {
+      if (!Array.isArray(value)) {
+        return [];
+      }
+
+      return value
+        .filter(item =>
+          item &&
+          ["image", "video"].includes(item.type) &&
+          typeof item.src === "string" &&
+          (
+            item.type === "image"
+              ? /^data:image\//i.test(item.src)
+              : /^data:video\//i.test(item.src)
+          )
+        )
+        .map(item => ({
+          name: String(item.name || "Uploaded media"),
+          type: item.type,
+          src: item.src
+        }));
+    }
+
+    function normalizeProject(input) {
+      const source = input && input.state ? input.state : input;
+
+      if (
+        !source ||
+        typeof source !== "object" ||
+        !Array.isArray(source.dishes)
+      ) {
+        throw new Error("This file is not a compatible creator project.");
+      }
+
+      const normalized = clone(DEFAULT_STATE);
+
+      Object.keys(DEFAULT_STATE).forEach(key => {
+        if (
+          typeof DEFAULT_STATE[key] === "string" &&
+          typeof source[key] === "string"
+        ) {
+          normalized[key] = source[key];
+        }
+      });
+
+      ["accent", "gold", "background", "ink"].forEach(key => {
+        if (!/^#[0-9a-f]{6}$/i.test(normalized[key])) {
+          normalized[key] = DEFAULT_STATE[key];
+        }
+      });
+
+      if (!["both", "en", "zh"].includes(normalized.defaultLanguage)) {
+        normalized.defaultLanguage = "both";
+      }
+
+      normalized.heroMedia = normalizeMedia(source.heroMedia);
+
+      normalized.dishes = source.dishes
+        .filter(dish => dish && typeof dish === "object")
+        .map(dish => {
+          const result = newDish();
+
+          [
+            "icon",
+            "nameEn",
+            "nameZh",
+            "price",
+            "descriptionEn",
+            "descriptionZh"
+          ].forEach(key => {
+            if (typeof dish[key] === "string") {
+              result[key] = dish[key];
+            }
+          });
+
+          result.media = normalizeMedia(dish.media);
+          return result;
+        });
+
+      return normalized;
+    }
+
+    document.getElementById("saveProject").addEventListener("click", () => {
+      download(
+        JSON.stringify({
+          creator: "Zhang Fei Drinks Website Creator",
+          version: 1,
+          state
+        }, null, 2),
+        filenameBase() + "-project.json",
+        "application/json;charset=utf-8"
+      );
+
+      dirty = false;
+      previewStatus.textContent = "Project download requested";
+      toast("Project backup download started.");
+    });
+
+    document.getElementById("exportWebsite").addEventListener("click", () => {
+      download(
+        createDocument(state),
+        filenameBase() + ".html",
+        "text/html;charset=utf-8"
+      );
+
+      toast("Website export started. Save the project too for future editing.");
+    });
+
+    const projectFile = document.getElementById("projectFile");
+
+    document.getElementById("loadProject").addEventListener("click", () => {
+      if (
+        dirty &&
+        !confirm("Loading a project will replace your unsaved changes. Continue?")
+      ) {
+        return;
+      }
+
+      projectFile.click();
+    });
+
+    projectFile.addEventListener("change", async () => {
+      const file = projectFile.files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      try {
+        const text = await file.text();
+        const imported = normalizeProject(JSON.parse(text));
+
+        state = imported;
+        dirty = false;
+
+        renderEditor();
+        updatePreview();
+        toast("Project loaded.");
+      } catch (error) {
+        console.error(error);
+        toast(error.message || "Could not load this project.");
+      } finally {
+        projectFile.value = "";
+      }
+    });
+
+    document.getElementById("resetProject").addEventListener("click", () => {
+      if (
+        !confirm(
+          "Reset all text, drinks, colors, and uploads to the " +
+          "张飞饮料店 defaults?"
+        )
+      ) {
+        return;
+      }
+
+      state = clone(DEFAULT_STATE);
+      dirty = true;
+
+      renderEditor();
+      updatePreview();
+      toast("Default content restored.");
+    });
+
+    // ============================================================
+    // PREVIEW SIZE CONTROLS
+    // ============================================================
+
+    const desktopButton = document.getElementById("desktopPreview");
+    const mobileButton = document.getElementById("mobilePreview");
+
+    desktopButton.addEventListener("click", () => {
+      preview.classList.remove("mobile");
+      desktopButton.classList.add("active");
+      mobileButton.classList.remove("active");
+    });
+
+    mobileButton.addEventListener("click", () => {
+      preview.classList.add("mobile");
+      mobileButton.classList.add("active");
+      desktopButton.classList.remove("active");
+    });
+
+    document.getElementById("refreshPreview").addEventListener(
+      "click",
+      updatePreview
+    );
+
+    // ============================================================
+    // NOTIFICATIONS & UNSAVED-CHANGE WARNING
+    // ============================================================
+
+    function toast(message) {
+      const element = document.getElementById("toast");
+
+      clearTimeout(toastTimer);
+      element.textContent = message;
+      element.classList.add("visible");
+
+      toastTimer = setTimeout(() => {
+        element.classList.remove("visible");
+      }, 4000);
+    }
+
+    window.addEventListener("beforeunload", event => {
+      if (!dirty) {
+        return;
+      }
+
+      event.preventDefault();
+      event.returnValue = "";
+    });
+
+    // ============================================================
+    // START
+    // ============================================================
+
+    renderEditor();
+    updatePreview();
+  </script>
+</body>
+</html>
