@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173d38">
+<meta name="description"
+      content="A bilingual MA CAT teaching studio: create a generative-AI character, design a promotional image series, prototype a prompt storefront, and critically evaluate digital marketing.">
+
+<title>GenAI Creative Commerce Lab | 生成式 AI 創意商業教學</title>
+
+<style>
+:root {
+  --bg: #f5f3ed;
+  --paper: #fffefa;
+  --ink: #23332f;
+  --muted: #606d65;
+  --green: #173d38;
+  --green-light: #e8f0ea;
+  --orange: #f3b86a;
+  --line: #d9dfd6;
+  --soft: #eef0e8;
+  --red: #96473a;
+  --radius: 18px;
+  --shadow: 0 12px 35px rgba(29, 53, 43, .05);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI",
+    "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.7;
+}
+button, input, textarea { font: inherit; }
+button, a, summary { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+a { color: var(--green); text-underline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible,
+textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid #b96b18;
+  outline-offset: 4px;
+}
+h1, h2, h3, h4 { line-height: 1.25; }
+h1, h2, h3, h4, p { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+h1 { font-size: clamp(2.25rem, 4.6vw, 4.4rem); letter-spacing: -.045em; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -.025em; }
+h3 { font-size: 1.08rem; }
+h4 { font-size: 1rem; }
+small { font-size: .8rem; }
+[hidden] { display: none !important; }
+
+.en, .zh { display: block; }
+.zh { margin-top: .28em; }
+p .zh, li .zh, .muted .zh { color: var(--muted); }
+h1 .zh, h2 .zh, h3 .zh {
+  font-size: .66em;
+  font-weight: 600;
+  letter-spacing: .025em;
+}
+button .zh, .btn .zh {
+  margin: 0;
+  font-size: .82em;
+  line-height: 1.4;
+}
+
+.skip {
+  position: fixed;
+  left: 15px;
+  top: -100px;
+  z-index: 100;
+  padding: 12px;
+  background: white;
+}
+.skip:focus { top: 15px; }
+
+.shell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 30px 22px;
+  color: #fff;
+  background: var(--green);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  color: var(--green);
+  background: var(--orange);
+  font-weight: 900;
+}
+.brand strong { display: block; line-height: 1.2; }
+.brand small { color: #c8d9cf; }
+.sidebar .eyebrow { color: #b9cfc2; }
+
+nav { display: grid; gap: 6px; }
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #e9f0ea;
+  text-decoration: none;
+  font-size: .85rem;
+}
+nav a:hover, nav a.active { background: #ffffff16; }
+nav a.active { box-shadow: inset 3px 0 var(--orange); }
+nav .zh { color: #c2d5c8; font-size: .78rem; margin-top: 1px; }
+.nav-number { color: var(--orange); font-size: .75rem; font-weight: 800; }
+
+.progress-box {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #ffffff25;
+}
+progress {
+  display: block;
+  width: 100%;
+  height: 9px;
+  margin: 10px 0;
+  accent-color: var(--orange);
+}
+.progress-box p { font-size: .8rem; color: #d3e1d7; }
+.sidebar .utility {
+  margin-top: 20px;
+  display: grid;
+  gap: 9px;
+}
+.sidebar .utility button {
+  padding: 9px;
+  border: 1px solid #ffffff40;
+  border-radius: 8px;
+  background: transparent;
+  color: white;
+  font-size: .8rem;
+}
+
+main {
+  min-width: 0;
+  max-width: 1450px;
+  width: 100%;
+  padding: 38px clamp(18px, 4vw, 64px) 70px;
+}
+.eyebrow {
+  margin-bottom: 12px;
+  color: var(--green);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 4vw, 48px);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -85px;
+  width: 240px;
+  height: 240px;
+  border: 45px solid #f3b86a24;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero h1 { max-width: 800px; margin-bottom: 22px; }
+.hero .lead { max-width: 800px; font-size: 1.02rem; }
+
+.tags, .actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.tags { margin-bottom: 20px; }
+.tag {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: .74rem;
+}
+.actions { margin-top: 18px; }
+
+.btn {
+  display: inline-block;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--green);
+  background: white;
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 700;
+  text-align: center;
+}
+.btn:hover { background: var(--soft); }
+.btn.primary { background: var(--green); border-color: var(--green); color: white; }
+.btn.primary:hover { background: #28544b; }
+.btn.warm { background: var(--orange); border-color: var(--orange); }
+.btn.small { min-height: 38px; padding: 7px 11px; font-size: .76rem; }
+
+.path {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 30px;
+}
+.path > div {
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.path b { color: #946121; display: block; font-size: .75rem; }
+.path strong { display: block; font-size: .85rem; }
+.path .zh { color: var(--muted); font-size: .8rem; }
+
+.section { margin-top: 42px; scroll-margin-top: 22px; }
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.step-number {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  background: var(--green);
+  color: var(--orange);
+  border-radius: 15px;
+  font-weight: 800;
+}
+.section-heading h2 { margin-bottom: 8px; }
+.section-heading p { margin: 0; font-size: .85rem; color: var(--muted); }
+
+.grid2, .grid3 {
+  display: grid;
+  gap: 18px;
+}
+.grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.panel, .prompt-card, .resource {
+  min-width: 0;
+  padding: 24px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.panel p, .panel li { font-size: .9rem; }
+.panel ul, .panel ol { padding-left: 21px; margin-bottom: 0; }
+.panel li + li { margin-top: 12px; }
+.panel.tint { background: var(--green-light); }
+.panel.gold { background: #fcf1de; }
+.panel + .panel, .prompt-card + .prompt-card { margin-top: 18px; }
+.grid2 > .panel, .grid3 > .panel { margin-top: 0; }
+
+.callout {
+  margin: 20px 0;
+  padding: 18px 21px;
+  background: #fcf1de;
+  border-left: 4px solid #b77c30;
+  border-radius: 0 12px 12px 0;
+  font-size: .88rem;
+}
+.callout.cool { background: var(--green-light); border-color: var(--green); }
+.callout .zh { color: #685c45; }
+.callout.cool .zh { color: #486353; }
+
+.prompt-card { margin-top: 20px; padding: 0; overflow: hidden; }
+.prompt-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 22px 24px 14px;
+}
+.prompt-top h3 { margin-bottom: 8px; }
+.prompt-top p { font-size: .83rem; color: var(--muted); }
+.prompt-id {
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: .72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.prompt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 24px 18px;
+}
+details { border-top: 1px solid var(--line); }
+summary { padding: 16px 24px; cursor: pointer; font-size: .85rem; font-weight: 700; }
+.prompt-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 24px 24px;
+}
+.prompt-language {
+  min-width: 0;
+  padding: 16px;
+  background: #f3f4ee;
+  border-radius: 10px;
+}
+.prompt-language h4 { font-size: .78rem; margin-bottom: 10px; }
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: inherit;
+  font-size: .82rem;
+  line-height: 1.85;
+}
+.overlay-copy {
+  margin: 0 24px 22px;
+  padding: 16px;
+  border: 1px dashed #9faa9c;
+  border-radius: 10px;
+  background: #fffdf5;
+}
+.overlay-copy strong { display: block; font-size: .8rem; margin-bottom: 8px; }
+.overlay-copy .btn { margin-top: 12px; }
+
+.workbook { margin-top: 18px; }
+.workbook label { display: block; font-size: .88rem; font-weight: 700; }
+textarea, input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #aebcb0;
+  border-radius: 9px;
+  background: white;
+  color: var(--ink);
+}
+textarea { resize: vertical; min-height: 120px; margin-top: 10px; }
+.workbook .hint { margin: 10px 0; font-size: .77rem; color: var(--muted); }
+.complete {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  cursor: pointer;
+}
+.complete input {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  margin-top: 4px;
+  accent-color: var(--green);
+}
+
+.diagram {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 320px;
+  padding: 22px;
+  border: 2px solid #b18c4b;
+  outline: 7px solid #f4ead6;
+  outline-offset: -10px;
+  background: #fffbef;
+  border-radius: 12px;
+  text-align: center;
+}
+.diagram-label {
+  padding: 8px;
+  border: 1px dashed #b7b4a6;
+  color: #6b6355;
+  font-size: .78rem;
+}
+.diagram-center {
+  display: grid;
+  align-content: center;
+  padding: 18px;
+  gap: 10px;
+}
+.diagram-center .emoji { font-size: 3.2rem; }
+.diagram-bottom { display: flex; justify-content: space-between; gap: 12px; }
+
+.poster-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+.mini-poster {
+  padding: 18px 10px;
+  border: 1px solid #b38b48;
+  border-top: 5px solid var(--accent, #b38b48);
+  border-radius: 10px;
+  text-align: center;
+  background: #fffbef;
+}
+.mini-poster .fruit { font-size: 2rem; }
+.mini-poster strong { display: block; font-size: .85rem; }
+.mini-poster small { display: block; color: var(--muted); }
+
+.store-demo {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: white;
+}
+.store-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 15px 24px;
+  background: var(--green);
+  color: white;
+  font-size: .85rem;
+}
+.store-body {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 28px;
+  padding: 28px;
+}
+.pack-art {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 310px;
+  padding: 28px;
+  background: #efe7d7;
+  border: 1px solid #c7b38d;
+  border-radius: 14px;
+}
+.pack-art .large { font-size: 3.8rem; font-weight: 900; color: var(--green); }
+.pack-art h3 { font-size: 1.5rem; }
+.pack-art small { color: #6b604d; }
+.price { font-size: 1.8rem; font-weight: 800; margin: 8px 0; }
+.price small { font-weight: 400; color: var(--muted); }
+.store-body ul { padding-left: 20px; font-size: .86rem; }
+.store-note { padding: 0 28px 25px; font-size: .8rem; color: var(--muted); }
+
+.ref-inline { font-size: .8rem; font-weight: 700; }
+.resource { margin-top: 14px; }
+.resource h3 { font-size: .95rem; margin-bottom: 10px; }
+.resource p { font-size: .85rem; }
+.resource-type {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--green-light);
+  font-size: .7rem;
+}
+.resource-links { display: flex; flex-wrap: wrap; gap: 15px; font-size: .8rem; }
+.resource:target { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+table { width: 100%; border-collapse: collapse; background: white; font-size: .86rem; }
+caption { padding: 14px; font-weight: 700; text-align: left; background: var(--soft); }
+th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--line); }
+th { background: var(--soft); }
+tr:last-child td { border-bottom: none; }
+
+.metrics-form { margin-top: 16px; }
+.metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+fieldset { min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+legend { padding: 0 6px; font-weight: 700; }
+.metrics-form label { display: block; margin: 10px 0 5px; font-size: .82rem; }
+.metric-result { margin-top: 16px; padding: 16px; background: var(--green-light); border-radius: 10px; }
+.muted { color: var(--muted); }
+
+footer {
+  margin-top: 42px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  z-index: 100;
+  max-width: calc(100% - 30px);
+  padding: 12px 22px;
+  border-radius: 11px;
+  background: var(--green);
+  color: white;
+  box-shadow: 0 10px 35px #0003;
+  opacity: 0;
+  transform: translate(-50%, 15px);
+  transition: .2s;
+  pointer-events: none;
+  text-align: center;
+  font-size: .85rem;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+dialog {
+  width: min(670px, calc(100% - 30px));
+  max-height: 85vh;
+  overflow: auto;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--ink);
+}
+dialog::backdrop { background: #122720aa; }
+dialog textarea { min-height: 240px; }
+dialog form { margin-top: 20px; }
+dialog h2 { font-size: 1.5rem; }
+
+@media (max-width: 1100px) {
+  .shell { grid-template-columns: 225px minmax(0, 1fr); }
+  .sidebar { padding: 24px 16px; }
+  .grid3 { grid-template-columns: 1fr; }
+  .prompt-columns { grid-template-columns: 1fr; }
+}
+@media (max-width: 850px) {
+  .shell { display: block; }
+  .sidebar { position: static; height: auto; padding: 20px; }
+  .brand { margin-bottom: 15px; }
+  nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  nav a { padding: 8px; }
+  .progress-box { margin-top: 16px; padding-top: 16px; }
+  .sidebar .utility { grid-template-columns: repeat(2, 1fr); }
+  main { padding: 24px 18px 50px; }
+}
+@media (max-width: 600px) {
+  .grid2, .store-body, .metric-grid { grid-template-columns: 1fr; }
+  .path, .poster-row { grid-template-columns: repeat(2, 1fr); }
+  nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero { padding: 25px 21px; }
+  .panel, .resource { padding: 20px; }
+  .prompt-top { padding: 20px; }
+  .prompt-actions { padding-left: 20px; padding-right: 20px; }
+  .prompt-columns { padding: 0 20px 20px; }
+  .overlay-copy { margin-left: 20px; margin-right: 20px; }
+  .store-body { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+@media print {
+  .shell { display: block; }
+  .sidebar, .actions, .prompt-actions, .btn, .toast,
+  .complete, dialog, .skip, .metrics-form button { display: none !important; }
+  main { max-width: none; padding: 0; }
+  body { background: white; font-size: 10pt; }
+  .hero, .panel, .prompt-card, .resource { box-shadow: none; }
+  .section { break-before: auto; }
+  h2, h3 { break-after: avoid; }
+  .prompt-columns, .grid2, .grid3 { display: block; }
+  .prompt-language, .panel { margin-bottom: 12px; }
+  textarea { min-height: 150px; }
+  a { color: black; }
+}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to lesson / 跳至課程內容</a>
+
+<div class="shell">
+  <aside class="sidebar" aria-label="Course navigation / 課程導覽">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">AI</div>
+      <div>
+        <strong>Creative Commerce Lab</strong>
+        <small lang="zh-Hant">生成式 AI 創意商業教學</small>
+      </div>
+    </div>
+
+    <p class="eyebrow">MA CAT · Bilingual Studio</p>
+
+    <nav id="course-nav" aria-label="Learning pathway / 學習路徑">
+      <a href="#overview">
+        <span class="nav-number">00</span>
+        <span>Start here<span class="zh" lang="zh-Hant">課程導讀</span></span>
+      </a>
+      <a href="#step1">
+        <span class="nav-number">01</span>
+        <span>Main character<span class="zh" lang="zh-Hant">建立品牌主角</span></span>
+      </a>
+      <a href="#step2">
+        <span class="nav-number">02</span>
+        <span>Master poster<span class="zh" lang="zh-Hant">建立主視覺海報</span></span>
+      </a>
+      <a href="#step3">
+        <span class="nav-number">03</span>
+        <span>Image variations<span class="zh" lang="zh-Hant">延伸系列圖像</span></span>
+      </a>
+      <a href="#step4">
+        <span class="nav-number">04</span>
+        <span>Store cover<span class="zh" lang="zh-Hant">製作店舖封面</span></span>
+      </a>
+      <a href="#step5">
+        <span class="nav-number">05</span>
+        <span>Prompt storefront<span class="zh" lang="zh-Hant">雙語提示詞商店</span></span>
+      </a>
+      <a href="#step6">
+        <span class="nav-number">06</span>
+        <span>Digital marketing<span class="zh" lang="zh-Hant">數碼營銷與測試</span></span>
+      </a>
+      <a href="#step7">
+        <span class="nav-number">07</span>
+        <span>Critique & submit<span class="zh" lang="zh-Hant">評議與作品提交</span></span>
+      </a>
+      <a href="#resources">
+        <span class="nav-number">R</span>
+        <span>Academic resources<span class="zh" lang="zh-Hant">學術與實務資源</span></span>
+      </a>
+    </nav>
+
+    <div class="progress-box">
+      <label for="course-progress">Learning progress / 學習進度</label>
+      <progress id="course-progress" max="7" value="0">0 / 7</progress>
+      <p id="progress-label" aria-live="polite">0 / 7 steps completed · 已完成 0 / 7 步</p>
+      <p id="storage-status"></p>
+    </div>
+
+    <div class="utility">
+      <button type="button" data-action="export-notes">Export workbook / 匯出學習紀錄</button>
+      <button type="button" data-action="reset">Reset progress / 重設進度</button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header class="hero" id="overview">
+      <p class="eyebrow">Learning studio · 教學工作坊</p>
+      <div class="tags">
+        <span class="tag">MA CAT students / 碩士生</span>
+        <span class="tag">English + 繁體中文</span>
+        <span class="tag">Suggested studio time: 3 hours / 建議三小時</span>
+      </div>
+
+      <h1>
+        From AI character<br>to creative commerce.
+        <span class="zh" lang="zh-Hant">從 AI 品牌角色，到創意商業實踐。</span>
+      </h1>
+
+      <p class="lead">
+        <span class="en">Learn how to use generative AI to create a store’s main character,
+        develop five coordinated promotional images, and prototype a bilingual website
+        that presents and sells the prompt workflow.</span>
+        <span class="zh" lang="zh-Hant">本課程教授如何利用生成式 AI 建立店舖主角、
+        製作五張一致的宣傳圖像，再設計一個展示及銷售提示詞工作流程的雙語網站。</span>
+      </p>
+
+      <p class="lead">
+        <span class="en">The learning goal is not simply an attractive image:
+        it is a documented, critically evaluated and clearly communicated creative process.</span>
+        <span class="zh" lang="zh-Hant">學習目標不只是漂亮的圖片，
+        更是有紀錄、經批判評估，並能清楚向他人說明的創作過程。</span>
+      </p>
+
+      <div class="actions">
+        <a href="#step1" class="btn primary">Begin the lesson<span class="zh" lang="zh-Hant">開始學習</span></a>
+        <button type="button" class="btn" data-action="copy-all">Copy all 8 templates<span class="zh" lang="zh-Hant">複製八組模板</span></button>
+        <button type="button" class="btn" data-action="download-pack">Download prompt pack<span class="zh" lang="zh-Hant">下載提示詞包</span></button>
+      </div>
+
+      <div class="path" aria-label="Four stages / 四個階段">
+        <div><b>CREATE / 創作</b><strong>Main character</strong><span class="zh" lang="zh-Hant">原創品牌主角</span></div>
+        <div><b>DEVELOP / 延伸</b><strong>Five-image campaign</strong><span class="zh" lang="zh-Hant">五張系列宣傳圖</span></div>
+        <div><b>PACKAGE / 包裝</b><strong>Bilingual prompt store</strong><span class="zh" lang="zh-Hant">雙語提示詞商店</span></div>
+        <div><b>EVALUATE / 評估</b><strong>Evidence & reflection</strong><span class="zh" lang="zh-Hant">證據與批判反思</span></div>
+      </div>
+    </header>
+
+    <div class="callout">
+      <strong>Two businesses, one case study / 兩個層次，一個案例</strong>
+      <p>
+        <span class="en"><b>Zhangfei Drinks</b> is the fictional juice brand inside the images.
+        Your student website sells a <b>digital prompt pack</b>, not juice.
+        Juice prices and the prompt-pack price are classroom examples only.</span>
+        <span class="zh" lang="zh-Hant"><b>張飛飲品</b>是圖像中的虛構果汁品牌。
+        學生網站售賣的是<b>數碼提示詞包</b>，並非果汁。
+        果汁價格及提示詞包價格均只供課堂示範。</span>
+      </p>
+    </div>
+
+    <div class="grid2">
+      <section class="panel" aria-labelledby="outcomes-title">
+        <h2 id="outcomes-title" style="font-size:1.15rem">Learning outcomes<span class="zh" lang="zh-Hant">學習成果</span></h2>
+        <ul>
+          <li>Construct and revise a visual brief.<span class="zh" lang="zh-Hant">建立及修訂視覺設計簡報。</span></li>
+          <li>Separate consistent identity from controlled variations.<span class="zh" lang="zh-Hant">區分固定品牌特徵與可控制的變化。</span></li>
+          <li>Communicate a digital product in two languages.<span class="zh" lang="zh-Hant">以雙語清楚介紹數碼產品。</span></li>
+          <li>Connect marketing decisions to evidence and limitations.<span class="zh" lang="zh-Hant">以證據及研究限制支持營銷決策。</span></li>
+          <li>Critique authorship, representation and AI-assisted labour.<span class="zh" lang="zh-Hant">批判分析作者身分、文化再現及 AI 輔助勞動。</span></li>
+        </ul>
+      </section>
+
+      <section class="panel tint" aria-labelledby="prepare-title">
+        <h2 id="prepare-title" style="font-size:1.15rem">Before you start<span class="zh" lang="zh-Hant">課前準備</span></h2>
+        <ul>
+          <li>Use an image-generation tool available through your institution or account.<span class="zh" lang="zh-Hant">使用院校或個人帳戶可使用的圖像生成工具。</span></li>
+          <li>Check whether it supports reference images or image editing; controls differ by tool.<span class="zh" lang="zh-Hant">先確認工具是否支援參考圖片或圖像編輯；各工具操作不同。</span></li>
+          <li>Prepare an image editor for accurate bilingual typography.<span class="zh" lang="zh-Hant">準備圖像編輯工具，以準確加入中英文字。</span></li>
+          <li>Record the actual tool, model/version, date, inputs and edits.<span class="zh" lang="zh-Hant">記錄實際工具、模型／版本、日期、輸入及修改。</span></li>
+        </ul>
+        <p style="margin-top:15px">
+          <a class="ref-inline" href="#r1">Responsible learning: R1</a> ·
+          <a class="ref-inline" href="#r6">AI risk review: R6</a>
+        </p>
+      </section>
+    </div>
+
+    <div class="callout cool">
+      <p>
+        <span class="en"><b>How to use the bilingual prompts:</b> copy either English or Chinese
+        into your chosen tool. “Copy both” is useful for teaching and documentation.
+        The two versions are alternatives, not a requirement to paste both.
+        This page does not generate images or call an AI API.</span>
+        <span class="zh" lang="zh-Hant"><b>雙語提示詞使用方法：</b>複製英文或中文其中一個版本至所選工具。
+        「複製雙語」適合教學及紀錄，並不表示必須同時輸入兩種語言。
+        本網頁不會直接生成圖片，也不會呼叫 AI API。</span>
+      </p>
+    </div>
+
+    <div id="lessons"></div>
+
+    <section class="section" id="resources" aria-labelledby="resources-title">
+      <div class="section-heading">
+        <div class="step-number" aria-hidden="true">R</div>
+        <div>
+          <h2 id="resources-title">Read, apply, question.<span class="zh" lang="zh-Hant">閱讀、應用、提問。</span></h2>
+          <p>Academic literature + institutional guidance / 學術文獻與機構指引</p>
+        </div>
+      </div>
+
+      <div class="callout cool">
+        <p>
+          <span class="en">The activities, timing and rubric on this page are suggested teaching
+          designs, not validated assessment instruments. The readings support particular
+          concepts; they do not validate this exact prompt pack or promise sales.
+          Some journal full texts may require library access.</span>
+          <span class="zh" lang="zh-Hant">本頁活動、時間及評分規準均為建議教學設計，
+          並非經驗證的評量工具。文獻支持特定概念，不代表認證本提示詞包或保證銷售成果。
+          部分期刊全文可能需要圖書館權限。</span>
+        </p>
+      </div>
+
+      <div id="resource-list"></div>
+
+      <div class="actions">
+        <button type="button" class="btn" data-action="copy-references">Copy references / 複製參考文獻</button>
+      </div>
+    </section>
+
+    <footer>
+      <p>MA CAT · GenAI Creative Commerce Lab</p>
+      <p>
+        <span class="en">Educational prototype. No payment processing, analytics, account system,
+        image-generation service or protected digital delivery is included.
+        Notes stay in this browser when local storage is available; export a backup.</span>
+        <span class="zh" lang="zh-Hant">教學原型：不包含付款、分析追蹤、帳戶、
+        圖像生成服務或受保護的數碼交付。
+        瀏覽器支援本機儲存時，筆記只保存在此瀏覽器；請匯出備份。</span>
+      </p>
+    </footer>
+
+    <noscript>
+      <div class="callout">Enable JavaScript to load the lessons, prompts and workbook.
+        / 請啟用 JavaScript，以載入課程、提示詞及學習紀錄。</div>
+    </noscript>
+  </main>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<dialog id="copy-dialog" aria-labelledby="copy-dialog-title">
+  <h2 id="copy-dialog-title">Manual copy / 手動複製</h2>
+  <p>Automatic copying was blocked. Select and copy the text below.
+    <span class="zh" lang="zh-Hant">自動複製被阻擋，請選取並複製以下文字。</span></p>
+  <textarea id="copy-fallback-text" readonly aria-label="Text to copy / 待複製文字"></textarea>
+  <form method="dialog"><button class="btn primary">Close / 關閉</button></form>
+</dialog>
+
+<dialog id="order-dialog" aria-labelledby="order-dialog-title">
+  <h2 id="order-dialog-title">Order preview — demonstration only<span class="zh" lang="zh-Hant">訂單預覽——僅供示範</span></h2>
+  <div class="panel tint">
+    <p><strong>Zhangfei Creative Prompt Kit / 張飛創意提示詞套裝</strong></p>
+    <p>8 bilingual templates · TXT download<br>八組雙語模板 · TXT 下載</p>
+    <p class="price">USD 12 <small>fictional price / 虛構價格</small></p>
+  </div>
+  <p style="margin-top:18px">
+    <span class="en">No order has been placed. No payment or personal information is collected.
+    In this classroom prototype, the sample pack can be downloaded free.</span>
+    <span class="zh" lang="zh-Hant">尚未建立任何訂單；不收取付款或個人資料。
+    本課堂原型提供免費下載示範提示詞包。</span>
+  </p>
+  <div class="actions">
+    <button class="btn primary" type="button" data-action="download-pack">Download demo pack / 下載示範包</button>
+  </div>
+  <form method="dialog"><button class="btn">Close / 關閉</button></form>
+</dialog>
+
+<script>
+"use strict";
+
+/* ---------------------------------------------------------
+   Utilities: all editable/user-supplied text is treated as text.
+--------------------------------------------------------- */
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+
+function esc(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  }[char]));
+}
+
+function bi(en, zh) {
+  return `<span class="en" lang="en">${esc(en)}</span>
+          <span class="zh" lang="zh-Hant">${esc(zh)}</span>`;
+}
+
+function paragraph(en, zh) {
+  return `<p>${bi(en, zh)}</p>`;
+}
+
+function items(list, ordered = false) {
+  const tag = ordered ? "ol" : "ul";
+  return `<${tag}>${list.map(x => `<li>${bi(x[0], x[1])}</li>`).join("")}</${tag}>`;
+}
+
+function panel(titleEN, titleZH, content, className = "") {
+  return `<div class="panel ${className}">
+    <h3>${bi(titleEN, titleZH)}</h3>${content}</div>`;
+}
+
+function callout(en, zh, cool = false) {
+  return `<div class="callout ${cool ? "cool" : ""}">${paragraph(en, zh)}</div>`;
+}
+
+let toastTimer;
+function toast(message) {
+  const el = $("#toast");
+  clearTimeout(toastTimer);
+  el.textContent = message;
+  el.classList.add("show");
+  toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
+}
+
+function downloadText(filename, text) {
+  const blob = new Blob(["\uFEFF", text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  toast("Download requested / 已開始下載");
+}
+
+function legacyCopy(text) {
+  const focused = document.activeElement;
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.readOnly = true;
+  area.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
+  document.body.append(area);
+  let success = false;
+  try {
+    area.focus();
+    area.select();
+    success = document.execCommand("copy");
+  } catch (_) {
+    success = false;
+  } finally {
+    area.remove();
+    if (focused instanceof HTMLElement) focused.focus({ preventScroll: true });
+  }
+  return success;
+}
+
+async function copyText(text) {
+  let copied = false;
+  if (window.isSecureContext && navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      copied = true;
+    } catch (_) {}
+  }
+  if (!copied) copied = legacyCopy(text);
+  if (copied) {
+    toast("Copied to clipboard / 已複製到剪貼簿");
+  } else {
+    const dialog = $("#copy-dialog");
+    $("#copy-fallback-text").value = text;
+    if (!dialog.open) dialog.showModal();
+    $("#copy-fallback-text").focus();
+    $("#copy-fallback-text").select();
+  }
+}
+
+/* ---------------------------------------------------------
+   Source records: verified publication details.
+   R1/R6 = institutional guidance; R7 = technical guidance.
+   R2–R5 = academic journal articles.
+--------------------------------------------------------- */
+
+const resources = [
+  {
+    id: "r1",
+    type: "Institutional guidance / 機構指引",
+    citation: "Miao, F., & Holmes, W. (2023). Guidance for generative AI in education and research. UNESCO.",
+    url: "https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research",
+    en: "Focus: human agency and responsible educational use. Ask which creative decisions you retained and what information you chose not to upload.",
+    zh: "重點：人的自主性與負責任的教育應用。思考你保留了哪些創作決定，以及選擇不向工具上傳哪些資料。"
+  },
+  {
+    id: "r2",
+    type: "Journal article / 期刊論文",
+    citation: "Oppenlaender, J. (2024). A taxonomy of prompt modifiers for text-to-image generation. Behaviour & Information Technology, 43(15), 3763–3776.",
+    url: "https://doi.org/10.1080/0144929X.2023.2286532",
+    extra: "https://arxiv.org/abs/2204.13988",
+    en: "Focus: vocabulary for modifying text-to-image prompts. Annotate your subject, visual style and quality descriptors. Compare this historical taxonomy with your current tool rather than treating it as a universal recipe.",
+    zh: "重點：文字生成圖像提示詞的修飾語。標示主體、視覺風格及品質描述，再與目前工具比較；不要把這套歷史分類當作通用公式。"
+  },
+  {
+    id: "r3",
+    type: "Journal article / 期刊論文",
+    citation: "Lemon, K. N., & Verhoef, P. C. (2016). Understanding customer experience throughout the customer journey. Journal of Marketing, 80(6), 69–96.",
+    url: "https://doi.org/10.1509/jm.15.0420",
+    extra: "https://research.rug.nl/en/publications/understanding-customer-experience-throughout-the-customer-journey/",
+    en: "Focus: experiences across multiple touchpoints. Map discovery, product evaluation and post-download support; identify a possible difficulty at each stage.",
+    zh: "重點：多個接觸點之間的顧客體驗。描繪發現產品、評估產品及下載後支援，並找出各階段可能的困難。"
+  },
+  {
+    id: "r4",
+    type: "Journal article / 期刊論文",
+    citation: "Kannan, P. K., & Li, H. A. (2017). Digital marketing: A framework, review and research agenda. International Journal of Research in Marketing, 34(1), 22–45.",
+    url: "https://doi.org/10.1016/j.ijresmar.2016.11.006",
+    en: "Focus: connections between digital touchpoints, marketing actions and outcomes. Explain why your chosen channel suits the intended buyer and specify an observable outcome.",
+    zh: "重點：數碼接觸點、營銷行動與成果的關係。解釋所選渠道如何適合目標買家，並界定可觀察的成果。"
+  },
+  {
+    id: "r5",
+    type: "Journal article · open access / 開放取用期刊論文",
+    citation: "Kohavi, R., Longbotham, R., Sommerfield, D., & Henne, R. M. (2009). Controlled experiments on the web: Survey and practical guide. Data Mining and Knowledge Discovery, 18, 140–181.",
+    url: "https://doi.org/10.1007/s10618-008-0114-1",
+    en: "Focus: controlled online experimentation. Define the unit of randomization, primary metric and stopping rule before testing. A difference between two small samples is not enough to establish a reliable effect.",
+    zh: "重點：受控制的網上實驗。測試前界定隨機分派單位、主要指標及停止規則。兩個小樣本出現差異，並不足以確認可靠效果。"
+  },
+  {
+    id: "r6",
+    type: "Institutional risk guidance / 機構風險指引",
+    citation: "Autio, C., Schwartz, R., Dunietz, J., Jain, S., Stanley, M., Tabassi, E., Hall, P., & Roberts, K. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (NIST AI 600-1). National Institute of Standards and Technology.",
+    url: "https://doi.org/10.6028/NIST.AI.600-1",
+    en: "Focus: identifying and managing generative-AI risks. Use it to structure a review of inaccurate claims, privacy, representation and reuse concerns; it is not product certification or legal clearance.",
+    zh: "重點：識別及管理生成式 AI 風險。可用來檢視不準確陳述、私隱、文化再現及重用問題；它並非產品認證或法律許可。"
+  },
+  {
+    id: "r7",
+    type: "Technical guidance / 技術指引",
+    citation: "World Wide Web Consortium, Web Accessibility Initiative. (n.d.). Writing for web accessibility.",
+    url: "https://www.w3.org/WAI/tips/writing/",
+    en: "Focus: useful headings, meaningful link text, text alternatives and clear instructions. Audit the storefront with a keyboard and review the purpose of each image before writing its alternative text.",
+    zh: "重點：有用的標題、具意義的連結文字、圖像替代文字及清楚指示。以鍵盤檢查商店，並先理解圖片用途，再撰寫替代文字。"
+  }
+];
+
+$("#resource-list").innerHTML = resources.map(r => `
+  <article class="resource" id="${r.id}">
+    <span class="resource-type">${esc(r.type)}</span>
+    <h3>${r.id.toUpperCase()} · ${esc(r.citation)}</h3>
+    ${paragraph(r.en, r.zh)}
+    <div class="resource-links">
+      <a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+        Publisher / official source · 出版社／官方來源 ↗
+      </a>
+      ${r.extra ? `<a href="${esc(r.extra)}" target="_blank" rel="noopener noreferrer">
+        ${r.id === "r2" ? "Earlier preprint / 較早預印本" : "University record / 大學紀錄"} ↗
+      </a>` : ""}
+    </div>
+  </article>
+`).join("");
+
+/* ---------------------------------------------------------
+   Prompt library: 1 character + 5 images + website + marketing.
+   Image prompts do not ask the model to render exact lettering.
+--------------------------------------------------------- */
+
+const identityEN = `CHARACTER LOCK:
+Use the approved character reference. Preserve a broad face, thick arched eyebrows, full black beard, sturdy build, dark-green cloth headband, plain indigo tunic and brown apron. He is a warm, approachable adult shopkeeper. Do not redesign his face or clothing.`;
+
+const identityZH = `角色固定設定：
+使用已批准的角色參考圖。保留寬闊面形、濃密上揚眉毛、濃黑鬍鬚、結實體型、深綠布頭帶、樸素靛藍長衫及棕色圍裙。他是一位親切友善的成年店主。不要重新設計面貌或服裝。`;
+
+const styleEN = `SERIES STYLE:
+Square 1:1 composition; realistic stylized 3D illustration inspired by broad classical Chinese visual motifs, not a specific game adaptation. Warm ivory paper background, thin antique-gold frame, dark wooden counter and soft warm key light from upper left. Match the approved master poster's framing, material rendering and cup design. Keep the composition uncluttered.
+
+TEXT-FREE ARTWORK:
+Render no words, letters, numbers, logos or watermarks. Leave safe empty areas for typesetting. The designer will add all bilingual names and prices afterward.`;
+
+const styleZH = `系列風格：
+1:1正方形構圖；寫實而帶風格化的三維插畫，以廣義中國古典視覺元素為靈感，不模仿特定遊戲改編。暖象牙白紙紋背景、古金色細框、深色木桌，以及左上方柔和暖光。配合已批准主海報的構圖、材質表現及杯型。保持畫面簡潔。
+
+無字圖像：
+不要生成文字、字母、數字、標誌或浮水印。保留安全留白區供後期排版。所有雙語名稱及價格均由設計者稍後加入。`;
+
+const layoutEN = `LAYOUT:
+Keep the character waist-up and centered. Reserve approximately the top fifth for the bilingual heading. Place fruit at lower left and reserve a small clear label area at lower right. Keep hands, face and drink unobstructed.`;
+
+const layoutZH = `版式：
+人物以居中半身構圖呈現。上方約五分之一預留雙語標題；水果置於左下，右下保留小型清晰價格標籤區。不要遮擋手部、面容及飲品。`;
+
+const prompts = [{
+  id: "character",
+  titleEN: "Create the store’s main figure",
+  titleZH: "建立店舖主角",
+  noteEN: "Generate candidates first; approve one identity before making posters.",
+  noteZH: "先生成候選角色，再確定一個形象，之後才製作海報。",
+  en: `Create an original fictional brand mascot for "Zhangfei Drinks."
+
+Interpret the broad idea of a friendly classical Chinese warrior as a welcoming juice-shop owner; do not reproduce a particular actor, game character, film costume or existing brand mascot.
+
+Show one adult male character, full body, front-facing, in a relaxed neutral pose against a plain warm ivory background.
+
+Identity: broad face, thick arched eyebrows, full black beard, sturdy build, dark-green cloth headband, plain indigo tunic, brown apron and simple cloth shoes.
+
+Expression: warm, approachable and gently smiling. No weapons, armour, intimidating gestures or aggressive imagery.
+
+Visual treatment: realistic stylized 3D illustration, detailed cloth and beard, soft warm light from upper left, clear silhouette and natural anatomy.
+
+No drink, scenery, written labels, logos or watermark. Keep the whole figure visible.
+
+Purpose: a reusable character reference for a coordinated advertising series.`,
+  zh: `為「張飛飲品」建立一位原創虛構品牌角色。
+
+把廣義的友善中國古典武將概念，重新演繹為親切果汁店主；不要複製特定演員、遊戲角色、電影服裝或現有品牌吉祥物。
+
+只呈現一位成年男性，全身正面，姿勢自然放鬆，背景為單純暖象牙白。
+
+角色特徵：寬闊面形、濃密上揚眉毛、濃黑鬍鬚、結實體型、深綠布頭帶、樸素靛藍長衫、棕色圍裙及簡單布鞋。
+
+表情：溫暖、親切、輕微微笑。不持武器、不穿盔甲，不使用威嚇姿勢或攻擊性畫面。
+
+視覺處理：寫實而帶風格化的三維插畫，細緻布料及鬍鬚，左上方柔和暖光，輪廓清晰，人體結構自然。
+
+不加入飲品、場景、文字標籤、標誌或浮水印。完整呈現全身。
+
+用途：作為一組一致宣傳海報的可重用角色參考圖。`
+}];
+
+const drinks = [
+  {
+    id: "apple", en: "Apple Juice", zh: "蘋果汁",
+    price: 8, emoji: "🍎", accent: "#a75047",
+    shotEN: "Eye-level front view",
+    shotZH: "正面平視",
+    sceneEN: "The shopkeeper smiles and holds one clear cup of pale amber apple juice at chest level. Place red and green apples at lower left. Use restrained apple-red accents.",
+    sceneZH: "店主微笑，在胸前拿著一杯透明杯裝淺琥珀色蘋果汁。紅蘋果及青蘋果放左下，使用少量蘋果紅點綴。"
+  },
+  {
+    id: "orange", en: "Orange Juice", zh: "橙汁",
+    price: 10, emoji: "🍊", accent: "#ba742c",
+    shotEN: "Slightly low-angle view",
+    shotZH: "輕微仰視",
+    sceneEN: "The shopkeeper smiles and offers one clear cup of orange juice slightly toward the viewer without hiding his face. Place oranges and orange slices at lower left. Use restrained orange accents.",
+    sceneZH: "店主微笑，將一杯透明杯裝橙汁稍微向觀眾遞出，不遮住面容。橙子及橙子切片放左下，使用少量橙色點綴。"
+  },
+  {
+    id: "pear", en: "Pear Juice", zh: "梨汁",
+    price: 9, emoji: "🍐", accent: "#6d8550",
+    shotEN: "45-degree three-quarter view",
+    shotZH: "45度側面",
+    sceneEN: "The shopkeeper turns his face toward the viewer with a gentle smile and holds one clear cup of pale pear juice. Place pears and pear slices at lower left. Use restrained jade-green accents.",
+    sceneZH: "店主以側身姿勢轉頭看向觀眾，親切微笑，拿著一杯透明杯裝淺色梨汁。梨子及梨子切片放左下，使用少量玉綠色點綴。"
+  },
+  {
+    id: "pineapple", en: "Pineapple Juice", zh: "菠蘿汁",
+    price: 12, emoji: "🍍", accent: "#a68c32",
+    shotEN: "Slightly high-angle view, not overhead",
+    shotZH: "輕微俯視，並非垂直鳥瞰",
+    sceneEN: "The shopkeeper looks slightly upward with a friendly smile and presents one clear cup of golden pineapple juice. Place pineapple wedges at lower left. Use restrained pineapple-yellow accents.",
+    sceneZH: "店主稍微抬頭，親切微笑，展示一杯透明杯裝金黃色菠蘿汁。菠蘿切塊放左下，使用少量菠蘿黃色點綴。"
+  }
+];
+
+drinks.forEach(d => {
+  const refEN = d.id === "apple"
+    ? "REFERENCE INPUT: Attach the approved character image. This apple poster will establish the master campaign style."
+    : "REFERENCE INPUTS: Attach the approved character image and apple master poster. Use the first for identity and the second for composition and visual treatment. Ignore any existing lettering in the poster reference.";
+
+  const refZH = d.id === "apple"
+    ? "參考輸入：附上已批准角色圖。這張蘋果汁海報將建立系列主視覺。"
+    : "參考輸入：附上已批准角色圖及蘋果汁主海報。前者用於角色身分，後者用於構圖及視覺處理。忽略參考海報原有文字。";
+
+  prompts.push({
+    id: d.id,
+    titleEN: `${d.en} promotional image`,
+    titleZH: `${d.zh}宣傳圖`,
+    noteEN: `${d.shotEN} · Artwork first, typography second.`,
+    noteZH: `${d.shotZH} · 先製作圖像，再加入文字。`,
+    en: [
+      `Create a promotional illustration for ${d.en} at Zhangfei Drinks.`,
+      refEN, identityEN, styleEN,
+      `CAMERA: ${d.shotEN}.\nSCENE: ${d.sceneEN}`,
+      layoutEN
+    ].join("\n\n"),
+    zh: [
+      `為張飛飲品的${d.zh}製作宣傳插畫。`,
+      refZH, identityZH, styleZH,
+      `鏡頭：${d.shotZH}。\n場景：${d.sceneZH}`,
+      layoutZH
+    ].join("\n\n"),
+    overlay: `${d.zh}\n${d.en}\n人民幣${d.price}元／杯\nRMB ${d.price} per cup`
+  });
+});
+
+prompts.push({
+  id: "cover",
+  titleEN: "Four-drink store cover",
+  titleZH: "四款飲品店舖封面",
+  noteEN: "Combine the series without changing the approved character.",
+  noteZH: "整合系列，同時保持已批准角色形象。",
+  en: `Create a square store-cover illustration for Zhangfei Drinks.
+
+REFERENCE INPUTS: Attach the approved character image and apple master poster. Use these for character identity and series style.
+
+${identityEN}
+
+${styleEN}
+
+CAMERA AND SCENE:
+Eye-level front view. Place the shopkeeper centrally behind the dark wooden counter. He smiles warmly with relaxed, welcoming hands.
+
+Display exactly four clear cups in one evenly spaced row, left to right: apple juice, orange juice, pear juice, pineapple juice. Keep cup shape, size and fill level consistent. Add a small matching fruit garnish beside each cup without obstructing it.
+
+LAYOUT:
+Reserve the upper fifth for the store name. Place the character in the middle. Arrange the drinks across the lower third. Reserve four equal-width empty label areas beneath their respective cups. Use restrained red, orange, jade-green and yellow accents. No additional cups.
+
+Do not generate lettering. The designer will add the brand name and bilingual labels afterward.`,
+  zh: `為張飛飲品製作正方形店舖封面插畫。
+
+參考輸入：附上已批准角色圖及蘋果汁主海報，分別作為角色身分及系列風格參考。
+
+${identityZH}
+
+${styleZH}
+
+鏡頭與場景：
+正面平視。店主站在深色木桌後方中央，親切微笑，雙手自然放鬆，呈現歡迎姿態。
+
+桌面只排列四杯透明杯裝果汁，間距相等，由左至右依次為：蘋果汁、橙汁、梨汁及菠蘿汁。杯型、大小及盛裝高度一致。每杯旁放少量對應水果，不遮擋杯子。
+
+版式：
+上方五分之一預留店名。人物位於中間，四杯飲品排列於下方三分之一。每杯下方各預留一個等寬空白標籤區。使用少量紅、橙、玉綠及黃色點綴。不要增加其他杯子。
+
+不要生成文字。店名及雙語標籤由設計者稍後加入。`,
+  overlay: `Zhangfei Drinks\n張飛飲品\n\n${drinks.map(d =>
+    `${d.zh} / ${d.en}\n人民幣${d.price}元／杯 / RMB ${d.price} per cup`
+  ).join("\n\n")}`
+});
+
+prompts.push({
+  id: "website",
+  titleEN: "Generate a bilingual prompt storefront",
+  titleZH: "生成雙語提示詞商店",
+  noteEN: "Use with a coding assistant; inspect and test the result.",
+  noteZH: "交由程式助手生成後，必須自行檢查及測試。",
+  en: `Act as a front-end developer and learning designer.
+
+Create one complete HTML file containing all CSS and JavaScript for an English / Traditional Chinese digital prompt storefront.
+
+PRODUCT:
+"Zhangfei Creative Prompt Kit / 張飛創意提示詞套裝".
+It contains eight bilingual templates: one character prompt, five promotional-image prompts, one website prompt and one marketing-planning prompt.
+The fictional juice shop is the example brand; this website sells digital prompts, not juice.
+Use USD 12 as an explicitly fictional classroom price.
+
+CONTENT:
+Include a clear value proposition, intended audience, exact contents, editable variables, text-only previews, production workflow, actual testing disclosure, limitations, proposed usage terms and FAQ.
+Until test evidence is supplied, label compatibility "Not yet tested". Do not invent customer reviews, sales, conversion rates, model versions or image examples.
+Use clearly labelled placeholders for missing artwork.
+
+BILINGUAL DESIGN:
+Provide equivalent English and Traditional Chinese content, including buttons, product descriptions, limitations and error messages. Translate for meaning rather than mechanically word for word.
+Use semantic headings, labelled form controls, visible keyboard focus, meaningful image alternatives and a responsive layout. Do not claim accessibility certification.
+
+FUNCTIONS:
+Copy English, Chinese or both versions of each prompt.
+Download the classroom sample as a TXT file.
+Provide an order-preview modal clearly marked "Demo only".
+Do not collect payment or personal information.
+Never place secret API keys in client-side code.
+
+IMPLEMENTATION:
+No external libraries, trackers, remote fonts or AI API calls.
+Do not imply that client-side code protects paid files.
+Use placeholders for production checkout and fulfilment integrations.
+Explain that real sales require separately implemented payment confirmation and protected delivery.
+Return a complete single file, not fragments.`,
+  zh: `你是一位前端開發者及學習設計師。
+
+建立一個完整HTML檔案，包含全部CSS及JavaScript，製作英文／繁體中文數碼提示詞商店。
+
+產品：
+「Zhangfei Creative Prompt Kit / 張飛創意提示詞套裝」。
+包含八組雙語模板：一組角色提示詞、五組宣傳圖像提示詞、一組網站提示詞及一組營銷規劃提示詞。
+虛構果汁店只是案例品牌；網站售賣數碼提示詞，不售果汁。
+使用USD 12，並清楚標示為虛構課堂價格。
+
+內容：
+包括清晰價值主張、目標受眾、準確內容清單、可編輯變數、純文字預覽、製作流程、實際測試披露、限制、建議使用條款及常見問題。
+未提供測試證據前，相容性必須標示「尚未測試」。
+不要虛構顧客評價、銷量、轉換率、模型版本或生成圖像例子。
+缺少作品時使用清楚標示的佔位圖。
+
+雙語設計：
+英文與繁體中文內容意義對等，包括按鈕、產品說明、限制及錯誤訊息。
+按意思在地化，不要機械式逐字翻譯。
+使用語義化標題、有標籤的表單、清晰鍵盤焦點、有意義的圖像替代文字及響應式版面。
+不要聲稱已獲無障礙認證。
+
+功能：
+每組提示詞可複製英文、中文或雙語。
+可將課堂示範包下載為TXT。
+提供清楚標示「僅供示範」的訂單預覽視窗。
+不收取付款或個人資料。
+不要把秘密API金鑰放在前端程式碼。
+
+實作：
+不使用外部函式庫、追蹤器、遠端字體或AI API。
+不要暗示前端程式碼可以保護付費檔案。
+正式結帳及交付整合以佔位說明呈現。
+說明真實銷售需要另外實作付款確認及受保護交付。
+輸出完整單一檔案，不要只提供片段。`
+});
+
+prompts.push({
+  id: "marketing",
+  titleEN: "Plan an evidence-aware bilingual campaign",
+  titleZH: "規劃重視證據的雙語營銷活動",
+  noteEN: "Treat audience and performance claims as hypotheses until tested.",
+  noteZH: "未經測試前，受眾與成效主張均應視為假設。",
+  en: `Act as a digital-marketing tutor for MA CAT students.
+
+Create an English / Traditional Chinese campaign plan for the Zhangfei Creative Prompt Kit: eight reusable bilingual templates showing a character-to-campaign workflow.
+
+Distinguish the prompt-pack buyer from the fictional juice-shop customer.
+
+INPUTS TO REQUEST:
+Intended buyer, evidence of their needs, tested image tool and version, actual examples, available channels, time budget and known limitations.
+If information is missing, label assumptions instead of inventing facts.
+
+OUTPUT:
+1. One provisional buyer persona and a validation question.
+2. One specific value proposition based only on the pack's actual contents.
+3. A customer-journey map: discovery, evaluation, decision and post-download support.
+4. Three bilingual content ideas showing process, useful examples and honest limitations.
+5. Two meaning-equivalent bilingual headlines for a controlled A/B exercise.
+6. A test plan specifying one changed variable, randomization unit, primary metric, duration/stopping rule and a plan to determine sample size before testing.
+7. A limitations section explaining that small convenience samples and descriptive rates do not establish reliable causal effects.
+8. An AI-use disclosure and a list of claims that need evidence.
+
+READING CONNECTIONS:
+Use Lemon and Verhoef (2016) for customer journeys, Kannan and Li (2017) for digital touchpoints, and Kohavi et al. (2009) for controlled experiments.
+Ask for the readings if detailed quotations are required. Do not invent quotes, statistics, DOI links or references.
+
+Do not invent testimonials, urgency, discounts, sustainability benefits, commercial-use guarantees or sales results.`,
+  zh: `你是一位為MA CAT學生授課的數碼營銷導師。
+
+為「張飛創意提示詞套裝」設計英文／繁體中文營銷計劃。
+產品包含八組可重用雙語模板，示範由角色建立至系列宣傳的流程。
+
+必須區分提示詞包買家與虛構果汁店顧客。
+
+先索取以下資料：
+目標買家、需求證據、已測試圖像工具及版本、真實作品例子、可用渠道、時間預算及已知限制。
+資料不足時標示假設，不要虛構事實。
+
+輸出：
+1. 一個暫定買家人物誌及一條驗證問題。
+2. 一個只基於產品實際內容的具體價值主張。
+3. 顧客旅程：發現、評估、決定及下載後支援。
+4. 三個雙語內容構想，展示流程、有用例子及真實限制。
+5. 兩個供受控制A/B練習使用、雙語意思對等的標題版本。
+6. 測試計劃：只改變一個變數，界定隨機分派單位、主要指標、測試時長／停止規則，以及事前決定樣本量的方法。
+7. 限制說明：小型便利樣本及描述性比率不能確立可靠因果效果。
+8. AI使用披露及需要證據支持的主張清單。
+
+閱讀連結：
+以Lemon及Verhoef（2016）討論顧客旅程；
+Kannan及Li（2017）討論數碼接觸點；
+Kohavi等人（2009）討論受控制實驗。
+如需詳細引文，先要求提供原文。不要虛構引句、數據、DOI或參考文獻。
+
+不要虛構顧客見證、限時壓力、折扣、環保效益、商用保證或銷售成果。`
+});
+
+const promptMap = Object.fromEntries(prompts.map(p => [p.id, p]));
+
+function fullPrompt(p) {
+  return [
+    `${p.titleEN} / ${p.titleZH}`,
+    "ENGLISH\n" + p.en,
+    "繁體中文\n" + p.zh,
+    p.overlay
+      ? "MANUAL TYPESETTING — NOT AN IMAGE PROMPT\n後期排版文字——不是圖像提示詞\n" + p.overlay
+      : ""
+  ].filter(Boolean).join("\n\n");
+}
+
+function packText() {
+  return [
+    "GENAI CREATIVE COMMERCE LAB / 生成式AI創意商業教學",
+    "CLASSROOM SAMPLE: 8 bilingual templates / 課堂示範：八組雙語模板",
+    "Not yet tested on a specified model/version. Outputs vary. No image generation or commercial-use clearance is provided.\n尚未在指定模型／版本測試。輸出會有差異；不提供圖像生成或商用許可確認。",
+    ...prompts.map(fullPrompt)
+  ].join("\n\n" + "=".repeat(54) + "\n\n");
+}
+
+function promptCard(id, open = false) {
+  const p = promptMap[id];
+  return `
+    <article class="prompt-card" aria-labelledby="prompt-title-${id}">
+      <div class="prompt-top">
+        <div>
+          <h3 id="prompt-title-${id}">${bi(p.titleEN, p.titleZH)}</h3>
+          ${paragraph(p.noteEN, p.noteZH)}
+        </div>
+        <span class="prompt-id">P${String(prompts.indexOf(p) + 1).padStart(2, "0")}</span>
+      </div>
+      <div class="prompt-actions">
+        <button class="btn small" type="button" data-copy="${id}" data-lang="en"
+          aria-label="Copy English: ${esc(p.titleEN)}">Copy EN</button>
+        <button class="btn small" type="button" data-copy="${id}" data-lang="zh"
+          aria-label="複製中文：${esc(p.titleZH)}">複製中文</button>
+        <button class="btn small primary" type="button" data-copy="${id}" data-lang="both"
+          aria-label="Copy bilingual prompt: ${esc(p.titleEN)}">Copy both / 複製雙語</button>
+      </div>
+      <details ${open ? "open" : ""}>
+        <summary>Read the complete prompt / 閱讀完整提示詞</summary>
+        <div class="prompt-columns">
+          <div class="prompt-language" lang="en">
+            <h4>ENGLISH</h4><pre>${esc(p.en)}</pre>
+          </div>
+          <div class="prompt-language" lang="zh-Hant">
+            <h4>繁體中文</h4><pre>${esc(p.zh)}</pre>
+          </div>
+        </div>
+      </details>
+      ${p.overlay ? `
+        <div class="overlay-copy">
+          <strong>Manual text overlay — add after generation / 生成後手動加入文字</strong>
+          <pre>${esc(p.overlay)}</pre>
+          <button class="btn small" type="button" data-overlay="${id}">
+            Copy overlay text / 複製排版文字
+          </button>
+        </div>` : ""}
+    </article>`;
+}
+
+/* ---------------------------------------------------------
+   Lesson-specific content.
+--------------------------------------------------------- */
+
+function posterPreview() {
+  return `<div class="poster-row">
+    ${drinks.map(d => `
+      <div class="mini-poster" style="--accent:${d.accent}">
+        <div class="fruit" aria-hidden="true">${d.emoji}</div>
+        <strong lang="zh-Hant">${d.zh}</strong>
+        <small>${d.en}</small>
+        <small>RMB ${d.price} / 杯</small>
+      </div>`).join("")}
+  </div>
+  ${paragraph(
+    "These are layout placeholders, not generated-image examples.",
+    "以上是版式佔位示意，並非AI生成作品例子。"
+  )}`;
+}
+
+function storefront() {
+  return `
+    <div class="store-demo" aria-label="Bilingual storefront demonstration / 雙語商店示範">
+      <div class="store-bar">
+        <strong>CAT Prompt Studio / CAT 提示詞工作室</strong>
+        <span>DEMO ONLY / 僅供示範</span>
+      </div>
+      <div class="store-body">
+        <div class="pack-art">
+          <div>
+            <small>TEXT-ONLY PRODUCT MOCKUP / 純文字產品示意</small>
+            <div class="large">08</div>
+            <h3>One character.<br>One coherent campaign.
+              <span class="zh" lang="zh-Hant">一位角色，一組一致宣傳。</span>
+            </h3>
+          </div>
+          <small>ENGLISH + 繁體中文<br>CHARACTER → IMAGES → STORE → MARKETING</small>
+        </div>
+
+        <div>
+          <p class="eyebrow">Digital workflow kit / 數碼流程套裝</p>
+          <h3 style="font-size:1.45rem">Zhangfei Creative Prompt Kit
+            <span class="zh" lang="zh-Hant">張飛創意提示詞套裝</span>
+          </h3>
+          ${paragraph(
+            "For student designers learning to document a character-led campaign.",
+            "為學習記錄角色品牌宣傳流程的學生設計者而設。"
+          )}
+          <p class="price">USD 12 <small>fictional / 虛構</small></p>
+          ${items([
+            ["8 bilingual templates in one TXT file.", "一個TXT檔案，內含八組雙語模板。"],
+            ["1 character + 5 campaign images + website + marketing.", "一組角色、五組宣傳圖像、網站及營銷提示詞。"],
+            ["Editable variables: brand, product, palette and camera.", "可修改品牌、產品、色彩及鏡頭設定。"],
+            ["Testing status: not yet tested on a specified model/version.", "測試狀態：尚未在指定模型／版本測試。"],
+            ["Generated images and AI-tool subscriptions are not included.", "不包含生成圖片或AI工具訂閱。"]
+          ])}
+          <div class="actions">
+            <button class="btn" type="button" data-copy="apple" data-lang="both">
+              Copy a free sample / 複製免費範例
+            </button>
+            <button class="btn primary" type="button" data-action="order-preview">
+              Preview order / 預覽訂單
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="store-note">
+        ${paragraph(
+          "Proposed classroom usage note: adapt these templates for the assignment and acknowledge AI assistance. Before a real launch, review the chosen tool's current terms, the provenance of reference assets, and the terms you intend to offer buyers. This prototype makes no rights or output-quality guarantees.",
+          "課堂建議使用說明：可為作業改寫模板，並披露AI協助。正式推出前，請檢查所選工具的現行條款、參考素材來源，以及擬向買家提供的條款。本原型不作權利或輸出品質保證。"
+        )}
+      </div>
+    </div>`;
+}
+
+const marketingHints = [
+  {
+    enTitle: "1. Separate buyer from end customer",
+    zhTitle: "1. 區分買家與終端顧客",
+    en: "For this exercise, begin with one provisional prompt buyer: a student designer who needs a repeatable campaign workflow. A juice customer is a different audience. Interview a peer about the actual difficulty before finalizing the persona.",
+    zh: "本練習先假設提示詞買家是需要可重用宣傳流程的學生設計者；果汁顧客是另一群受眾。先訪問同學的實際困難，再修訂買家人物誌。",
+    ref: "r4"
+  },
+  {
+    enTitle: "2. Show what the buyer receives",
+    zhTitle: "2. 清楚展示買家所得",
+    en: "State the file format, template count, reference requirements, editable variables and test status. Demonstrate your actual process rather than promising effortless professional results.",
+    zh: "列明檔案格式、模板數量、參考圖要求、可改變數及測試狀態。展示真實流程，不要承諾毫不費力便可得到專業成果。",
+    ref: "r6"
+  },
+  {
+    enTitle: "3. Map the whole journey",
+    zhTitle: "3. 規劃完整顧客旅程",
+    en: "Propose a route: process post → sample prompt → product explanation → download → quick-start guide. At every stage, ask what information the learner still needs.",
+    zh: "建議路徑：流程貼文 → 提示詞範例 → 產品說明 → 下載 → 快速指南。每一步都思考學習者還欠缺甚麼資訊。",
+    ref: "r3"
+  },
+  {
+    enTitle: "4. Localize meaning, not just words",
+    zhTitle: "4. 在地化意思，而非只翻譯字詞",
+    en: "As a classroom exercise, ask bilingual peers whether both versions express the same benefit and limitation. Define “prompt pack” for beginners. Keep currencies, quantities and calls to action equivalent.",
+    zh: "課堂可請雙語同學檢查兩個版本的效益與限制是否一致。向初學者解釋「提示詞包」，並保持貨幣、數量及行動呼籲一致。",
+    ref: "r7"
+  },
+  {
+    enTitle: "5. Match content to a learning question",
+    zhTitle: "5. 以學習問題設計內容",
+    en: "Try a character-consistency walkthrough, a before/after revision explanation, and an honest failure analysis. Use only your actual outputs; label missing work as a placeholder. Treat channel choice as a hypothesis.",
+    zh: "可設計角色一致性教學、修改前後說明，以及真實失敗分析。只用實際輸出；缺少作品時標示佔位圖。渠道選擇應視為待驗證假設。",
+    ref: "r4"
+  },
+  {
+    enTitle: "6. Test a decision, not your optimism",
+    zhTitle: "6. 測試決策，而非證明樂觀預期",
+    en: "For the first experiment, change one headline while holding the page, audience and offer constant. Plan random assignment and analysis in advance. Two language groups alone are not randomized A/B variants.",
+    zh: "首次實驗只更改一個標題，維持頁面、受眾及優惠相同。事前規劃隨機分派及分析。兩個不同語言群體本身並不等於隨機A/B版本。",
+    ref: "r5"
+  }
+];
+
+function metricsExercise() {
+  return `
+    <div class="panel" style="margin-top:20px">
+      <h3>${bi("Mini lab: descriptive conversion rates", "小實驗：描述性轉換率")}</h3>
+      ${paragraph(
+        "Define conversion here as a unique visitor downloading the free sample within the test window. Use the same counting rule for A and B. Enter classroom data manually; this page tracks no visitors.",
+        "本練習把轉換定義為獨立訪客在測試期內下載免費範例；A與B使用相同計數規則。請手動輸入課堂數據；本頁不追蹤訪客。"
+      )}
+      <form id="metrics-form" class="metrics-form">
+        <div class="metric-grid">
+          ${["A", "B"].map(v => `
+            <fieldset>
+              <legend>Variant ${v} / 版本 ${v}</legend>
+              <label for="visitors-${v}">Unique visitors / 獨立訪客</label>
+              <input id="visitors-${v}" type="number" min="1" step="1" required inputmode="numeric">
+              <label for="downloads-${v}">Unique sample downloaders / 獨立範例下載者</label>
+              <input id="downloads-${v}" type="number" min="0" step="1" required inputmode="numeric">
+            </fieldset>`).join("")}
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn primary">Calculate rates / 計算比率</button>
+        </div>
+        <div id="metrics-result" class="metric-result" role="status" aria-live="polite" hidden></div>
+      </form>
+      <p class="muted" style="font-size:.8rem;margin-top:15px">
+        Rate = unique downloaders ÷ unique visitors × 100%.
+        <br>
+        ${bi(
+          "This is not a significance test, power calculation or automatic winner selection. A classroom convenience sample supports practice, not a general sales forecast. See R5.",
+          "這不是顯著性檢驗、檢定力計算或自動勝出判定。課堂便利樣本只供練習，不能推論一般銷售表現。參見R5。"
+        )}
+      </p>
+    </div>`;
+}
+
+const lessons = [
+  {
+    id: "step1", num: "01", minutes: 25,
+    en: "Create the main character first",
+    zh: "先建立店舖主角",
+    outcomeEN: "Deliverable: one approved reference image and a character identity sheet.",
+    outcomeZH: "成果：一張已批准角色參考圖，以及一份角色設定表。",
+    content: `
+      <div class="grid2">
+        ${panel("Teacher demonstration", "教師示範", items([
+          ["Start with brand role, audience and tone—not a long list of visual adjectives.", "先界定品牌角色、受眾及語氣，而非堆砌視覺形容詞。"],
+          ["Explain what must stay fixed: face, beard, build, headband, tunic and apron.", "說明固定元素：面容、鬍鬚、體型、頭帶、長衫及圍裙。"],
+          ["Use an original interpretation rather than copying a particular entertainment adaptation.", "使用原創演繹，不複製特定娛樂作品的改編造型。"]
+        ]))}
+        ${panel("Student activity", "學生活動", items([
+          ["Generate three candidates using the same brief. Record each run.", "按相同簡報生成三個候選版本，記錄每次生成。"],
+          ["Select one using recognizability, friendliness and visual clarity.", "按辨識度、親切感及視覺清晰度選擇一個。"],
+          ["Save it as character-master.png. Record six identity traits and one rejected alternative.", "儲存為character-master.png，記錄六項特徵及一個被淘汰方案。"]
+        ], true), "tint")}
+      </div>
+      ${callout(
+        "Critical question: What meanings does the name “Zhang Fei” bring into the brand? Discuss your own cultural position, avoid reducing a culture to a stereotype, and justify the reinterpretation. Read R1 and R6.",
+        "批判問題：「張飛」這個名字為品牌帶來哪些意義？討論自己的文化位置，避免把文化簡化成刻板印象，並解釋重新演繹的理由。閱讀R1及R6。"
+      )}
+      ${promptCard("character", true)}
+      ${paragraph(
+        "Prompt analysis: underline the subject, identity descriptors, composition, lighting and exclusions. Compare your categories with Oppenlaender’s taxonomy rather than assuming the classroom structure reproduces it exactly.",
+        "提示詞分析：標示主體、身分特徵、構圖、光線及排除項目，再與Oppenlaender的分類比較；不要假設課堂結構與原文分類完全相同。"
+      )}
+      <a class="ref-inline" href="#r2">Reading R2 / 閱讀R2</a>`,
+    questionEN: "Why did you choose this character? Record the real tool/version, date, six fixed traits and one ethical concern.",
+    questionZH: "為何選擇此角色？記錄實際工具／版本、日期、六項固定特徵及一個倫理問題。"
+  },
+  {
+    id: "step2", num: "02", minutes: 25,
+    en: "Build the apple master poster",
+    zh: "建立蘋果汁主視覺海報",
+    outcomeEN: "Deliverable: one text-free illustration plus one accurately typeset bilingual poster.",
+    outcomeZH: "成果：一張無字插畫，以及一張準確排字的雙語海報。",
+    content: `
+      <div class="grid2">
+        ${panel("A repeatable workflow", "可重用工作流程", items([
+          ["Attach the approved character reference in a tool that supports it.", "在支援參考圖的工具中附上已批准角色圖。"],
+          ["Generate the text-free apple composition and check anatomy and identity.", "生成無字蘋果汁構圖，檢查人體結構與角色身分。"],
+          ["Add the exact Chinese name, English name and price in an editor.", "在編輯工具中加入準確中文名、英文名及價格。"],
+          ["Save apple-art.png and apple-master.png. Record fonts, colours and placement.", "儲存apple-art.png及apple-master.png，記錄字體、色彩及位置。"]
+        ], true))}
+        <div class="panel">
+          <h3>${bi("Poster anatomy", "海報構造")}</h3>
+          <div class="diagram">
+            <div class="diagram-label">BILINGUAL TITLE / 雙語標題留白</div>
+            <div class="diagram-center">
+              <div class="emoji" aria-hidden="true">🍎</div>
+              <strong>APPROVED CHARACTER + ONE CUP</strong>
+              <span lang="zh-Hant">已批准角色＋一杯飲品</span>
+              <small>Layout diagram, not AI artwork / 版式示意，非AI作品</small>
+            </div>
+            <div class="diagram-bottom">
+              <div class="diagram-label">FRUIT / 水果</div>
+              <div class="diagram-label">PRICE / 價格</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      ${callout(
+        "Teaching choice: separate image generation from typography so you can directly control spelling, bilingual hierarchy and prices. Do not ask the image model to perform every design task at once.",
+        "教學選擇：把圖像生成與排字分開，直接控制拼寫、雙語層級及價格。不要要求圖像模型同時完成所有設計工作。",
+        true
+      )}
+      ${promptCard("apple", true)}`,
+    questionEN: "Record your visual system: background, accent, fonts, margins, cup shape and light direction. What changed between draft and final?",
+    questionZH: "記錄視覺系統：背景、點綴色、字體、邊距、杯型及光線方向。草稿至定稿改了甚麼？"
+  },
+  {
+    id: "step3", num: "03", minutes: 25,
+    en: "Extend the series with controlled changes",
+    zh: "以受控制變化延伸系列",
+    outcomeEN: "Deliverable: orange, pear and pineapple posters that belong to the same visual family.",
+    outcomeZH: "成果：橙汁、梨汁及菠蘿汁海報，形成一致視覺系列。",
+    content: `
+      <div class="grid2">
+        ${panel("Keep fixed", "保持固定", items([
+          ["Character identity and outfit.", "人物身分及服裝。"],
+          ["Ivory background, gold frame, warm lighting and typography.", "象牙白背景、金框、暖光及字體。"],
+          ["Cup design, title position, label layout and character scale.", "杯型、標題位置、標籤版式及人物大小。"]
+        ]))}
+        ${panel("Change deliberately", "有目的地改變", items([
+          ["Fruit, juice colour and small accent colours.", "水果、果汁顏色及少量點綴色。"],
+          ["Camera angle and a modest hand gesture.", "鏡頭角度及適度手勢。"],
+          ["Product name and price, added manually.", "手動加入不同產品名稱及價格。"]
+        ]), "tint")}
+      </div>
+      ${posterPreview()}
+      ${callout(
+        "Reference inputs guide the workflow but do not guarantee identical characters. Inspect every result. If the face drifts, return to the approved reference and revise one instruction at a time. Record the actual settings your tool exposes; do not invent unsupported parameters.",
+        "參考圖有助引導流程，但不保證人物完全一致。逐張檢查；若面貌偏移，返回已批准參考圖，每次只修訂一項指示。只記錄工具實際提供的設定，不虛構不支援的參數。"
+      )}
+      ${promptCard("orange")}
+      ${promptCard("pear")}
+      ${promptCard("pineapple")}
+      ${panel("Peer review checkpoint", "同儕評議檢查點", paragraph(
+        "Place all four posters side by side. Ask a peer to identify three shared features and the intended change in each image without seeing the prompts. Record disagreements as useful evidence, not simply reviewer error.",
+        "把四張海報並排展示，請同學在不看提示詞下指出三項共同特徵，以及每張圖像預期的變化。把分歧當作有用證據，而非單純視為評閱者出錯。"
+      ))}`,
+    questionEN: "Which feature drifted most? Document one failed output, your revision, and whether a peer could recognize the series.",
+    questionZH: "哪項特徵最容易偏移？記錄一個失敗輸出、修訂方法，以及同學能否辨認系列一致性。"
+  },
+  {
+    id: "step4", num: "04", minutes: 20,
+    en: "Compose the store cover",
+    zh: "整合店舖封面",
+    outcomeEN: "Deliverable: a square cover with the same character and exactly four correctly labelled drinks.",
+    outcomeZH: "成果：一張正方形封面，保留相同角色，並準確標示四杯飲品。",
+    content: `
+      ${panel("Build hierarchy, not clutter", "建立層級，避免雜亂", items([
+        ["Brand name first, welcoming character second, four-drink range third.", "首先是店名，其次是親切角色，再次是四款飲品。"],
+        ["Check the left-to-right order: apple, orange, pear, pineapple.", "檢查左至右次序：蘋果、橙、梨、菠蘿。"],
+        ["Add labels after generation and compare every price with the individual poster.", "生成後才加標籤，逐一與單品海報價格核對。"],
+        ["Preview at mobile size. If a label is hard to read, revise spacing or type size.", "以手機尺寸預覽；標籤難讀時，修訂間距或字號。"]
+      ], true))}
+      ${promptCard("cover")}
+      ${callout(
+        "Composition fallback: if the model repeatedly produces extra cups or incorrect ordering, assemble the approved character and four product elements in an editor. Document compositing as human creative work rather than hiding it.",
+        "構圖替代方案：若模型反覆增加杯子或排列錯誤，可在編輯工具中合成已批准角色及四款飲品。應記錄合成作為人的創作工作，而非隱藏此步驟。",
+        true
+      )}`,
+    questionEN: "How did the cover adapt the single-product layout? Record checks for cup count, product order, readability and price consistency.",
+    questionZH: "封面如何改寫單品版式？記錄杯數、產品次序、可讀性及價格一致性檢查。"
+  },
+  {
+    id: "step5", num: "05", minutes: 35,
+    en: "Build a bilingual website that sells the workflow",
+    zh: "建立銷售創作流程的雙語網站",
+    outcomeEN: "Deliverable: a responsive prompt-product page with honest previews and clearly labelled demo functions.",
+    outcomeZH: "成果：響應式提示詞產品頁，包含真實預覽及清楚標示的示範功能。",
+    content: `
+      <div class="grid2">
+        ${panel("Package the product clearly", "清楚包裝產品", items([
+          ["Describe the buyer's task, not just the technology.", "說明買家要完成的任務，而非只介紹技術。"],
+          ["List exactly what is included and what is not.", "準確列出包含及不包含的內容。"],
+          ["Show real test information, reference requirements and limitations.", "展示真實測試資料、參考圖要求及限制。"],
+          ["Draft a quick-start guide and proposed usage terms for review.", "草擬快速指南及待審閱的使用條款。"]
+        ]))}
+        ${panel("Implement and inspect", "實作及檢查", items([
+          ["Generate the page with a coding assistant; save the complete file as index.html.", "利用程式助手生成頁面，將完整檔案存為index.html。"],
+          ["Replace placeholders with your actual work and accurate descriptions.", "以真實作品及準確說明取代佔位內容。"],
+          ["Test mobile width, keyboard navigation, copy buttons and downloads.", "測試手機寬度、鍵盤導覽、複製按鈕及下載。"],
+          ["Check bilingual equivalence, button labels and visible focus. See R7.", "檢查雙語對等、按鈕標籤及可見焦點。參見R7。"]
+        ], true), "tint")}
+      </div>
+      ${storefront()}
+      ${callout(
+        "Prototype boundary: the preview above is not a checkout. It creates no order. Real payment confirmation and protected delivery must be implemented separately; do not treat a browser-only download link as a paywall.",
+        "原型界線：以上預覽不是結帳系統，也不建立訂單。真實付款確認及受保護交付必須另外實作；不要把瀏覽器下載連結當作付費保護。"
+      )}
+      ${promptCard("website")}
+      <a class="ref-inline" href="#r7">Accessibility writing guidance / 無障礙寫作指引：R7</a>`,
+    questionEN: "Write your value proposition in both languages. What exactly does the buyer receive, and which production functions remain unimplemented?",
+    questionZH: "以雙語撰寫價值主張。買家確切得到甚麼？哪些正式營運功能尚未實作？"
+  },
+  {
+    id: "step6", num: "06", minutes: 30,
+    en: "Plan, localize and test your marketing",
+    zh: "規劃、在地化及測試營銷",
+    outcomeEN: "Deliverable: a bilingual journey map, three content ideas and a pre-planned A/B exercise.",
+    outcomeZH: "成果：雙語顧客旅程、三個內容構想，以及事前規劃的A/B練習。",
+    content: `
+      <div class="grid2">
+        ${marketingHints.map(h => panel(
+          h.enTitle, h.zhTitle,
+          paragraph(h.en, h.zh) +
+          `<a class="ref-inline" href="#${h.ref}">Reading connection / 閱讀連結：${h.ref.toUpperCase()}</a>`
+        )).join("")}
+      </div>
+      ${panel("Example bilingual headline hypotheses", "雙語標題假設範例", `
+        ${paragraph(
+          "A: Create a coordinated four-drink campaign.",
+          "A：建立四款飲品的一致宣傳系列。"
+        )}
+        ${paragraph(
+          "B: Keep one character consistent across five posters.",
+          "B：讓同一角色貫穿五張海報。"
+        )}
+        ${paragraph(
+          "These are proposed messages, not proven winners. Test A versus B within comparable language conditions rather than confounding headline and language.",
+          "以上只是建議訊息，並非已證實優勝版本。應在可比較的語言條件下測試A與B，避免把標題效果與語言效果混淆。"
+        )}
+      `, "gold")}
+      ${metricsExercise()}
+      ${promptCard("marketing")}
+      ${callout(
+        "Ethical marketing task: mark every factual claim in your draft. For each claim, attach evidence, soften it into a clearly labelled hypothesis, or remove it. Never invent testimonials or imply that a polished preview guarantees the same output.",
+        "倫理營銷任務：標記草稿中每個事實主張，逐一附上證據、改為清楚標示的假設，或刪除。不要虛構見證，也不要暗示精緻預覽保證相同輸出。"
+      )}`,
+    questionEN: "State your audience hypothesis, primary metric, one changed variable, randomization plan and stopping rule. Which claims still lack evidence?",
+    questionZH: "列出受眾假設、主要指標、單一變數、隨機分派計劃及停止規則。哪些主張仍欠證據？"
+  },
+  {
+    id: "step7", num: "07", minutes: 20,
+    en: "Critique the process and submit the evidence",
+    zh: "批判評議流程並提交證據",
+    outcomeEN: "Deliverable: a documented portfolio and a research-informed critical reflection.",
+    outcomeZH: "成果：有紀錄的作品集，以及結合研究的批判反思。",
+    content: `
+      <div class="grid2">
+        ${panel("Submission checklist", "提交清單", items([
+          ["One approved character reference and five final campaign images.", "一張已批准角色參考圖及五張宣傳成品。"],
+          ["At least three documented iterations, including one failure.", "至少三次有紀錄的迭代，包括一次失敗。"],
+          ["The single-file bilingual storefront and a short test report.", "單檔雙語商店及簡短測試報告。"],
+          ["A prompt pack with actual tool/version information and limitations.", "包含實際工具／版本資料及限制的提示詞包。"],
+          ["A bilingual marketing plan and a 600–800-word English reflection, or an equivalent length agreed with the tutor for another language.", "雙語營銷計劃，以及600–800英文單字反思；其他語言篇幅由導師確認。"]
+        ]))}
+        ${panel("MA-level critical questions", "碩士層次批判問題", items([
+          ["Where did authorship lie: brief, prompt, selection, editing or presentation?", "作者性位於簡報、提示詞、選擇、編輯還是呈現？"],
+          ["What cultural assumptions shaped the character and its audience?", "哪些文化假設塑造角色及受眾？"],
+          ["What work was saved, and what new checking or translation work appeared?", "節省了哪些工作，又增加哪些檢查或翻譯工作？"],
+          ["Which claim can your evidence support, and which remains uncertain?", "證據支持哪些主張，哪些仍不確定？"],
+          ["Connect at least two academic articles to decisions; also use one institutional guidance source.", "至少引用兩篇學術論文連結設計決策，另使用一項機構指引。"]
+        ]), "tint")}
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Suggested rubric / 建議評分規準</caption>
+          <thead>
+            <tr>
+              <th scope="col">Criterion / 項目</th>
+              <th scope="col">Evidence / 證據</th>
+              <th scope="col">Weight / 比重</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Visual identity / 視覺一致性</td><td>Recognizable character and coherent series / 角色可辨及系列一致</td><td>20%</td></tr>
+            <tr><td>Process documentation / 流程紀錄</td><td>Traceable prompts, settings, failures and revisions / 可追溯提示詞、設定、失敗及修訂</td><td>20%</td></tr>
+            <tr><td>Bilingual website / 雙語網站</td><td>Equivalent meaning, usable controls and honest product information / 語義對等、可用操作及真實資訊</td><td>20%</td></tr>
+            <tr><td>Marketing inquiry / 營銷探究</td><td>Clear hypothesis, journey and appropriate test limitations / 清晰假設、旅程及適當測試限制</td><td>20%</td></tr>
+            <tr><td>Critical scholarship / 批判研究</td><td>Evidence-based reflection, accurate citations and AI disclosure / 有證據反思、準確引用及AI披露</td><td>20%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="button" data-action="export-notes">Export my workbook / 匯出學習紀錄</button>
+        <button class="btn" type="button" data-action="download-pack">Download all prompts / 下載全部提示詞</button>
+        <button class="btn" type="button" data-action="expand">Expand prompts / 展開提示詞</button>
+        <button class="btn" type="button" data-action="collapse">Collapse prompts / 收起提示詞</button>
+      </div>`,
+    questionEN: "Write your critical reflection outline and AI-use disclosure. Name the readings that changed a design decision and explain the connection.",
+    questionZH: "撰寫批判反思大綱及AI使用披露。列出曾改變設計決定的文獻，並解釋關聯。"
+  }
+];
+
+/* ---------------------------------------------------------
+   Local workbook: only seven notes + completion flags.
+--------------------------------------------------------- */
+
+const STORAGE_KEY = "ma-cat-genai-commerce-lab-v1";
+let storageAvailable = true;
+let state = { notes: {}, done: {} };
+
+try {
+  const probe = STORAGE_KEY + "-probe";
+  localStorage.setItem(probe, "1");
+  localStorage.removeItem(probe);
+
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+  if (saved && typeof saved === "object") {
+    lessons.forEach(l => {
+      if (typeof saved.notes?.[l.id] === "string") state.notes[l.id] = saved.notes[l.id];
+      if (saved.done?.[l.id] === true) state.done[l.id] = true;
+    });
+  }
+} catch (_) {
+  storageAvailable = false;
+}
+
+function updateStorageMessage() {
+  $("#storage-status").textContent = storageAvailable
+    ? "Notes save on this device. / 筆記保存在本機。"
+    : "Local saving unavailable. Export before leaving. / 本機儲存不可用，離開前請匯出。";
+}
+
+function persist() {
+  if (!storageAvailable) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (_) {
+    storageAvailable = false;
+    updateStorageMessage();
+    toast("Saving unavailable — export your workbook / 無法儲存，請匯出紀錄");
+  }
+}
+
+function updateProgress() {
+  const n = lessons.filter(l => state.done[l.id]).length;
+  $("#course-progress").value = n;
+  $("#course-progress").textContent = `${n} / 7`;
+  $("#progress-label").textContent =
+    `${n} / 7 steps completed · 已完成 ${n} / 7 步`;
+}
+
+$("#lessons").innerHTML = lessons.map(l => `
+  <section class="section" id="${l.id}" aria-labelledby="${l.id}-title">
+    <div class="section-heading">
+      <div class="step-number" aria-hidden="true">${l.num}</div>
+      <div>
+        <p class="eyebrow">STUDIO STEP ${l.num} · Suggested ${l.minutes} min / 建議${l.minutes}分鐘</p>
+        <h2 id="${l.id}-title">${bi(l.en, l.zh)}</h2>
+        ${paragraph(l.outcomeEN, l.outcomeZH)}
+      </div>
+    </div>
+
+    ${l.content}
+
+    <div class="panel workbook">
+      <label for="note-${l.id}">${bi("Your learning log", "你的學習紀錄")}</label>
+      <p id="question-${l.id}" style="margin-top:10px">${bi(l.questionEN, l.questionZH)}</p>
+      <textarea id="note-${l.id}" data-note="${l.id}"
+        aria-describedby="question-${l.id}"
+        placeholder="Write your observations here / 在此記錄觀察"></textarea>
+      <p class="hint">Keep identifying or confidential information out of your notes.
+        / 請勿在筆記中填寫身分識別或機密資料。</p>
+      <label class="complete">
+        <input type="checkbox" data-complete="${l.id}">
+        <span>${bi("I have completed this step and recorded evidence.", "我已完成此步驟並記錄證據。")}</span>
+      </label>
+    </div>
+  </section>
+`).join("");
+
+lessons.forEach(l => {
+  $(`#note-${l.id}`).value = state.notes[l.id] || "";
+  $(`[data-complete="${l.id}"]`).checked = !!state.done[l.id];
+});
+
+updateStorageMessage();
+updateProgress();
+
+document.addEventListener("input", event => {
+  if (event.target.matches("[data-note]")) {
+    state.notes[event.target.dataset.note] = event.target.value;
+    persist();
+  }
+});
+
+document.addEventListener("change", event => {
+  if (event.target.matches("[data-complete]")) {
+    state.done[event.target.dataset.complete] = event.target.checked;
+    persist();
+    updateProgress();
+  }
+});
+
+function exportWorkbook() {
+  const references = resources.map(r => `${r.citation}\n${r.url}`).join("\n\n");
+  const text = [
+    "MA CAT — GENAI CREATIVE COMMERCE WORKBOOK",
+    "MA CAT — 生成式AI創意商業學習紀錄",
+    `Exported / 匯出時間: ${new Date().toISOString()}`,
+    ...lessons.map(l => [
+      `${l.num}. ${l.en} / ${l.zh}`,
+      `Completed / 已完成: ${state.done[l.id] ? "Yes / 是" : "No / 否"}`,
+      `${l.questionEN}\n${l.questionZH}`,
+      state.notes[l.id] || "[No notes / 尚無筆記]"
+    ].join("\n\n")),
+    "REFERENCES / 參考文獻\n\n" + references
+  ].join("\n\n" + "-".repeat(55) + "\n\n");
+  downloadText("MA-CAT-learning-workbook.txt", text);
+}
+
+/* ---------------------------------------------------------
+   Buttons, downloads and demonstration order preview.
+--------------------------------------------------------- */
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  if (button.dataset.copy) {
+    const p = promptMap[button.dataset.copy];
+    const lang = button.dataset.lang;
+    copyText(lang === "both"
+      ? `ENGLISH\n${p.en}\n\n繁體中文\n${p.zh}`
+      : p[lang]);
+    return;
+  }
+
+  if (button.dataset.overlay) {
+    copyText(promptMap[button.dataset.overlay].overlay);
+    return;
+  }
+
+  switch (button.dataset.action) {
+    case "copy-all":
+      copyText(packText());
+      break;
+    case "download-pack":
+      downloadText("Zhangfei-bilingual-prompt-kit.txt", packText());
+      break;
+    case "export-notes":
+      exportWorkbook();
+      break;
+    case "copy-references":
+      copyText(resources.map(r => `${r.citation}\n${r.url}`).join("\n\n"));
+      break;
+    case "order-preview":
+      $("#order-dialog").showModal();
+      break;
+    case "expand":
+      $$(".prompt-card details").forEach(d => d.open = true);
+      toast("Prompts expanded / 已展開提示詞");
+      break;
+    case "collapse":
+      $$(".prompt-card details").forEach(d => d.open = false);
+      toast("Prompts collapsed / 已收起提示詞");
+      break;
+    case "reset":
+      if (confirm("Delete this page's saved notes and progress? Export first if needed.\n刪除此頁儲存的筆記及進度？如有需要，請先匯出。")) {
+        state = { notes: {}, done: {} };
+        $$("[data-note]").forEach(el => el.value = "");
+        $$("[data-complete]").forEach(el => el.checked = false);
+        persist();
+        updateProgress();
+        toast("Workbook reset / 已重設學習紀錄");
+      }
+      break;
+  }
+});
+
+/* ---------------------------------------------------------
+   Descriptive metrics: no analytics or significance claims.
+--------------------------------------------------------- */
+
+$("#metrics-form").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const va = Number($("#visitors-A").value);
+  const da = Number($("#downloads-A").value);
+  const vb = Number($("#visitors-B").value);
+  const db = Number($("#downloads-B").value);
+  const result = $("#metrics-result");
+
+  result.hidden = false;
+
+  if (![va, da, vb, db].every(Number.isSafeInteger) ||
+      va <= 0 || vb <= 0 || da < 0 || db < 0 || da > va || db > vb) {
+    result.textContent =
+      "Use valid whole-number counts. Visitors must be positive; downloaders cannot exceed visitors.\n請輸入有效整數。訪客須大於零；下載者不可多於訪客。";
+    return;
+  }
+
+  const a = da / va * 100;
+  const b = db / vb * 100;
+  const delta = b - a;
+  const sign = delta > 0 ? "+" : "";
+
+  result.innerHTML = `
+    <strong>A: ${a.toFixed(2)}% · B: ${b.toFixed(2)}%</strong>
+    ${paragraph(
+      `B − A = ${sign}${delta.toFixed(2)} percentage points.`,
+      `B − A = ${sign}${delta.toFixed(2)}個百分點。`
+    )}
+    ${paragraph(
+      "Descriptive difference only. No statistically reliable winner has been established.",
+      "僅呈現描述性差異，尚未確立具統計可靠性的優勝版本。"
+    )}
+  `;
+});
+
+/* ---------------------------------------------------------
+   Current-section navigation. Optional progressive enhancement.
+--------------------------------------------------------- */
+
+const navLinks = $$("#course-nav a");
+const sections = ["overview", ...lessons.map(l => l.id), "resources"]
+  .map(id => document.getElementById(id));
+
+let ticking = false;
+function updateActiveNavigation() {
+  let current = sections[0].id;
+  for (const section of sections) {
+    if (section.getBoundingClientRect().top <= 150) current = section.id;
+  }
+  navLinks.forEach(link => {
+    const active = link.getAttribute("href") === `#${current}`;
+    link.classList.toggle("active", active);
+    if (active) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+  ticking = false;
+}
+
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    ticking = true;
+    requestAnimationFrame(updateActiveNavigation);
+  }
+}, { passive: true });
+
+updateActiveNavigation();
+
+/* Expand prompt text temporarily when printing. */
+let printState = [];
+window.addEventListener("beforeprint", () => {
+  printState = $$(".prompt-card details").map(d => ({ el: d, open: d.open }));
+  printState.forEach(x => x.el.open = true);
+});
+window.addEventListener("afterprint", () => {
+  printState.forEach(x => x.el.open = x.open);
+});
+</script>
+</body>
+</html>
