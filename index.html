@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>张飞饮料店 · Website Creator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Website Creator</title>
 
   <style>
     :root {
-      color-scheme: light;
-      --editor-bg: #f3f4f7;
-      --editor-panel: #ffffff;
-      --editor-text: #202432;
-      --editor-muted: #697082;
-      --editor-border: #e2e5ec;
-      --editor-accent: #b82336;
+      --bg: #f1f3f7;
+      --panel: #fff;
+      --text: #222938;
+      --muted: #697386;
+      --border: #dfe4ed;
+      --accent: #4759db;
     }
 
     * {
@@ -23,9 +21,9 @@
 
     body {
       margin: 0;
+      background: var(--bg);
+      color: var(--text);
       font-family: Arial, "Microsoft YaHei", sans-serif;
-      background: var(--editor-bg);
-      color: var(--editor-text);
     }
 
     button,
@@ -39,214 +37,251 @@
       cursor: pointer;
     }
 
-    button,
-    input,
-    textarea,
-    select {
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid #aeb8ff;
       outline-offset: 3px;
     }
 
-    .app-header {
-      min-height: 78px;
+    .app {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      height: 100dvh;
+      min-height: 550px;
+    }
+
+    .app-header {
+      display: flex;
       justify-content: space-between;
-      gap: 20px;
-      padding: 16px 24px;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 17px 22px;
       background: white;
-      border-bottom: 1px solid var(--editor-border);
+      border-bottom: 1px solid var(--border);
     }
 
-    .app-title {
+    .app-header h1 {
       margin: 0;
-      font-size: 20px;
+      font-size: 21px;
+      letter-spacing: -.5px;
     }
 
-    .app-subtitle {
+    .app-header p {
       margin: 6px 0 0;
-      color: var(--editor-muted);
       font-size: 12px;
+      color: var(--muted);
       line-height: 1.5;
     }
 
-    .header-actions {
+    .actions {
       display: flex;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      align-items: center;
+      gap: 7px;
     }
 
-    .button {
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      min-height: 38px;
-      padding: 9px 13px;
-      border: 1px solid var(--editor-border);
+      padding: 10px 13px;
+      border: 1px solid var(--border);
       border-radius: 9px;
       background: white;
-      color: var(--editor-text);
-      font-weight: 700;
+      color: var(--text);
       font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
     }
 
-    .button:hover {
-      background: #f7f7fa;
+    .btn:hover {
+      background: #f5f6fa;
     }
 
-    .button.primary {
+    .btn.primary {
       color: white;
-      background: var(--editor-accent);
-      border-color: var(--editor-accent);
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
-    .button.primary:hover {
-      filter: brightness(.94);
+    .btn.primary:hover {
+      background: #394bc8;
     }
 
-    .button.danger {
-      color: #b42336;
-      background: #fff4f5;
-      border-color: #f0cbd1;
+    .btn.danger {
+      color: #b3263b;
+      background: #fff5f6;
+      border-color: #efced4;
     }
 
-    .button.small {
-      min-height: 30px;
+    .btn.small {
       padding: 6px 9px;
       font-size: 11px;
     }
 
-    .button:disabled {
+    .btn.active {
+      color: var(--accent);
+      background: #eef0ff;
+      border-color: var(--accent);
+    }
+
+    .btn:disabled {
       opacity: .45;
       cursor: not-allowed;
     }
 
-    .app-layout {
+    .workspace {
+      flex: 1;
+      min-height: 0;
       display: grid;
       grid-template-columns: 410px minmax(0, 1fr);
-      height: calc(100dvh - 89px);
-      min-height: 540px;
     }
 
     .editor {
       overflow: auto;
       padding: 18px;
-      border-right: 1px solid var(--editor-border);
+      border-right: 1px solid var(--border);
     }
 
-    .notice {
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      background: #fff8e8;
-      color: #72551b;
-      border: 1px solid #ecdcb8;
+    .intro {
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid #d8defc;
       border-radius: 12px;
+      background: #eef1ff;
+      color: #424e8d;
       font-size: 12px;
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
-    details.editor-section {
-      margin-bottom: 12px;
+    .template-box {
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       background: white;
-      border: 1px solid var(--editor-border);
-      border-radius: 13px;
+    }
+
+    .template-box strong {
+      font-size: 13px;
+    }
+
+    details.section {
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
       overflow: hidden;
     }
 
-    details.editor-section > summary {
+    details.section > summary {
       padding: 16px;
-      cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
+      cursor: pointer;
     }
 
-    .section-content {
-      padding: 0 16px 17px;
+    .section-body {
+      padding: 0 16px 16px;
     }
 
     .field {
       display: block;
-      margin: 0 0 13px;
+      margin-bottom: 13px;
     }
 
     .field > span {
       display: block;
       margin-bottom: 6px;
-      color: #525a6b;
+      color: #5b6373;
       font-size: 11px;
       font-weight: 700;
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .field input:not([type="color"]),
-    .field textarea,
-    .field select {
+    .field select,
+    .field textarea {
       width: 100%;
-      padding: 10px 11px;
-      color: var(--editor-text);
-      background: #fcfcfe;
-      border: 1px solid #dce0e8;
+      padding: 10px;
+      border: 1px solid #d9dfea;
       border-radius: 8px;
+      background: #fdfdff;
+      color: var(--text);
       font-size: 13px;
     }
 
     .field textarea {
+      min-height: 85px;
       resize: vertical;
-      min-height: 84px;
-      line-height: 1.6;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: var(--editor-accent);
+      line-height: 1.65;
     }
 
     .field input[type="color"] {
       width: 100%;
       height: 40px;
       padding: 3px;
-      border: 1px solid var(--editor-border);
+      border: 1px solid var(--border);
       border-radius: 8px;
       background: white;
     }
 
-    .two-columns {
+    .two {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
     .helper {
-      color: var(--editor-muted);
+      color: var(--muted);
       font-size: 12px;
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
-    .upload-label {
+    .item-editor {
+      margin: 13px 0;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #fafbfe;
+    }
+
+    .item-header {
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 68px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .item-header h3 {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .upload {
+      display: block;
       margin: 12px 0;
-      padding: 15px;
-      border: 1px dashed #c7cbd5;
+      padding: 14px;
+      border: 1px dashed #b9c1d4;
       border-radius: 10px;
-      background: #fafafd;
-      color: #626a7c;
-      text-align: center;
+      color: #59647a;
+      background: #f8f9ff;
       font-size: 12px;
-      cursor: pointer;
+      line-height: 1.6;
     }
 
-    .upload-label:hover {
-      border-color: var(--editor-accent);
-      color: var(--editor-accent);
-    }
-
-    .upload-label input {
-      display: none;
+    .upload input {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 11px;
     }
 
     .media-list {
@@ -254,97 +289,57 @@
       gap: 8px;
     }
 
-    .media-item {
+    .media-row {
       display: grid;
-      grid-template-columns: 58px minmax(0, 1fr);
+      grid-template-columns: 60px minmax(0, 1fr);
       gap: 10px;
+      align-items: center;
       padding: 8px;
-      border: 1px solid var(--editor-border);
+      border: 1px solid var(--border);
       border-radius: 9px;
-      align-items: center;
+      background: white;
     }
 
-    .media-item img,
-    .media-item video {
-      width: 58px;
-      height: 58px;
-      object-fit: cover;
+    .media-row img,
+    .media-row video {
+      width: 60px;
+      height: 60px;
       border-radius: 6px;
-      background: #eee;
+      object-fit: cover;
+      background: #e9ecf2;
     }
 
-    .media-name {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      margin-bottom: 6px;
+    .media-row .field {
+      margin-bottom: 7px;
+    }
+
+    .media-row .field input {
+      padding: 6px;
       font-size: 11px;
-    }
-
-    .media-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .drink-editor {
-      margin: 12px 0;
-      padding: 13px;
-      border: 1px solid var(--editor-border);
-      border-radius: 11px;
-      background: #fcfcfe;
-    }
-
-    .drink-editor-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .drink-editor-header h3 {
-      margin: 0;
-      font-size: 13px;
-    }
-
-    .drink-editor-header .actions {
-      display: flex;
-      gap: 4px;
     }
 
     .preview-panel {
       display: flex;
       flex-direction: column;
       min-width: 0;
-      background: #e8ebf1;
-      overflow: hidden;
+      min-height: 0;
+      background: #e7eaf1;
     }
 
     .preview-toolbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
-      padding: 13px 18px;
-      border-bottom: 1px solid #d9dde5;
-      background: #f9fafc;
+      padding: 12px 17px;
+      border-bottom: 1px solid #d6dce7;
+      background: #fafbfe;
     }
 
-    .preview-label {
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .preview-tools {
-      display: flex;
-      gap: 6px;
-    }
-
-    .preview-tools .active {
-      color: var(--editor-accent);
-      border-color: var(--editor-accent);
-      background: #fff3f5;
+    .preview-toolbar strong {
+      font-size: 11px;
+      letter-spacing: 1px;
     }
 
     .preview-stage {
@@ -359,12 +354,11 @@
     #preview {
       width: 100%;
       height: 100%;
-      min-height: 400px;
+      min-height: 350px;
       border: 0;
-      background: #fff;
-      box-shadow: 0 10px 45px #20243216;
       border-radius: 12px;
-      transition: width .2s ease;
+      background: white;
+      box-shadow: 0 12px 40px #29304718;
     }
 
     #preview.mobile {
@@ -373,54 +367,47 @@
     }
 
     .preview-footer {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 18px;
-      color: var(--editor-muted);
+      padding: 10px 17px;
+      color: var(--muted);
+      background: #fafbfe;
       font-size: 11px;
-      background: #f9fafc;
+      line-height: 1.5;
     }
 
     #toast {
       position: fixed;
-      left: 50%;
-      bottom: 24px;
-      transform: translate(-50%, 15px);
-      max-width: calc(100vw - 32px);
-      padding: 13px 20px;
-      color: white;
-      background: #222735;
-      border-radius: 10px;
-      box-shadow: 0 8px 30px #0002;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s, transform .2s;
       z-index: 100;
+      bottom: 22px;
+      left: 50%;
+      transform: translate(-50%, 12px);
+      max-width: calc(100vw - 30px);
+      padding: 13px 19px;
+      border-radius: 10px;
+      background: #252d3d;
+      color: white;
+      box-shadow: 0 8px 30px #0002;
       font-size: 13px;
+      line-height: 1.5;
       text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s, transform .2s;
     }
 
-    #toast.visible {
+    #toast.show {
       opacity: 1;
       transform: translate(-50%, 0);
     }
 
     @media (min-width: 1600px) {
-      .app-layout {
-        grid-template-columns: 460px minmax(0, 1fr);
+      .workspace {
+        grid-template-columns: 455px minmax(0, 1fr);
       }
     }
 
     @media (max-width: 1000px) {
-      .app-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .app-layout {
+      .workspace {
         grid-template-columns: 350px minmax(0, 1fr);
-        height: calc(100dvh - 135px);
       }
 
       .preview-stage {
@@ -429,14 +416,16 @@
     }
 
     @media (max-width: 760px) {
+      .app {
+        height: auto;
+      }
+
       .app-header {
         padding: 16px;
       }
 
-      .app-layout {
-        display: flex;
-        flex-direction: column;
-        height: auto;
+      .workspace {
+        display: block;
       }
 
       .editor {
@@ -445,94 +434,86 @@
       }
 
       .preview-panel {
-        height: 760px;
-        border-top: 1px solid var(--editor-border);
-      }
-
-      .preview-toolbar {
-        flex-wrap: wrap;
+        height: 780px;
+        border-top: 1px solid var(--border);
       }
     }
   </style>
 </head>
 
 <body>
-  <header class="app-header">
-    <div>
-      <h1 class="app-title">张飞饮料店 · Website Creator</h1>
-      <p class="app-subtitle">
-        Customize your drinks, prices, photos & videos · Export your website
-      </p>
-    </div>
+  <div class="app">
+    <header class="app-header">
+      <div>
+        <h1>Website Creator</h1>
+        <p>
+          A customizable website editor for businesses, products,
+          services, and portfolios.
+        </p>
+      </div>
 
-    <div class="header-actions">
-      <button class="button" id="saveProject" type="button">
-        Save project
-      </button>
+      <div class="actions">
+        <button type="button" class="btn" id="saveProject">
+          Save project
+        </button>
 
-      <button class="button" id="loadProject" type="button">
-        Load project
-      </button>
+        <button type="button" class="btn" id="loadProject">
+          Load project
+        </button>
 
-      <button class="button" id="resetProject" type="button">
-        Reset
-      </button>
+        <button type="button" class="btn primary" id="exportWebsite">
+          ↓ Export website
+        </button>
+      </div>
+    </header>
 
-      <button class="button primary" id="exportWebsite" type="button">
-        ↓ Export website
-      </button>
-    </div>
-  </header>
+    <main class="workspace">
+      <aside class="editor" id="editor"></aside>
 
-  <main class="app-layout">
-    <aside class="editor" id="editor"></aside>
+      <section class="preview-panel">
+        <div class="preview-toolbar">
+          <strong>LIVE PREVIEW</strong>
 
-    <section class="preview-panel">
-      <div class="preview-toolbar">
-        <span class="preview-label">LIVE WEBSITE PREVIEW</span>
+          <div class="actions">
+            <button
+              type="button"
+              class="btn small active"
+              id="desktop"
+              aria-pressed="true"
+            >
+              Desktop
+            </button>
 
-        <div class="preview-tools">
-          <button
-            class="button small active"
-            id="desktopPreview"
-            type="button"
-          >
-            Desktop
-          </button>
+            <button
+              type="button"
+              class="btn small"
+              id="mobile"
+              aria-pressed="false"
+            >
+              Mobile
+            </button>
 
-          <button
-            class="button small"
-            id="mobilePreview"
-            type="button"
-          >
-            Mobile
-          </button>
-
-          <button
-            class="button small"
-            id="refreshPreview"
-            type="button"
-          >
-            Refresh
-          </button>
+            <button type="button" class="btn small" id="refresh">
+              Refresh
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="preview-stage">
-        <iframe
-          id="preview"
-          title="Drink shop website preview"
-          sandbox="allow-scripts"
-          allow="fullscreen"
-        ></iframe>
-      </div>
+        <div class="preview-stage">
+          <iframe
+            id="preview"
+            title="Website preview"
+            sandbox="allow-scripts"
+            allow="fullscreen"
+          ></iframe>
+        </div>
 
-      <div class="preview-footer">
-        <span id="previewStatus" role="status">Ready</span>
-        <span>Save your project before closing.</span>
-      </div>
-    </section>
-  </main>
+        <div class="preview-footer" id="status" role="status">
+          Ready
+        </div>
+      </section>
+    </main>
+  </div>
 
   <input
     id="projectFile"
@@ -546,20 +527,20 @@
   <script>
     "use strict";
 
-    // ============================================================
-    // UTILITIES
-    // ============================================================
+    // ==========================================================
+    // GENERAL UTILITIES
+    // ==========================================================
 
     function uid() {
-      return (
-        "drink-" +
-        Date.now().toString(36) +
-        "-" +
-        Math.random().toString(36).slice(2, 9)
-      );
+      return "item-" + Date.now().toString(36) +
+        "-" + Math.random().toString(36).slice(2, 10);
     }
 
-    function escapeHTML(value) {
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function esc(value) {
       return String(value ?? "").replace(/[&<>"']/g, character => ({
         "&": "&amp;",
         "<": "&lt;",
@@ -569,181 +550,251 @@
       })[character]);
     }
 
-    function clone(value) {
-      return JSON.parse(JSON.stringify(value));
-    }
-
-    function newDish(values = {}) {
+    function makeItem(values = {}) {
       return Object.assign({
         id: uid(),
-        icon: "🥤",
-        nameEn: "Your New Drink",
-        nameZh: "你的新饮品",
+        icon: "✦",
+        nameEn: "Your item",
+        nameZh: "你的项目",
         price: "",
         descriptionEn:
-          "Introduce this drink: its flavor, ingredients, " +
-          "and any available size, sweetness, or ice options.",
+          "Describe your product, service, work, or offer here.",
         descriptionZh:
-          "介绍这杯饮品的口味、配料，以及实际提供的杯型、甜度或冰量选项。",
+          "在这里介绍你的产品、服务、作品或其他内容。",
         media: []
       }, values);
     }
 
-    // ============================================================
-    // DEFAULT SHOP CONTENT
-    // Sample drinks and prices: replace with your actual menu.
-    // ============================================================
+    // ==========================================================
+    // GENERAL-PURPOSE STARTING PROJECT
+    // No drink-shop branding is required by the editor.
+    // ==========================================================
 
-    let state = {
-      nameEn: "Zhang Fei Drinks",
-      nameZh: "张飞饮料店",
+    function blankProject() {
+      return {
+        projectName: "My Website",
 
-      eyebrowEn: "BOLD SIPS · GOOD COMPANY",
-      eyebrowZh: "大口畅饮 · 快乐相聚",
+        nameEn: "Your Brand",
+        nameZh: "你的品牌",
+        icon: "✦",
 
-      titleEn: "Big flavor. Instant refreshment.",
-      titleZh: "豪气一口，清爽上头。",
+        eyebrowEn: "WELCOME TO YOUR WEBSITE",
+        eyebrowZh: "欢迎来到你的网站",
 
-      descriptionEn:
-        "Take a break, grab a drink, and make yourself at home. " +
-        "From bright fruit teas to creamy milk teas, " +
-        "find a little happiness in your next cup.",
+        titleEn: "Introduce what makes you different.",
+        titleZh: "展示你的独特之处。",
 
-      descriptionZh:
-        "忙里偷闲，来张飞喝一杯。" +
-        "清爽果茶、香浓奶茶，总有一杯合你心意。" +
-        "约上好友，大口畅饮，把平凡的一天喝出好心情。",
+        descriptionEn:
+          "Use this space to introduce your business, products, services, " +
+          "or creative work. Replace every example with your own content.",
 
-      heroButtonEn: "Take a look around",
-      heroButtonZh: "看看店里",
+        descriptionZh:
+          "在这里介绍你的企业、产品、服务或创意作品。" +
+          "所有示例内容都可以替换为你自己的文字。",
 
-      menuButtonEn: "Find your next drink",
-      menuButtonZh: "选一杯心头好",
+        primaryButtonEn: "Explore",
+        primaryButtonZh: "了解更多",
+        primaryUrl: "#collection",
 
-      menuTitleEn: "Bold drinks. Happy moments.",
-      menuTitleZh: "杯杯有性格，口口好心情。",
+        secondaryButtonEn: "View gallery",
+        secondaryButtonZh: "查看展示",
+        secondaryUrl: "#gallery",
 
-      menuDescriptionEn:
-        "Feeling fruity, creamy, or simply refreshed? " +
-        "Explore the drinks below and flip a card for the details.",
+        collectionTitleEn: "What we offer",
+        collectionTitleZh: "我们的内容",
 
-      menuDescriptionZh:
-        "今天想喝清爽的，还是香浓的？" +
-        "看看下面的饮品，翻转卡片，找到属于你的那一杯。",
+        collectionDescriptionEn:
+          "Add products, services, projects, menu items, or anything " +
+          "you would like to showcase.",
 
-      detailsEn: "Meet your drink",
-      detailsZh: "看看这杯",
+        collectionDescriptionZh:
+          "添加产品、服务、作品、菜单项目，或任何你想展示的内容。",
 
-      backEn: "Back to the drink",
-      backZh: "返回饮品",
+        detailsEn: "View details",
+        detailsZh: "查看详情",
+        backEn: "Go back",
+        backZh: "返回",
 
-      previousEn: "Previous",
-      previousZh: "上一张 / 段",
+        previousEn: "Previous",
+        previousZh: "上一个",
+        nextEn: "Next",
+        nextZh: "下一个",
 
-      nextEn: "Next",
-      nextZh: "下一张 / 段",
+        closingEn: "Make this website your own.",
+        closingZh: "打造属于你自己的网站。",
 
-      closingEn: "Bring your friends. Find your favorite.",
-      closingZh: "有空来坐坐，有伴来喝喝。",
+        contactTitleEn: "Get in touch",
+        contactTitleZh: "联系我们",
+        contactTextEn: "",
+        contactTextZh: "",
 
-      footerEn:
-        "Zhang Fei Drinks · A little refreshment. A little togetherness.",
+        contactButtonEn: "",
+        contactButtonZh: "",
+        contactUrl: "",
 
-      footerZh:
-        "张飞饮料店 · 一杯好心情，一起慢慢喝。",
+        footerEn: "Your Brand",
+        footerZh: "你的品牌",
 
-      accent: "#b82336",
-      gold: "#f2cb86",
-      background: "#fffaf2",
-      ink: "#292323",
+        accent: "#4759db",
+        secondary: "#dbe1ff",
+        background: "#f8f9ff",
+        ink: "#252c3b",
 
-      defaultLanguage: "both",
-      heroIcon: "🧋",
-      heroMedia: [],
+        language: "both",
+        columns: "3",
 
-      dishes: [
-        newDish({
-          icon: "🍋",
-          nameEn: "Bold Lemon Tea",
-          nameZh: "豪气柠檬茶",
-          price: "¥12",
+        heroMedia: [],
+        items: []
+      };
+    }
 
-          descriptionEn:
-            "Bright lemon meets fragrant tea for a crisp, lively sip. " +
-            "A refreshing pick for an afternoon break or a catch-up with friends.",
+    // ==========================================================
+    // OPTIONAL EXAMPLE TEMPLATE
+    // Zhang Fei Drinks is sample content, not editor branding.
+    // ==========================================================
 
-          descriptionZh:
-            "柠檬的清香与茶香相遇，酸甜爽口，喝出利落好心情。" +
-            "午后歇一歇，或与好友聊聊天，都适合来上一杯。",
+    function juiceTemplate() {
+      const project = blankProject();
 
-          media: []
-        }),
+      Object.assign(project, {
+        projectName: "Zhang Fei Drinks Example",
 
-        newDish({
-          icon: "🧋",
-          nameEn: "Hero's Pearl Milk Tea",
-          nameZh: "好汉珍珠奶茶",
-          price: "¥15",
+        nameEn: "Zhang Fei Drinks",
+        nameZh: "张飞饮料店",
+        icon: "🧃",
 
-          descriptionEn:
-            "Fragrant tea, creamy milk, and chewy tapioca pearls. " +
-            "A comforting classic with a playful bite in every sip.",
+        eyebrowEn: "FRUITY FLAVORS · EVERYDAY MOMENTS",
+        eyebrowZh: "果香相伴 · 日常好滋味",
 
-          descriptionZh:
-            "茶香融入奶香，搭配颗颗有嚼劲的珍珠。" +
-            "熟悉的经典滋味，让每一口都多一点满足。",
+        titleEn: "A fruity break for your day.",
+        titleZh: "来一杯果香，歇一歇忙碌。",
 
-          media: []
-        }),
+        descriptionEn:
+          "Welcome to Zhang Fei Drinks. Explore our example juice menu, " +
+          "from familiar apple and orange to mellow pear and bright pineapple.",
 
-        newDish({
-          icon: "🍑",
-          nameEn: "Peachy Oolong",
-          nameZh: "桃气乌龙",
-          price: "¥14",
+        descriptionZh:
+          "欢迎来到张飞饮料店。看看我们的示例果汁菜单：" +
+          "苹果、橙子、梨和菠萝，总有一种果香让你心动。",
 
-          descriptionEn:
-            "Soft peach notes meet the mellow character of oolong tea. " +
-            "Fruity, fragrant, and made for taking your time.",
+        primaryButtonEn: "Explore the menu",
+        primaryButtonZh: "看看菜单",
 
-          descriptionZh:
-            "桃香轻轻入茶，乌龙韵味悠悠回荡。" +
-            "一口果香，一口茶香，陪你把匆忙的节奏放慢一点。",
+        secondaryButtonEn: "Take a look around",
+        secondaryButtonZh: "看看店里",
 
-          media: []
-        })
-      ]
-    };
+        collectionTitleEn: "Pick your favorite fruit flavor.",
+        collectionTitleZh: "选一杯喜欢的果香。",
 
-    const DEFAULT_STATE = clone(state);
+        collectionDescriptionEn:
+          "Four example juices to get you started. " +
+          "Select a card to read more.",
 
+        collectionDescriptionZh:
+          "从四款示例果汁开始，点击卡片，了解每一杯。",
+
+        detailsEn: "About this juice",
+        detailsZh: "了解这杯",
+        backEn: "Back to the juice",
+        backZh: "返回果汁",
+
+        closingEn: "A little fruitiness. A little time for yourself.",
+        closingZh: "一点果香，一段属于自己的时光。",
+
+        footerEn: "Zhang Fei Drinks · Your next fruity break.",
+        footerZh: "张飞饮料店 · 给日常添一点果香。",
+
+        accent: "#b82336",
+        secondary: "#f2cb86",
+        background: "#fffaf2",
+        ink: "#292323",
+        columns: "4",
+
+        items: [
+          makeItem({
+            icon: "🍎",
+            nameEn: "Apple Juice",
+            nameZh: "苹果汁",
+            price: "¥12",
+            descriptionEn:
+              "A familiar apple flavor with a gentle, fruity sweetness. " +
+              "An easygoing choice for a quiet break or a catch-up with friends.",
+            descriptionZh:
+              "熟悉的苹果果香，带着柔和的甜意。" +
+              "无论独自小憩，还是与朋友聊天，都适合慢慢享用。"
+          }),
+
+          makeItem({
+            icon: "🍊",
+            nameEn: "Orange Juice",
+            nameZh: "橙汁",
+            price: "¥14",
+            descriptionEn:
+              "Bright citrus flavor with a lively sweet-and-tangy character. " +
+              "A cheerful addition to your everyday moments.",
+            descriptionZh:
+              "明亮的柑橘果香，酸甜交织，口感活泼。" +
+              "为平常的一天，添上一点轻快的滋味。"
+          }),
+
+          makeItem({
+            icon: "🍐",
+            nameEn: "Pear Juice",
+            nameZh: "梨汁",
+            price: "¥12",
+            descriptionEn:
+              "A mellow pear flavor with a delicate sweetness. " +
+              "A simple option when you feel like something gentle and fruity.",
+            descriptionZh:
+              "梨的淡雅果香，搭配温和的甜味。" +
+              "想喝一杯清雅的果味饮品时，不妨试试这一杯。"
+          }),
+
+          makeItem({
+            icon: "🍍",
+            nameEn: "Pineapple Juice",
+            nameZh: "菠萝汁",
+            price: "¥16",
+            descriptionEn:
+              "Distinctive pineapple flavor with a tropical sweet-and-tangy twist. " +
+              "A lively choice for a little change of pace.",
+            descriptionZh:
+              "鲜明的菠萝风味，带着热带水果的酸甜气息。" +
+              "想给日常换个口味，就来一点不一样的果香。"
+          })
+        ]
+      });
+
+      return project;
+    }
+
+    let state = juiceTemplate();
     let dirty = false;
+    let revision = 0;
+    let pendingUploads = 0;
     let previewTimer;
     let toastTimer;
 
     const editor = document.getElementById("editor");
     const preview = document.getElementById("preview");
-    const previewStatus = document.getElementById("previewStatus");
+    const status = document.getElementById("status");
 
-    // ============================================================
-    // EXPORTED WEBSITE STYLES
-    // ============================================================
+    // ==========================================================
+    // STANDALONE WEBSITE STYLES
+    // ==========================================================
 
-    const WEBSITE_CSS = `
+    const SITE_CSS = `
       :root {
-        --accent: #b82336;
-        --gold: #f2cb86;
-        --background: #fffaf2;
-        --ink: #292323;
+        --accent: #4759db;
+        --secondary: #dbe1ff;
+        --background: #f8f9ff;
+        --ink: #252c3b;
+        --columns: 3;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
-      html {
-        scroll-behavior: smooth;
-      }
+      html { scroll-behavior: smooth; }
 
       body {
         margin: 0;
@@ -753,441 +804,354 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      button, a {
-        -webkit-tap-highlight-color: transparent;
-      }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      button { font: inherit; cursor: pointer; }
+      a { color: inherit; }
 
-      button {
-        font: inherit;
-        cursor: pointer;
-      }
-
-      a {
-        color: inherit;
-      }
-
-      button:focus-visible,
-      a:focus-visible {
-        outline: 3px solid var(--gold);
-        outline-offset: 5px;
+      button:focus-visible, a:focus-visible {
+        outline: 3px solid var(--secondary);
+        outline-offset: 4px;
       }
 
       .container {
-        width: min(1180px, calc(100% - 72px));
+        width: min(1240px, calc(100% - 64px));
         margin-inline: auto;
       }
 
       .site-header {
-        border-bottom: 1px solid #30232312;
+        border-bottom: 1px solid #25253516;
       }
 
       .navigation {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        min-height: 100px;
-        gap: 20px;
+        gap: 18px;
+        min-height: 96px;
       }
 
       .brand {
         display: flex;
         align-items: center;
         gap: 12px;
-        text-decoration: none;
         min-width: 0;
+        text-decoration: none;
       }
 
-      .brand-symbol {
+      .brand-icon {
         display: grid;
         place-items: center;
-        flex: 0 0 auto;
+        flex-shrink: 0;
         width: 46px;
         height: 46px;
+        border-radius: 14px 14px 14px 4px;
+        color: white;
         background: var(--accent);
-        color: var(--gold);
-        border-radius: 13px 13px 13px 3px;
-        font-size: 28px;
-        transform: rotate(-5deg);
+        font-size: 27px;
       }
 
       .brand-copy {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
 
       .brand-copy .zh {
+        display: block;
+        margin-bottom: 4px;
         font-size: 20px;
         font-weight: 900;
-        letter-spacing: 2px;
       }
 
       .brand-copy .en {
+        display: block;
         font-size: 11px;
         font-weight: 800;
-        letter-spacing: 1.3px;
-        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
-      .language-switch {
+      .languages {
         display: flex;
         gap: 3px;
-        padding: 4px;
-        border: 1px solid #30232318;
-        border-radius: 30px;
         flex-shrink: 0;
+        padding: 4px;
+        border: 1px solid #25253520;
+        border-radius: 25px;
       }
 
-      .language-switch button {
+      .languages button {
+        padding: 7px 9px;
         border: 0;
+        border-radius: 20px;
         background: transparent;
         color: var(--ink);
-        padding: 8px 10px;
-        border-radius: 22px;
         font-size: 11px;
         font-weight: 700;
       }
 
-      .language-switch button.active {
-        background: var(--accent);
+      .languages button.active {
         color: white;
+        background: var(--accent);
       }
 
       .hero {
         display: grid;
-        grid-template-columns: 1.08fr 1fr;
+        grid-template-columns: 1.05fr 1fr;
         align-items: center;
         gap: 55px;
-        padding-block: 75px 85px;
+        padding-block: 70px 80px;
       }
 
       .eyebrow {
         display: flex;
         flex-wrap: wrap;
-        gap: 7px 12px;
+        gap: 6px 12px;
+        margin-bottom: 22px;
         color: var(--accent);
         font-size: 10px;
-        line-height: 1.6;
         font-weight: 800;
+        line-height: 1.6;
         letter-spacing: 1.7px;
-        margin-bottom: 22px;
       }
 
       h1 {
         margin: 0 0 24px;
-        line-height: 1.08;
-        letter-spacing: -2px;
         overflow-wrap: anywhere;
       }
 
       h1 .zh {
         display: block;
-        font-size: clamp(35px, 4.8vw, 66px);
-        line-height: 1.2;
-        margin-bottom: 13px;
-        font-weight: 900;
+        margin-bottom: 14px;
+        font-size: clamp(35px, 4.6vw, 62px);
+        line-height: 1.22;
         letter-spacing: -1px;
       }
 
       h1 .en {
         display: block;
-        font-size: clamp(35px, 4.5vw, 62px);
-        font-weight: 900;
+        font-size: clamp(35px, 4.3vw, 59px);
+        line-height: 1.06;
+        letter-spacing: -2px;
       }
 
       .description {
-        max-width: 550px;
-        opacity: .75;
-        line-height: 1.85;
         font-size: 14px;
+        line-height: 1.9;
+        opacity: .78;
         overflow-wrap: anywhere;
       }
 
-      .description .zh,
-      .description .en {
+      .description .zh, .description .en {
         display: block;
         white-space: pre-line;
       }
 
-      .description .zh {
-        margin-bottom: 9px;
-      }
+      .description .zh { margin-bottom: 9px; }
 
       .hero-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 11px;
-        margin-top: 28px;
+        gap: 10px;
+        margin-top: 27px;
       }
 
       .site-button {
         display: inline-flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         flex-wrap: wrap;
-        gap: 5px 9px;
-        border: 1px solid #30232320;
-        border-radius: 10px;
+        gap: 6px 9px;
         padding: 14px 18px;
-        background: transparent;
+        border: 1px solid #25253525;
+        border-radius: 10px;
         color: var(--ink);
-        text-decoration: none;
+        background: transparent;
         font-size: 12px;
         font-weight: 800;
-        line-height: 1.45;
+        line-height: 1.5;
+        text-decoration: none;
       }
 
       .site-button.primary {
+        color: white;
         background: var(--accent);
         border-color: var(--accent);
-        color: white;
       }
 
-      .site-button:hover {
-        filter: brightness(.95);
-      }
+      .site-button:hover { filter: brightness(.95); }
 
       .hero-visual {
-        position: relative;
         min-width: 0;
-        padding: 18px 0 0 18px;
+        padding: 15px 0 0 15px;
+        position: relative;
         scroll-margin-top: 20px;
       }
 
       .hero-visual::before {
         content: "";
         position: absolute;
-        inset: 0 18px 18px 0;
+        inset: 0 15px 15px 0;
         border: 1px solid var(--accent);
-        border-radius: 130px 24px 24px 24px;
+        border-radius: 110px 22px 22px 22px;
         opacity: .3;
         pointer-events: none;
       }
 
       .gallery {
         position: relative;
+        height: 100%;
         overflow: hidden;
+        background: var(--secondary);
         isolation: isolate;
-        background: #f0e1cd;
       }
 
       .hero-visual .gallery {
-        height: 480px;
-        border-radius: 120px 22px 22px 22px;
+        height: 470px;
+        border-radius: 100px 20px 20px 20px;
       }
 
-      .gallery-stage {
-        height: 100%;
-      }
+      .gallery-stage, .slide { height: 100%; }
+      .slide[hidden] { display: none !important; }
 
-      .slide {
-        width: 100%;
-        height: 100%;
-      }
-
-      .slide[hidden] {
-        display: none !important;
-      }
-
-      .slide img,
-      .slide video {
+      .slide img, .slide video {
         display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
 
-      .slide video {
-        background: #211c1c;
-      }
+      .slide video { background: #222; }
 
       .placeholder {
-        height: 100%;
-        min-height: 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        gap: 24px;
+        justify-content: center;
+        gap: 22px;
+        height: 100%;
+        padding: 25px;
+        text-align: center;
         background:
-          radial-gradient(circle at 24% 20%, #ffffff88, transparent 40%),
-          linear-gradient(140deg, var(--gold), #ebc8b3);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .placeholder::before,
-      .placeholder::after {
-        content: "";
-        position: absolute;
-        width: 250px;
-        height: 250px;
-        border: 1px solid #ffffff88;
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
-      .placeholder::before {
-        right: -110px;
-        top: -110px;
-      }
-
-      .placeholder::after {
-        left: -125px;
-        bottom: -125px;
+          radial-gradient(circle at 20% 15%, #ffffff99, transparent 55%),
+          var(--secondary);
       }
 
       .placeholder-icon {
-        display: block;
-        font-size: 130px;
+        font-size: 120px;
         line-height: 1.2;
-        filter: drop-shadow(0 15px 10px #5e301c18);
-        transform: rotate(-10deg);
+        filter: drop-shadow(0 13px 12px #25253516);
+        transform: rotate(-8deg);
       }
 
-      .placeholder-brand {
-        text-align: center;
-        padding: 0 20px;
-        position: relative;
-      }
-
-      .placeholder-brand .zh {
+      .placeholder-title .zh {
         display: block;
+        margin-bottom: 8px;
         font-size: 25px;
         font-weight: 900;
-        letter-spacing: 4px;
-        margin-bottom: 7px;
       }
 
-      .placeholder-brand .en {
+      .placeholder-title .en {
         display: block;
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
       }
 
       .gallery-controls {
         position: absolute;
-        top: 14px;
-        left: 14px;
-        right: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
+        top: 12px;
+        left: 12px;
+        right: 12px;
         z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
         pointer-events: none;
       }
 
       .gallery-controls button {
-        pointer-events: auto;
-        border: 1px solid #ffffff70;
-        border-radius: 30px;
-        padding: 8px 11px;
+        max-width: 43%;
+        padding: 8px 10px;
+        border: 1px solid #ffffff80;
+        border-radius: 25px;
         color: #222;
-        background: #ffffffed;
+        background: #fffffff0;
         box-shadow: 0 3px 12px #0001;
         font-size: 10px;
         font-weight: 700;
-        max-width: 44%;
+        pointer-events: auto;
       }
 
-      .gallery-controls button span + span {
-        margin-left: 4px;
-      }
+      .gallery-controls button span + span { margin-left: 4px; }
 
       .gallery-count {
         padding: 5px 8px;
         border-radius: 20px;
         color: white;
-        background: #211c1c80;
+        background: #25253588;
         font-size: 10px;
         white-space: nowrap;
       }
 
-      .section-rule {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        color: var(--accent);
-      }
-
-      .section-rule::before,
-      .section-rule::after {
-        content: "";
-        height: 1px;
-        flex: 1;
-        background: currentColor;
-        opacity: .18;
-      }
-
-      .section-rule span {
-        font-size: 22px;
-      }
-
-      .menu-section {
-        padding-block: 65px 80px;
+      .collection {
+        padding-block: 55px 75px;
+        border-top: 1px solid #25253516;
         scroll-margin-top: 20px;
       }
 
       .section-heading {
-        max-width: 700px;
-        margin: 0 auto 40px;
+        max-width: 720px;
+        margin: 0 auto 38px;
         text-align: center;
       }
 
       h2 {
-        margin: 0 0 18px;
+        margin: 0 0 17px;
         overflow-wrap: anywhere;
       }
 
       h2 .zh {
         display: block;
-        font-size: clamp(26px, 3.1vw, 39px);
+        margin-bottom: 8px;
+        font-size: clamp(25px, 3vw, 39px);
         line-height: 1.4;
-        margin-bottom: 7px;
       }
 
       h2 .en {
         display: block;
-        font-size: clamp(23px, 2.8vw, 36px);
+        font-size: clamp(23px, 2.7vw, 35px);
         line-height: 1.2;
-        letter-spacing: -.8px;
+        letter-spacing: -.7px;
       }
 
-      .section-heading .description {
-        margin-inline: auto;
-      }
-
-      .drink-grid {
+      .item-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+        gap: 22px;
       }
 
-      .drink-card {
+      .item-card {
         min-width: 0;
-        padding: 12px;
-        border: 1px solid #30232315;
-        border-radius: 20px;
-        background: #ffffff70;
-        box-shadow: 0 8px 24px #34221d05;
+        padding: 11px;
+        border: 1px solid #25253516;
+        border-radius: 19px;
+        background: #ffffff80;
+        box-shadow: 0 8px 25px #25253506;
       }
 
       .flip-shell {
-        height: 290px;
+        height: 280px;
         perspective: 1200px;
       }
 
       .flip-inner {
         position: relative;
         height: 100%;
-        transition: transform .65s cubic-bezier(.2,.7,.2,1);
         transform-style: preserve-3d;
+        transition: transform .65s cubic-bezier(.2,.7,.2,1);
       }
 
-      .drink-card.flipped .flip-inner {
+      .item-card.flipped .flip-inner {
         transform: rotateY(180deg);
       }
 
@@ -1195,37 +1159,27 @@
         position: absolute;
         inset: 0;
         overflow: hidden;
-        border-radius: 12px;
+        border-radius: 11px;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
       }
 
-      .card-front .gallery {
-        height: 100%;
-      }
-
-      .card-front .placeholder-icon {
-        font-size: 100px;
-      }
-
-      .card-front .placeholder-brand {
-        display: none;
-      }
+      .card-front .placeholder-icon { font-size: 95px; }
 
       .card-back {
-        transform: rotateY(180deg);
-        background: var(--accent);
+        padding: 22px;
         color: white;
-        padding: 23px;
+        background: var(--accent);
+        transform: rotateY(180deg);
         overflow: auto;
       }
 
       .card-back h3 {
-        margin: 0 0 16px;
+        margin: 0 0 14px;
+        overflow-wrap: anywhere;
       }
 
-      .card-back h3 .zh,
-      .card-back h3 .en {
+      .card-back h3 span {
         display: block;
         margin-bottom: 6px;
         font-size: 18px;
@@ -1233,69 +1187,70 @@
 
       .card-back .description {
         font-size: 13px;
-        opacity: .92;
+        opacity: .95;
       }
 
-      .card-back .back-icon {
+      .back-icon {
         display: block;
+        margin-bottom: 13px;
         font-size: 30px;
-        margin-bottom: 14px;
       }
 
-      .drink-info {
-        padding: 19px 9px 9px;
-      }
+      .item-info { padding: 18px 8px 7px; }
 
-      .drink-title-row {
+      .title-row {
         display: flex;
-        align-items: flex-start;
         justify-content: space-between;
+        align-items: flex-start;
         gap: 10px;
       }
 
-      .drink-title {
+      .item-title {
         min-width: 0;
         margin: 0;
         overflow-wrap: anywhere;
       }
 
-      .drink-title .zh {
+      .item-title .zh {
         display: block;
         margin-bottom: 6px;
-        font-size: 20px;
+        font-size: 19px;
+        line-height: 1.4;
       }
 
-      .drink-title .en {
+      .item-title .en {
         display: block;
         font-size: 12px;
         line-height: 1.5;
-        opacity: .7;
+        opacity: .75;
       }
 
       .price {
-        color: var(--accent);
-        font-weight: 900;
-        font-size: 20px;
-        overflow-wrap: anywhere;
         max-width: 45%;
+        color: var(--accent);
+        font-size: 19px;
+        font-weight: 900;
+        line-height: 1.4;
         text-align: right;
+        overflow-wrap: anywhere;
       }
 
       .flip-button {
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
+        flex-wrap: wrap;
         gap: 5px 8px;
         width: 100%;
-        margin-top: 18px;
+        margin-top: 17px;
         padding: 13px 0 3px;
         border: 0;
-        border-top: 1px solid #30232315;
+        border-top: 1px solid #25253516;
         color: var(--accent);
         background: transparent;
-        text-align: left;
         font-size: 11px;
         font-weight: 800;
+        line-height: 1.5;
+        text-align: left;
       }
 
       .flip-button::after {
@@ -1304,220 +1259,127 @@
         font-size: 18px;
       }
 
-      .drink-card.flipped .flip-button::after {
-        content: "↶";
-      }
+      .item-card.flipped .flip-button::after { content: "↶"; }
 
       .closing {
-        padding: 55px 24px;
+        margin-bottom: 50px;
+        padding: 50px 24px;
+        border-radius: 24px;
         background: var(--accent);
         color: white;
         text-align: center;
-        border-radius: 25px;
-        margin-bottom: 50px;
         overflow-wrap: anywhere;
       }
 
-      .closing-icon {
-        display: block;
-        font-size: 36px;
-        margin-bottom: 16px;
-      }
-
-      .closing .zh {
+      .closing > .zh {
         display: block;
         margin-bottom: 10px;
-        color: var(--gold);
-        font-size: clamp(24px, 3vw, 38px);
+        font-size: clamp(25px, 3vw, 38px);
         font-weight: 900;
         line-height: 1.4;
       }
 
-      .closing .en {
+      .closing > .en {
         display: block;
-        font-size: clamp(19px, 2.5vw, 30px);
+        font-size: clamp(20px, 2.4vw, 30px);
         font-weight: 800;
         line-height: 1.4;
       }
 
+      .contact {
+        padding-bottom: 55px;
+        text-align: center;
+        scroll-margin-top: 20px;
+      }
+
+      .contact .description {
+        max-width: 700px;
+        margin: 0 auto 22px;
+      }
+
       footer {
-        padding: 0 24px 35px;
+        padding: 0 24px 32px;
         text-align: center;
         font-size: 11px;
         line-height: 1.9;
-        opacity: .6;
+        opacity: .65;
+        overflow-wrap: anywhere;
       }
 
-      footer .zh,
-      footer .en {
-        display: block;
+      footer span { display: block; }
+
+      body[data-language="en"] .zh { display: none !important; }
+      body[data-language="zh"] .en { display: none !important; }
+
+      @media (max-width: 1100px) {
+        .item-grid {
+          grid-template-columns: repeat(min(var(--columns), 3), minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        .hero { gap: 30px; }
+        .hero-visual .gallery { height: 420px; }
       }
 
-      body[data-language="en"] .zh {
-        display: none !important;
-      }
+      @media (max-width: 850px) {
+        .container { width: calc(100% - 40px); }
 
-      body[data-language="zh"] .en {
-        display: none !important;
-      }
-
-      @media (max-width: 1000px) {
-        .container {
-          width: calc(100% - 44px);
-        }
-
-        .hero {
-          gap: 28px;
-          padding-block: 50px 60px;
-        }
-
-        .hero-visual .gallery {
-          height: 410px;
-        }
-
-        .drink-grid {
-          gap: 15px;
-        }
-
-        .flip-shell {
-          height: 260px;
-        }
-
-        .card-back {
-          padding: 18px;
-        }
-      }
-
-      @media (max-width: 800px) {
         .hero {
           grid-template-columns: 1fr;
+          padding-block: 45px 60px;
         }
 
-        .hero-copy {
-          max-width: 620px;
-        }
+        .hero-copy { max-width: 660px; }
 
-        h1 .zh,
-        h1 .en {
+        h1 .zh, h1 .en {
           font-size: clamp(38px, 7vw, 58px);
         }
 
         .hero-visual {
-          max-width: 580px;
           width: 100%;
-          margin: 8px auto 0;
+          max-width: 620px;
+          margin-inline: auto;
         }
 
-        .hero-visual .gallery {
-          height: 440px;
-        }
-
-        .drink-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+        .item-grid {
+          grid-template-columns: repeat(min(var(--columns), 2), minmax(0, 1fr));
         }
       }
 
       @media (max-width: 520px) {
-        .container {
-          width: calc(100% - 32px);
-        }
-
-        .navigation {
-          min-height: 88px;
-          gap: 8px;
-        }
-
-        .brand {
-          gap: 8px;
-        }
-
-        .brand-symbol {
-          width: 36px;
-          height: 40px;
-          font-size: 24px;
-        }
-
-        .brand-copy .zh {
-          font-size: 15px;
-          letter-spacing: 1px;
-        }
-
-        .brand-copy .en {
-          font-size: 8px;
-          letter-spacing: .6px;
-        }
-
-        .language-switch button {
-          padding: 7px 6px;
-          font-size: 10px;
-        }
-
-        .hero {
-          padding-top: 37px;
-        }
-
-        h1 .zh,
-        h1 .en {
-          font-size: 39px;
-        }
-
-        .description {
-          font-size: 13px;
-        }
-
-        .hero-actions {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .hero-visual .gallery {
-          height: 365px;
-        }
-
-        .placeholder-icon {
-          font-size: 110px;
-        }
-
-        .drink-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-
-        .flip-shell {
-          height: 305px;
-        }
-
-        .menu-section {
-          padding-block: 45px 50px;
-        }
-
-        .closing {
-          margin-bottom: 30px;
-          padding: 40px 20px;
-        }
+        .container { width: calc(100% - 30px); }
+        .navigation { min-height: 85px; gap: 8px; }
+        .brand { gap: 8px; }
+        .brand-icon { width: 35px; height: 39px; font-size: 23px; }
+        .brand-copy .zh { font-size: 15px; }
+        .brand-copy .en { font-size: 9px; letter-spacing: .3px; }
+        .languages button { padding: 7px 6px; font-size: 10px; }
+        h1 .zh, h1 .en { font-size: 39px; }
+        .description { font-size: 13px; }
+        .hero-actions { flex-direction: column; }
+        .hero-visual .gallery { height: 360px; }
+        .placeholder-icon { font-size: 105px; }
+        .item-grid { grid-template-columns: 1fr; }
+        .flip-shell { height: 305px; }
+        .collection { padding-block: 40px 50px; }
+        .closing { padding: 38px 20px; margin-bottom: 35px; }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        *,
-        *::before,
-        *::after {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
           transition: none !important;
           animation: none !important;
         }
       }
     `;
 
-    // ============================================================
-    // STANDALONE WEBSITE RENDERER
-    // This function is embedded in the exported HTML.
-    // Keep it independent of editor variables.
-    // ============================================================
+    // ==========================================================
+    // EXPORTED WEBSITE RENDERER
+    // Self-contained: does not use editor variables.
+    // ==========================================================
 
-    function renderWebsite(data) {
+    function renderSite(data) {
       const escape = value =>
         String(value ?? "").replace(/[&<>"']/g, character => ({
           "&": "&amp;",
@@ -1529,124 +1391,164 @@
 
       function bilingual(en, zh) {
         return (
-          '<span class="zh" lang="zh-CN">' + escape(zh) + "</span>" +
-          '<span class="en" lang="en">' + escape(en) + "</span>"
+          (zh ? '<span class="zh" lang="zh-CN">' + escape(zh) + "</span>" : "") +
+          (en ? '<span class="en" lang="en">' + escape(en) + "</span>" : "")
         );
       }
 
-      function placeholder(icon) {
-        return `
-          <div class="placeholder">
-            <span class="placeholder-icon" aria-hidden="true">
-              ${escape(icon)}
-            </span>
+      function safeUrl(value) {
+        const url = String(value || "").trim();
 
-            <div class="placeholder-brand">
-              ${bilingual(data.nameEn, data.nameZh)}
-            </div>
-          </div>
+        if (/^#[A-Za-z][A-Za-z0-9_-]*$/.test(url)) {
+          return url;
+        }
+
+        if (/[\u0000-\u0020\u007f]/.test(url)) {
+          return "";
+        }
+
+        try {
+          const parsed = new URL(url);
+
+          if (["https:", "http:", "mailto:", "tel:"].includes(parsed.protocol)) {
+            return url;
+          }
+        } catch (_) {
+          // Invalid or unsupported URL: do not render the link.
+        }
+
+        return "";
+      }
+
+      function link(en, zh, url, primary = false) {
+        const destination = safeUrl(url);
+
+        if (!destination || (!en && !zh)) {
+          return "";
+        }
+
+        const external = /^https?:/i.test(destination);
+
+        return `
+          <a
+            class="site-button ${primary ? "primary" : ""}"
+            href="${escape(destination)}"
+            ${external ? 'target="_blank" rel="noopener noreferrer"' : ""}
+          >
+            ${bilingual(en, zh)}
+          </a>
         `;
       }
 
-      function gallery(media, icon, title) {
-        const items = Array.isArray(media) ? media : [];
-
-        if (!items.length) {
-          return '<div class="gallery">' + placeholder(icon) + "</div>";
-        }
-
-        const slides = items.map((item, index) => {
-          const content = item.type === "video"
-            ? `
-              <video
-                src="${escape(item.src)}"
-                controls
-                playsinline
-                preload="metadata"
-                aria-label="${escape(item.name || title)}"
-              ></video>
-            `
-            : `
-              <img
-                src="${escape(item.src)}"
-                alt="${escape(item.name || title)}"
-                loading="lazy"
-              >
-            `;
-
+      function gallery(media, icon, titleEn, titleZh, hero = false) {
+        if (!media.length) {
           return `
-            <div class="slide" ${index ? "hidden" : ""}>
-              ${content}
+            <div class="gallery">
+              <div class="placeholder">
+                <span class="placeholder-icon" aria-hidden="true">
+                  ${escape(icon)}
+                </span>
+
+                ${hero ? `
+                  <div class="placeholder-title">
+                    ${bilingual(titleEn, titleZh)}
+                  </div>
+                ` : ""}
+              </div>
             </div>
           `;
-        }).join("");
-
-        const controls = items.length > 1
-          ? `
-            <div class="gallery-controls">
-              <button
-                type="button"
-                data-step="-1"
-                aria-label="${escape(data.previousEn || data.previousZh)}"
-              >
-                ${bilingual(data.previousEn, data.previousZh)}
-              </button>
-
-              <span class="gallery-count" aria-live="polite">
-                1 / ${items.length}
-              </span>
-
-              <button
-                type="button"
-                data-step="1"
-                aria-label="${escape(data.nextEn || data.nextZh)}"
-              >
-                ${bilingual(data.nextEn, data.nextZh)}
-              </button>
-            </div>
-          `
-          : "";
+        }
 
         return `
           <div class="gallery" data-gallery data-index="0">
-            <div class="gallery-stage">${slides}</div>
-            ${controls}
+            <div class="gallery-stage">
+              ${media.map((item, index) => `
+                <div class="slide" ${index ? "hidden" : ""}>
+                  ${item.type === "video" ? `
+                    <video
+                      src="${escape(item.src)}"
+                      controls
+                      playsinline
+                      preload="metadata"
+                      aria-label="${escape(item.name || titleEn || titleZh)}"
+                    ></video>
+                  ` : `
+                    <img
+                      src="${escape(item.src)}"
+                      alt="${escape(item.name || titleEn || titleZh)}"
+                      loading="${hero && index === 0 ? "eager" : "lazy"}"
+                    >
+                  `}
+                </div>
+              `).join("")}
+            </div>
+
+            ${media.length > 1 ? `
+              <div class="gallery-controls">
+                <button type="button" data-step="-1" aria-label="Previous media">
+                  ${bilingual(data.previousEn, data.previousZh) || "←"}
+                </button>
+
+                <span class="gallery-count" aria-live="polite">
+                  1 / ${media.length}
+                </span>
+
+                <button type="button" data-step="1" aria-label="Next media">
+                  ${bilingual(data.nextEn, data.nextZh) || "→"}
+                </button>
+              </div>
+            ` : ""}
           </div>
         `;
       }
 
-      const rootStyle = document.documentElement.style;
+      const style = document.documentElement.style;
 
-      rootStyle.setProperty("--accent", data.accent);
-      rootStyle.setProperty("--gold", data.gold);
-      rootStyle.setProperty("--background", data.background);
-      rootStyle.setProperty("--ink", data.ink);
+      style.setProperty("--accent", data.accent);
+      style.setProperty("--secondary", data.secondary);
+      style.setProperty("--background", data.background);
+      style.setProperty("--ink", data.ink);
+      style.setProperty("--columns", data.columns);
 
-      document.title = [data.nameZh, data.nameEn].filter(Boolean).join(" · ");
+      document.title =
+        [data.nameZh, data.nameEn].filter(Boolean).join(" · ") || "Website";
+
+      const hasCollection =
+        data.items.length ||
+        data.collectionTitleEn ||
+        data.collectionTitleZh ||
+        data.collectionDescriptionEn ||
+        data.collectionDescriptionZh;
+
+      const contactLink = link(
+        data.contactButtonEn,
+        data.contactButtonZh,
+        data.contactUrl,
+        true
+      );
+
+      const hasContact =
+        data.contactTextEn || data.contactTextZh || contactLink;
 
       document.getElementById("site").innerHTML = `
         <header class="site-header">
           <div class="container navigation">
             <a class="brand" href="#home">
-              <span class="brand-symbol" aria-hidden="true">
-                ${escape(data.heroIcon)}
-              </span>
+              ${data.icon ? `
+                <span class="brand-icon" aria-hidden="true">
+                  ${escape(data.icon)}
+                </span>
+              ` : ""}
 
               <span class="brand-copy">
                 ${bilingual(data.nameEn, data.nameZh)}
               </span>
             </a>
 
-            <nav class="language-switch" aria-label="Language">
-              <button type="button" data-language-choice="both">
-                中 / EN
-              </button>
-              <button type="button" data-language-choice="zh">
-                中文
-              </button>
-              <button type="button" data-language-choice="en">
-                EN
-              </button>
+            <nav class="languages" aria-label="Language">
+              <button type="button" data-language="both">中 / EN</button>
+              <button type="button" data-language="zh">中文</button>
+              <button type="button" data-language="en">EN</button>
             </nav>
           </div>
         </header>
@@ -1665,116 +1567,133 @@
               </div>
 
               <div class="hero-actions">
-                <a class="site-button primary" href="#menu">
-                  ${bilingual(data.menuButtonEn, data.menuButtonZh)}
-                  <span aria-hidden="true">↗</span>
-                </a>
+                ${link(
+                  data.primaryButtonEn,
+                  data.primaryButtonZh,
+                  data.primaryUrl,
+                  true
+                )}
 
-                <a class="site-button" href="#shop-gallery">
-                  ${bilingual(data.heroButtonEn, data.heroButtonZh)}
-                </a>
-              </div>
-            </div>
-
-            <div class="hero-visual" id="shop-gallery">
-              ${gallery(
-                data.heroMedia,
-                data.heroIcon,
-                data.nameEn || data.nameZh
-              )}
-            </div>
-          </section>
-
-          <div class="container section-rule" aria-hidden="true">
-            <span>✦</span>
-          </div>
-
-          <section class="menu-section container" id="menu">
-            <div class="section-heading">
-              <h2>
-                ${bilingual(data.menuTitleEn, data.menuTitleZh)}
-              </h2>
-
-              <div class="description">
-                ${bilingual(
-                  data.menuDescriptionEn,
-                  data.menuDescriptionZh
+                ${link(
+                  data.secondaryButtonEn,
+                  data.secondaryButtonZh,
+                  data.secondaryUrl
                 )}
               </div>
             </div>
 
-            <div class="drink-grid">
-              ${data.dishes.map((dish, index) => `
-                <article class="drink-card">
-                  <div class="flip-shell">
-                    <div class="flip-inner">
-                      <div class="card-face card-front">
-                        ${gallery(
-                          dish.media,
-                          dish.icon,
-                          dish.nameEn || dish.nameZh
-                        )}
-                      </div>
-
-                      <div
-                        class="card-face card-back"
-                        id="drink-details-${index}"
-                        aria-hidden="true"
-                        inert
-                      >
-                        <span class="back-icon" aria-hidden="true">
-                          ${escape(dish.icon)}
-                        </span>
-
-                        <h3>
-                          ${bilingual(dish.nameEn, dish.nameZh)}
-                        </h3>
-
-                        <div class="description">
-                          ${bilingual(
-                            dish.descriptionEn,
-                            dish.descriptionZh
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="drink-info">
-                    <div class="drink-title-row">
-                      <h3 class="drink-title">
-                        ${bilingual(dish.nameEn, dish.nameZh)}
-                      </h3>
-
-                      ${dish.price
-                        ? '<span class="price">' +
-                          escape(dish.price) +
-                          "</span>"
-                        : ""
-                      }
-                    </div>
-
-                    <button
-                      type="button"
-                      class="flip-button"
-                      aria-expanded="false"
-                      aria-controls="drink-details-${index}"
-                    >
-                      ${bilingual(data.detailsEn, data.detailsZh)}
-                    </button>
-                  </div>
-                </article>
-              `).join("")}
+            <div class="hero-visual" id="gallery">
+              ${gallery(
+                data.heroMedia,
+                data.icon,
+                data.nameEn,
+                data.nameZh,
+                true
+              )}
             </div>
           </section>
 
-          <section class="closing container">
-            <span class="closing-icon" aria-hidden="true">
-              ${escape(data.heroIcon)}
-            </span>
+          ${hasCollection ? `
+            <section class="collection container" id="collection">
+              <div class="section-heading">
+                <h2>
+                  ${bilingual(
+                    data.collectionTitleEn,
+                    data.collectionTitleZh
+                  )}
+                </h2>
 
-            ${bilingual(data.closingEn, data.closingZh)}
-          </section>
+                <div class="description">
+                  ${bilingual(
+                    data.collectionDescriptionEn,
+                    data.collectionDescriptionZh
+                  )}
+                </div>
+              </div>
+
+              <div class="item-grid">
+                ${data.items.map((item, index) => `
+                  <article class="item-card">
+                    <div class="flip-shell">
+                      <div class="flip-inner">
+                        <div class="card-face card-front">
+                          ${gallery(
+                            item.media,
+                            item.icon,
+                            item.nameEn,
+                            item.nameZh
+                          )}
+                        </div>
+
+                        <div
+                          class="card-face card-back"
+                          id="details-${index}"
+                          aria-hidden="true"
+                          inert
+                        >
+                          <span class="back-icon" aria-hidden="true">
+                            ${escape(item.icon)}
+                          </span>
+
+                          <h3>
+                            ${bilingual(item.nameEn, item.nameZh)}
+                          </h3>
+
+                          <div class="description">
+                            ${bilingual(
+                              item.descriptionEn,
+                              item.descriptionZh
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="item-info">
+                      <div class="title-row">
+                        <h3 class="item-title">
+                          ${bilingual(item.nameEn, item.nameZh)}
+                        </h3>
+
+                        ${item.price ? `
+                          <span class="price">${escape(item.price)}</span>
+                        ` : ""}
+                      </div>
+
+                      <button
+                        class="flip-button"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="details-${index}"
+                      >
+                        ${bilingual(data.detailsEn, data.detailsZh) || "↗"}
+                      </button>
+                    </div>
+                  </article>
+                `).join("")}
+              </div>
+            </section>
+          ` : ""}
+
+          ${data.closingEn || data.closingZh ? `
+            <section class="closing container">
+              ${bilingual(data.closingEn, data.closingZh)}
+            </section>
+          ` : ""}
+
+          ${hasContact ? `
+            <section class="contact container" id="contact">
+              <h2>
+                ${bilingual(data.contactTitleEn, data.contactTitleZh)}
+              </h2>
+
+              <div class="description">
+                ${bilingual(data.contactTextEn, data.contactTextZh)}
+              </div>
+
+              ${contactLink}
+            </section>
+          ` : ""}
         </main>
 
         <footer>
@@ -1790,20 +1709,20 @@
         document.body.dataset.language = selected;
         document.documentElement.lang = selected === "en" ? "en" : "zh-CN";
 
-        document.querySelectorAll("[data-language-choice]").forEach(button => {
-          const active = button.dataset.languageChoice === selected;
+        document.querySelectorAll("[data-language]").forEach(button => {
+          const active = button.dataset.language === selected;
           button.classList.toggle("active", active);
           button.setAttribute("aria-pressed", String(active));
         });
       }
 
-      setLanguage(data.defaultLanguage);
-
-      document.querySelectorAll("[data-language-choice]").forEach(button => {
+      document.querySelectorAll("[data-language]").forEach(button => {
         button.addEventListener("click", () => {
-          setLanguage(button.dataset.languageChoice);
+          setLanguage(button.dataset.language);
         });
       });
+
+      setLanguage(data.language);
 
       document.querySelectorAll("[data-gallery]").forEach(element => {
         const slides = Array.from(element.querySelectorAll(".slide"));
@@ -1812,9 +1731,10 @@
         element.querySelectorAll("[data-step]").forEach(button => {
           button.addEventListener("click", () => {
             const current = Number(element.dataset.index);
-            const next =
-              (current + Number(button.dataset.step) + slides.length) %
-              slides.length;
+
+            const next = (
+              current + Number(button.dataset.step) + slides.length
+            ) % slides.length;
 
             slides[current].querySelectorAll("video").forEach(video => {
               video.pause();
@@ -1833,7 +1753,7 @@
         });
       });
 
-      document.querySelectorAll(".drink-card").forEach(card => {
+      document.querySelectorAll(".item-card").forEach(card => {
         const button = card.querySelector(".flip-button");
         const front = card.querySelector(".card-front");
         const back = card.querySelector(".card-back");
@@ -1849,8 +1769,8 @@
           back.toggleAttribute("inert", !flipped);
 
           button.innerHTML = flipped
-            ? bilingual(data.backEn, data.backZh)
-            : bilingual(data.detailsEn, data.detailsZh);
+            ? bilingual(data.backEn, data.backZh) || "↶"
+            : bilingual(data.detailsEn, data.detailsZh) || "↗";
 
           if (flipped) {
             front.querySelectorAll("video").forEach(video => video.pause());
@@ -1859,78 +1779,70 @@
       });
     }
 
-    // ============================================================
-    // CREATE COMPLETE EXPORTABLE HTML
-    // ============================================================
+    // ==========================================================
+    // BUILD A COMPLETE STANDALONE HTML DOCUMENT
+    // ==========================================================
 
     function createDocument(project) {
-      // Escape "<" so user text cannot terminate the embedded script.
       const serialized = JSON.stringify(project)
         .replace(/</g, "\\u003c")
         .replace(/\u2028/g, "\\u2028")
         .replace(/\u2029/g, "\\u2029");
 
-      const title = escapeHTML(
-        [project.nameZh, project.nameEn].filter(Boolean).join(" · ")
+      const title = esc(
+        [project.nameZh, project.nameEn].filter(Boolean).join(" · ") ||
+        "Website"
       );
 
-      const description = escapeHTML(
+      const description = esc(
         [project.descriptionEn, project.descriptionZh]
           .filter(Boolean)
           .join(" ")
       );
 
-      const language = project.defaultLanguage === "en" ? "en" : "zh-CN";
-
       return (
         "<!DOCTYPE html>\n" +
-        '<html lang="' + language + '">\n' +
+        '<html lang="' + (project.language === "en" ? "en" : "zh-CN") + '">\n' +
         "<head>\n" +
         '<meta charset="UTF-8">\n' +
-        '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
         '<meta name="description" content="' + description + '">\n' +
-        '<meta name="theme-color" content="' + escapeHTML(project.accent) + '">\n' +
+        '<meta name="theme-color" content="' + esc(project.accent) + '">\n' +
         "<title>" + title + "</title>\n" +
-        "<style>" + WEBSITE_CSS + "</style>\n" +
-        "</head>\n" +
-        "<body>\n" +
+        "<style>" + SITE_CSS + "</style>\n" +
+        "</head>\n<body>\n" +
         '<div id="site"></div>\n' +
         "<noscript>Please enable JavaScript to view this website.</noscript>\n" +
-        "<script>\n" +
-        "(" + renderWebsite.toString() + ")(" + serialized + ");\n" +
+        "<script>\n(" + renderSite.toString() + ")(" + serialized + ");\n" +
         "<" + "/script>\n" +
-        "</body>\n" +
-        "</html>"
+        "</body>\n</html>"
       );
     }
 
-    // ============================================================
-    // EDITOR FIELD BUILDERS
-    // ============================================================
+    // ==========================================================
+    // EDITOR HTML HELPERS
+    // ==========================================================
 
     function field(key, label, options = {}) {
-      const object = options.dish || state;
-      const value = escapeHTML(object[key]);
+      const object = options.item || state;
+      const value = object[key] ?? "";
 
-      const binding = options.dish
-        ? 'data-dish="' + escapeHTML(options.dish.id) +
-          '" data-key="' + escapeHTML(key) + '"'
-        : 'data-field="' + escapeHTML(key) + '"';
+      const binding = options.item
+        ? `data-item="${esc(options.item.id)}" data-key="${esc(key)}"`
+        : `data-field="${esc(key)}"`;
 
       let control;
 
       if (options.type === "textarea") {
-        control = `<textarea ${binding} rows="3">${value}</textarea>`;
+        control = `<textarea ${binding} rows="3">${esc(value)}</textarea>`;
       } else if (options.type === "select") {
         control = `
           <select ${binding}>
             ${options.options.map(([optionValue, optionLabel]) => `
               <option
-                value="${escapeHTML(optionValue)}"
-                ${object[key] === optionValue ? "selected" : ""}
-              >
-                ${escapeHTML(optionLabel)}
-              </option>
+                value="${esc(optionValue)}"
+                ${value === optionValue ? "selected" : ""}
+              >${esc(optionLabel)}</option>
             `).join("")}
           </select>
         `;
@@ -1939,95 +1851,103 @@
           <input
             type="${options.type || "text"}"
             ${binding}
-            value="${value}"
+            value="${esc(value)}"
           >
         `;
       }
 
       return `
         <label class="field">
-          <span>${escapeHTML(label)}</span>
+          <span>${esc(label)}</span>
           ${control}
         </label>
       `;
     }
 
-    function pair(base, englishLabel, chineseLabel, type = "text") {
+    function pair(base, label, type = "text", item = null) {
+      const options = { type, item };
+
       return (
-        field(base + "En", englishLabel, { type }) +
-        field(base + "Zh", chineseLabel, { type })
+        field(base + "En", label + " — English", options) +
+        field(base + "Zh", label + " — 中文", options)
       );
     }
 
     function section(id, title, content, open = false) {
       return `
-        <details class="editor-section" data-section="${id}" ${open ? "open" : ""}>
+        <details class="section" data-section="${id}" ${open ? "open" : ""}>
           <summary>${title}</summary>
-          <div class="section-content">${content}</div>
+          <div class="section-body">${content}</div>
         </details>
       `;
     }
 
     function mediaEditor(media, owner) {
       return `
-        <label class="upload-label">
-          ＋ Upload photos / videos · 上传图片或视频
+        <label class="upload">
+          <strong>Add photos or videos</strong><br>
+          Multiple files create a gallery. Uploads are embedded in your export.
+
           <input
             type="file"
             accept="image/*,video/*"
             multiple
-            data-upload="${escapeHTML(owner)}"
+            data-upload="${esc(owner)}"
           >
         </label>
 
         <div class="media-list">
           ${media.map((item, index) => `
-            <div class="media-item">
-              ${item.type === "video"
-                ? `<video
-                    src="${escapeHTML(item.src)}"
-                    muted
-                    playsinline
-                    preload="metadata"
-                    aria-label="${escapeHTML(item.name)}"
-                   ></video>`
-                : `<img
-                    src="${escapeHTML(item.src)}"
-                    alt="${escapeHTML(item.name)}"
-                   >`
-              }
+            <div class="media-row">
+              ${item.type === "video" ? `
+                <video
+                  src="${esc(item.src)}"
+                  muted
+                  playsinline
+                  preload="metadata"
+                  aria-label="${esc(item.name)}"
+                ></video>
+              ` : `
+                <img src="${esc(item.src)}" alt="${esc(item.name)}">
+              `}
 
               <div>
-                <div class="media-name" title="${escapeHTML(item.name)}">
-                  ${escapeHTML(item.name || "Uploaded media")}
-                </div>
+                <label class="field">
+                  <span>Media description / image alt text</span>
+                  <input
+                    type="text"
+                    value="${esc(item.name)}"
+                    data-media-owner="${esc(owner)}"
+                    data-media-index="${index}"
+                  >
+                </label>
 
-                <div class="media-actions">
+                <div class="actions">
                   <button
-                    class="button small"
+                    class="btn small"
                     type="button"
                     data-action="media-up"
-                    data-owner="${escapeHTML(owner)}"
+                    data-owner="${esc(owner)}"
                     data-index="${index}"
+                    aria-label="Move media earlier"
                     ${index === 0 ? "disabled" : ""}
-                    aria-label="Move media up"
                   >↑</button>
 
                   <button
-                    class="button small"
+                    class="btn small"
                     type="button"
                     data-action="media-down"
-                    data-owner="${escapeHTML(owner)}"
+                    data-owner="${esc(owner)}"
                     data-index="${index}"
+                    aria-label="Move media later"
                     ${index === media.length - 1 ? "disabled" : ""}
-                    aria-label="Move media down"
                   >↓</button>
 
                   <button
-                    class="button small danger"
+                    class="btn small danger"
                     type="button"
                     data-action="media-delete"
-                    data-owner="${escapeHTML(owner)}"
+                    data-owner="${esc(owner)}"
                     data-index="${index}"
                   >Remove</button>
                 </div>
@@ -2038,222 +1958,277 @@
       `;
     }
 
-    function drinkEditor(dish, index) {
+    function itemEditor(item, index) {
       return `
-        <div class="drink-editor">
-          <div class="drink-editor-header">
-            <h3>Drink ${index + 1} · 饮品</h3>
+        <div class="item-editor">
+          <div class="item-header">
+            <h3>Item ${index + 1}</h3>
 
             <div class="actions">
               <button
                 type="button"
-                class="button small"
-                data-action="drink-up"
-                data-id="${escapeHTML(dish.id)}"
+                class="btn small"
+                data-action="item-up"
+                data-id="${esc(item.id)}"
+                aria-label="Move item up"
                 ${index === 0 ? "disabled" : ""}
-                aria-label="Move drink up"
               >↑</button>
 
               <button
                 type="button"
-                class="button small"
-                data-action="drink-down"
-                data-id="${escapeHTML(dish.id)}"
-                ${index === state.dishes.length - 1 ? "disabled" : ""}
-                aria-label="Move drink down"
+                class="btn small"
+                data-action="item-down"
+                data-id="${esc(item.id)}"
+                aria-label="Move item down"
+                ${index === state.items.length - 1 ? "disabled" : ""}
               >↓</button>
 
               <button
                 type="button"
-                class="button small danger"
-                data-action="drink-delete"
-                data-id="${escapeHTML(dish.id)}"
+                class="btn small"
+                data-action="item-copy"
+                data-id="${esc(item.id)}"
+              >Copy</button>
+
+              <button
+                type="button"
+                class="btn small danger"
+                data-action="item-delete"
+                data-id="${esc(item.id)}"
               >Delete</button>
             </div>
           </div>
 
-          <div class="two-columns">
-            ${field("icon", "Placeholder emoji · 图标", { dish })}
-            ${field("price", "Price · 价格", { dish })}
+          <div class="two">
+            ${field("icon", "Placeholder emoji / symbol", { item })}
+            ${field("price", "Price or short label — optional", { item })}
           </div>
 
-          ${field("nameEn", "Drink name — English", { dish })}
-          ${field("nameZh", "饮品名称 — 中文", { dish })}
-
-          ${field("descriptionEn", "Drink description — English", {
-            dish,
-            type: "textarea"
-          })}
-
-          ${field("descriptionZh", "饮品介绍 — 中文", {
-            dish,
-            type: "textarea"
-          })}
-
           <p class="helper">
-            Add drink photos or videos. Multiple uploads create a gallery.
+            The price field accepts any text, such as $25, ¥12,
+            From £50, Free, or New. Leave it empty to hide it.
           </p>
 
-          ${mediaEditor(dish.media, dish.id)}
+          ${pair("name", "Item name / title", "text", item)}
+          ${pair("description", "Details / description", "textarea", item)}
+
+          ${mediaEditor(item.media, item.id)}
         </div>
       `;
     }
 
-    // ============================================================
-    // EDITOR RENDERING
-    // ============================================================
+    // ==========================================================
+    // RENDER THE GENERAL-PURPOSE EDITOR
+    // ==========================================================
 
     function renderEditor() {
+      const firstRender = !editor.children.length;
+
       const openSections = new Set(
         Array.from(editor.querySelectorAll("details[open]"))
           .map(element => element.dataset.section)
       );
 
-      const firstRender = !editor.children.length;
-      const scrollTop = editor.scrollTop;
+      const scrollPosition = editor.scrollTop;
 
       editor.innerHTML = `
-        <div class="notice">
-          <strong>张飞饮料店 · Zhang Fei Drinks</strong><br>
-          The default drinks, recipes, and prices are editable examples.
-          Replace them with your actual menu before publishing.<br>
-          示例饮品与价格仅供编辑参考，请替换为实际菜单。
+        <div class="intro">
+          <strong>Your website. Your content.</strong><br>
+          This editor is not limited to a drink shop.
+          Use it for a business, product catalog, service list,
+          restaurant menu, portfolio, or another showcase.
+          All visible example wording is editable.
         </div>
 
-        ${section(
-          "brand",
-          "01 · Brand & appearance / 品牌与外观",
-          `
-            ${pair("name", "Drink shop name — English", "饮料店名称 — 中文")}
+        <div class="template-box">
+          <strong>Starting points</strong>
 
-            ${field("heroIcon", "Brand / placeholder emoji · 品牌图标")}
+          <p class="helper">
+            张飞饮料店 is only an example template, with apple,
+            orange, pear, and pineapple juice.
+            Names, descriptions, and prices are sample content—
+            replace them with your actual information.
+          </p>
 
-            <div class="two-columns">
-              ${field("accent", "Brand red / accent", { type: "color" })}
-              ${field("gold", "Gold / secondary", { type: "color" })}
-              ${field("background", "Page background", { type: "color" })}
-              ${field("ink", "Text color", { type: "color" })}
-            </div>
-
-            ${field("defaultLanguage", "Default website language · 默认语言", {
-              type: "select",
-              options: [
-                ["both", "Chinese + English / 中英双语"],
-                ["zh", "Chinese / 中文"],
-                ["en", "English"]
-              ]
-            })}
-          `,
-          true
-        )}
-
-        ${section(
-          "hero",
-          "02 · Hero section / 首页内容",
-          `
-            ${pair("eyebrow", "Eyebrow — English", "顶部短句 — 中文")}
-            ${pair("title", "Main headline — English", "主标题 — 中文")}
-            ${pair(
-              "description",
-              "Introduction — English",
-              "首页介绍 — 中文",
-              "textarea"
-            )}
-            ${pair("menuButton", "Menu button — English", "菜单按钮 — 中文")}
-            ${pair("heroButton", "Gallery button — English", "店铺展示按钮 — 中文")}
-          `
-        )}
-
-        ${section(
-          "hero-media",
-          "03 · Shop photos & videos / 店铺图片与视频",
-          `
-            <p class="helper">
-              Upload your shop interior, signature drinks, or a short video.
-              The first item appears first. Without uploads, a branded
-              illustration is displayed.
-            </p>
-
-            <p class="helper">
-              Uploaded media is embedded in the exported HTML.
-              Large videos make the file larger and the preview slower.
-              Browser playback depends on the uploaded video format.
-            </p>
-
-            ${mediaEditor(state.heroMedia, "hero")}
-          `
-        )}
-
-        ${section(
-          "menu",
-          "04 · Menu introduction / 菜单标题",
-          `
-            ${pair("menuTitle", "Menu heading — English", "菜单标题 — 中文")}
-            ${pair(
-              "menuDescription",
-              "Menu introduction — English",
-              "菜单介绍 — 中文",
-              "textarea"
-            )}
-          `
-        )}
-
-        ${section(
-          "drinks",
-          "05 · Drinks, prices & media / 饮品与价格",
-          `
-            <p class="helper">
-              Each drink has an editable price, bilingual text, and its own
-              photo/video gallery. Flip the preview cards to read details.
-            </p>
-
-            <div id="dishEditors">
-              ${state.dishes.map(drinkEditor).join("")}
-            </div>
+          <div class="actions">
+            <button
+              class="btn small"
+              type="button"
+              data-action="template"
+            >
+              Load juice-shop example
+            </button>
 
             <button
-              class="button primary"
+              class="btn small"
               type="button"
-              data-action="drink-add"
-              style="width:100%"
+              data-action="blank"
             >
-              ＋ Add drink / 添加饮品
+              Start blank
             </button>
-          `,
-          true
-        )}
+          </div>
+        </div>
 
-        ${section(
-          "labels",
-          "06 · Buttons & gallery labels / 按钮文字",
-          `
-            ${pair("details", "Card details button — English", "查看详情 — 中文")}
-            ${pair("back", "Card back button — English", "返回饮品 — 中文")}
-            ${pair("previous", "Previous media — English", "上一张 / 段 — 中文")}
-            ${pair("next", "Next media — English", "下一张 / 段 — 中文")}
-          `
-        )}
+        ${section("brand", "01 · Project & brand", `
+          ${field("projectName", "Project name — editor / download filename")}
+          ${pair("name", "Website / brand name")}
+          ${field("icon", "Brand emoji or symbol — optional")}
 
-        ${section(
-          "footer",
-          "07 · Closing & footer / 结尾与页脚",
-          `
-            ${pair("closing", "Closing headline — English", "结尾标语 — 中文")}
-            ${pair(
-              "footer",
-              "Footer text — English",
-              "页脚文字 — 中文",
-              "textarea"
-            )}
-          `
-        )}
+          ${field("language", "Default website language", {
+            type: "select",
+            options: [
+              ["both", "Chinese + English / 中英双语"],
+              ["en", "English"],
+              ["zh", "中文"]
+            ]
+          })}
+
+          <p class="helper">
+            Use either language or both. Empty text fields are omitted
+            from the corresponding website text.
+          </p>
+        `, true)}
+
+        ${section("appearance", "02 · Colors & layout", `
+          <div class="two">
+            ${field("accent", "Accent / button color", { type: "color" })}
+            ${field("secondary", "Placeholder / secondary color", { type: "color" })}
+            ${field("background", "Page background", { type: "color" })}
+            ${field("ink", "Text color", { type: "color" })}
+          </div>
+
+          ${field("columns", "Maximum item columns on wide screens", {
+            type: "select",
+            options: [
+              ["1", "1 column"],
+              ["2", "2 columns"],
+              ["3", "3 columns"],
+              ["4", "4 columns"]
+            ]
+          })}
+
+          <p class="helper">
+            Smaller screens use fewer columns automatically.
+            Choose colors that keep your text easy to read.
+          </p>
+        `)}
+
+        ${section("hero", "03 · Main introduction", `
+          ${pair("eyebrow", "Small introductory heading")}
+          ${pair("title", "Main headline")}
+          ${pair("description", "Introduction", "textarea")}
+        `)}
+
+        ${section("buttons", "04 · Main buttons & destinations", `
+          ${pair("primaryButton", "Primary button label")}
+          ${field("primaryUrl", "Primary button destination")}
+
+          ${pair("secondaryButton", "Secondary button label")}
+          ${field("secondaryUrl", "Secondary button destination")}
+
+          <p class="helper">
+            Built-in destinations: <strong>#collection</strong>,
+            <strong>#gallery</strong>, <strong>#contact</strong>,
+            and <strong>#home</strong>.<br>
+            You can also use a full https:// address, mailto: address,
+            or tel: number. External web links open in a new tab.<br>
+            Leave a destination or both labels empty to hide that button.
+          </p>
+        `)}
+
+        ${section("gallery", "05 · Main photo / video gallery", `
+          <p class="helper">
+            Show your business, products, services, work, team,
+            venue, or another subject. Without uploads,
+            the website displays your chosen symbol and brand name.
+          </p>
+
+          ${mediaEditor(state.heroMedia, "hero")}
+
+          <p class="helper">
+            Use reasonably sized files. Large videos increase
+            project and website size. Playback depends on the
+            format supported by the visitor's browser.
+          </p>
+        `)}
+
+        ${section("collection", "06 · Collection heading", `
+          ${pair("collectionTitle", "Section title")}
+          ${pair("collectionDescription", "Section introduction", "textarea")}
+
+          <p class="helper">
+            Name this section anything you like:
+            Menu, Products, Services, Portfolio, Projects, Packages, or Offers.
+          </p>
+        `)}
+
+        ${section("items", "07 · Items / products / services / projects", `
+          <p class="helper">
+            Every card is fully editable. Add, copy, reorder,
+            or remove items. Photos, videos, descriptions,
+            prices, and short labels are optional.
+          </p>
+
+          ${state.items.length
+            ? state.items.map(itemEditor).join("")
+            : '<p class="helper">No items yet. Add your first item below.</p>'
+          }
+
+          <button
+            class="btn primary"
+            type="button"
+            data-action="item-add"
+            style="width:100%"
+          >
+            ＋ Add item
+          </button>
+        `, true)}
+
+        ${section("labels", "08 · Card & gallery button wording", `
+          ${pair("details", "Show-details button")}
+          ${pair("back", "Return button")}
+          ${pair("previous", "Previous media button")}
+          ${pair("next", "Next media button")}
+
+          <p class="helper">
+            These labels are shared by all cards and galleries.
+            Replace template-specific wording for your own use case.
+          </p>
+        `)}
+
+        ${section("closing", "09 · Closing message & footer", `
+          ${pair("closing", "Closing message")}
+          ${pair("footer", "Footer text", "textarea")}
+
+          <p class="helper">
+            Clear both closing-message fields to hide the closing panel.
+          </p>
+        `)}
+
+        ${section("contact", "10 · Contact / extra information — optional", `
+          ${pair("contactTitle", "Section heading")}
+          ${pair("contactText", "Contact details / additional information", "textarea")}
+
+          ${pair("contactButton", "Contact / action button label")}
+          ${field("contactUrl", "Contact / action button destination")}
+
+          <p class="helper">
+            Add an address, opening hours, contact information,
+            booking instructions, or other details.<br>
+            Examples: mailto:hello@example.com,
+            tel:+15551234567, or your full booking-page address.<br>
+            This section stays hidden if its information is empty
+            and it has no usable action button.
+          </p>
+        `)}
 
         <p class="helper">
-          <strong>Save project:</strong> downloads an editable JSON backup,
+          <strong>Save project:</strong> download an editable JSON backup,
           including uploaded media.<br>
-          <strong>Export website:</strong> downloads the finished standalone
-          website as an HTML file.<br>
-          Your changes are not automatically saved when you close this page.
+          <strong>Load project:</strong> reopen a backup in this editor.<br>
+          <strong>Export website:</strong> download the finished standalone HTML.<br><br>
+          Changes are kept in this tab only until you save a project.
+          Exporting HTML does not publish the site online.
         </p>
       `;
 
@@ -2263,53 +2238,31 @@
         });
       }
 
-      editor.scrollTop = scrollTop;
+      editor.scrollTop = scrollPosition;
     }
 
-    // ============================================================
-    // LIVE PREVIEW
-    // ============================================================
+    // ==========================================================
+    // PREVIEW AND CHANGE TRACKING
+    // ==========================================================
 
     function updatePreview() {
       clearTimeout(previewTimer);
-      previewStatus.textContent = "Updating preview…";
+      status.textContent = "Updating preview…";
       preview.srcdoc = createDocument(state);
     }
 
-    function markChanged() {
+    function changed() {
       dirty = true;
-      previewStatus.textContent = "Unsaved changes · Updating…";
+      revision++;
       clearTimeout(previewTimer);
-      previewTimer = setTimeout(updatePreview, 450);
+      status.textContent = "Unsaved changes · Updating preview…";
+      previewTimer = setTimeout(updatePreview, 500);
     }
 
     preview.addEventListener("load", () => {
-      previewStatus.textContent = dirty
-        ? "Preview updated · Unsaved project changes"
-        : "Preview updated";
-    });
-
-    // ============================================================
-    // EDITOR INPUT EVENTS
-    // ============================================================
-
-    editor.addEventListener("input", event => {
-      const target = event.target;
-
-      if (target.dataset.field) {
-        state[target.dataset.field] = target.value;
-        markChanged();
-        return;
-      }
-
-      if (target.dataset.dish && target.dataset.key) {
-        const dish = state.dishes.find(item => item.id === target.dataset.dish);
-
-        if (dish) {
-          dish[target.dataset.key] = target.value;
-          markChanged();
-        }
-      }
+      status.textContent = dirty
+        ? "Preview updated · Save your project to keep your changes."
+        : "Preview updated · Your project is ready to edit.";
     });
 
     function getMedia(owner) {
@@ -2317,10 +2270,43 @@
         return state.heroMedia;
       }
 
-      return state.dishes.find(dish => dish.id === owner)?.media;
+      return state.items.find(item => item.id === owner)?.media;
     }
 
-    function moveItem(array, index, direction) {
+    editor.addEventListener("input", event => {
+      const target = event.target;
+
+      if (target.dataset.field) {
+        state[target.dataset.field] = target.value;
+        changed();
+        return;
+      }
+
+      if (target.dataset.item && target.dataset.key) {
+        const item = state.items.find(
+          entry => entry.id === target.dataset.item
+        );
+
+        if (item) {
+          item[target.dataset.key] = target.value;
+          changed();
+        }
+
+        return;
+      }
+
+      if (target.dataset.mediaOwner) {
+        const media = getMedia(target.dataset.mediaOwner);
+        const item = media?.[Number(target.dataset.mediaIndex)];
+
+        if (item) {
+          item.name = target.value;
+          changed();
+        }
+      }
+    });
+
+    function move(array, index, direction) {
       const destination = index + direction;
 
       if (
@@ -2340,61 +2326,83 @@
     editor.addEventListener("click", event => {
       const button = event.target.closest("button[data-action]");
 
-      if (!button) {
-        return;
-      }
+      if (!button) return;
 
       const action = button.dataset.action;
-      const id = button.dataset.id;
-      const index = state.dishes.findIndex(dish => dish.id === id);
 
-      if (action === "drink-add") {
-        state.dishes.push(newDish());
-      } else if (action === "drink-delete") {
-        if (!confirm("Delete this drink and its media? / 删除此饮品及其媒体？")) {
+      if (action === "template" || action === "blank") {
+        if (!confirm(
+          "Replace the current project? Save a project backup first " +
+          "if you want to keep it."
+        )) {
           return;
         }
 
-        if (index >= 0) {
-          state.dishes.splice(index, 1);
+        state = action === "template" ? juiceTemplate() : blankProject();
+
+        renderEditor();
+        changed();
+
+        toast(action === "template"
+          ? "Example template loaded. Every field is editable."
+          : "Blank starting project loaded."
+        );
+
+        return;
+      }
+
+      const index = state.items.findIndex(
+        item => item.id === button.dataset.id
+      );
+
+      if (action === "item-add") {
+        state.items.push(makeItem());
+      } else if (action === "item-delete") {
+        if (index < 0 || !confirm("Delete this item and its uploaded media?")) {
+          return;
         }
-      } else if (action === "drink-up") {
-        moveItem(state.dishes, index, -1);
-      } else if (action === "drink-down") {
-        moveItem(state.dishes, index, 1);
+
+        state.items.splice(index, 1);
+      } else if (action === "item-copy") {
+        if (index < 0) return;
+
+        const copy = clone(state.items[index]);
+        copy.id = uid();
+        state.items.splice(index + 1, 0, copy);
+      } else if (action === "item-up") {
+        move(state.items, index, -1);
+      } else if (action === "item-down") {
+        move(state.items, index, 1);
       } else if (action.startsWith("media-")) {
         const media = getMedia(button.dataset.owner);
         const mediaIndex = Number(button.dataset.index);
 
-        if (!media) {
-          return;
-        }
+        if (!media) return;
 
         if (action === "media-delete") {
           media.splice(mediaIndex, 1);
         } else {
-          moveItem(media, mediaIndex, action === "media-up" ? -1 : 1);
+          move(media, mediaIndex, action === "media-up" ? -1 : 1);
         }
       } else {
         return;
       }
 
       renderEditor();
-      markChanged();
+      changed();
     });
 
-    // ============================================================
-    // PHOTO & VIDEO UPLOADS
-    // ============================================================
+    // ==========================================================
+    // MEDIA UPLOADS
+    // ==========================================================
 
-    function readFileAsDataURL(file) {
+    function readDataURL(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
         reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(
-          new Error("Could not read " + file.name)
-        );
+        reader.onerror = () => reject(new Error("Could not read " + file.name));
+        reader.onabort = () => reject(new Error("File reading was cancelled."));
 
         reader.readAsDataURL(file);
       });
@@ -2402,14 +2410,31 @@
 
     editor.addEventListener("change", async event => {
       const input = event.target.closest("input[data-upload]");
+      if (!input) return;
 
-      if (!input) {
+      const selectedFiles = Array.from(input.files || []);
+
+      const files = selectedFiles.filter(file =>
+        file.type.startsWith("image/") ||
+        file.type.startsWith("video/")
+      );
+
+      if (!files.length) {
+        input.value = "";
+        toast("Select image or video files recognized by your browser.");
         return;
       }
 
-      const files = Array.from(input.files || []);
+      const bytes = files.reduce((total, file) => total + file.size, 0);
 
-      if (!files.length) {
+      if (
+        bytes > 30 * 1024 * 1024 &&
+        !confirm(
+          "These files exceed 30 MB. Large embedded files can make " +
+          "editing and exporting slow. Continue?"
+        )
+      ) {
+        input.value = "";
         return;
       }
 
@@ -2417,166 +2442,166 @@
       const projectAtStart = state;
       const mediaAtStart = getMedia(owner);
 
-      if (!mediaAtStart) {
-        return;
-      }
-
-      const supportedFiles = files.filter(file =>
-        file.type.startsWith("image/") ||
-        file.type.startsWith("video/")
-      );
-
-      if (!supportedFiles.length) {
-        toast("Please select image or video files.");
-        input.value = "";
-        return;
-      }
-
-      const totalSize = supportedFiles.reduce(
-        (total, file) => total + file.size,
-        0
-      );
-
-      if (
-        totalSize > 30 * 1024 * 1024 &&
-        !confirm(
-          "These uploads exceed 30 MB. Embedded videos and photos can " +
-          "make previews and exports slow. Continue?"
-        )
-      ) {
-        input.value = "";
-        return;
-      }
+      if (!mediaAtStart) return;
 
       input.disabled = true;
-      previewStatus.textContent = "Reading uploads…";
+      pendingUploads++;
+      status.textContent = "Reading uploaded files…";
 
       let added = 0;
       let failed = 0;
+      let cancelled = false;
 
-      for (const file of supportedFiles) {
-        try {
-          const src = await readFileAsDataURL(file);
+      try {
+        for (const file of files) {
+          try {
+            const src = await readDataURL(file);
 
-          // Ignore an upload if its project or drink was removed while reading.
-          if (
-            state !== projectAtStart ||
-            getMedia(owner) !== mediaAtStart
-          ) {
-            return;
+            if (
+              state !== projectAtStart ||
+              getMedia(owner) !== mediaAtStart
+            ) {
+              cancelled = true;
+              break;
+            }
+
+            mediaAtStart.push({
+              name: file.name,
+              type: file.type.startsWith("video/") ? "video" : "image",
+              src
+            });
+
+            added++;
+            dirty = true;
+            revision++;
+          } catch (error) {
+            console.error(error);
+            failed++;
           }
-
-          mediaAtStart.push({
-            name: file.name,
-            type: file.type.startsWith("video/") ? "video" : "image",
-            src
-          });
-
-          added++;
-        } catch (error) {
-          console.error(error);
-          failed++;
         }
+      } finally {
+        pendingUploads--;
+        input.disabled = false;
+        input.value = "";
+      }
+
+      if (cancelled) {
+        toast("Upload stopped because its project or item was replaced.");
+        return;
       }
 
       renderEditor();
-      markChanged();
+      updatePreview();
 
       toast(
         added + " file(s) added." +
-        (failed ? " " + failed + " could not be read." : "")
+        (failed ? " " + failed + " file(s) could not be read." : "") +
+        (selectedFiles.length > files.length
+          ? " Unsupported files were skipped."
+          : "")
       );
     });
 
-    // ============================================================
-    // DOWNLOADS & PROJECT IMPORT
-    // ============================================================
-
-    function download(content, filename, mimeType) {
-      const blob = new Blob([content], { type: mimeType });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-    }
-
-    function filenameBase() {
-      return (
-        state.nameEn
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "") ||
-        "zhang-fei-drinks"
-      );
-    }
+    // ==========================================================
+    // IMPORT VALIDATION
+    // ==========================================================
 
     function normalizeMedia(value) {
-      if (!Array.isArray(value)) {
-        return [];
-      }
+      if (!Array.isArray(value)) return [];
 
-      return value
-        .filter(item =>
-          item &&
-          ["image", "video"].includes(item.type) &&
-          typeof item.src === "string" &&
-          (
-            item.type === "image"
-              ? /^data:image\//i.test(item.src)
-              : /^data:video\//i.test(item.src)
-          )
-        )
-        .map(item => ({
-          name: String(item.name || "Uploaded media"),
-          type: item.type,
-          src: item.src
-        }));
+      return value.filter(item => {
+        if (!item || typeof item.src !== "string") return false;
+
+        if (item.type === "image") {
+          return /^data:image\/[a-z0-9.+-]+;base64,/i.test(item.src);
+        }
+
+        if (item.type === "video") {
+          return /^data:video\/[a-z0-9.+-]+;base64,/i.test(item.src);
+        }
+
+        return false;
+      }).map(item => ({
+        name: typeof item.name === "string" ? item.name : "Uploaded media",
+        type: item.type,
+        src: item.src
+      }));
     }
 
     function normalizeProject(input) {
-      const source = input && input.state ? input.state : input;
+      const source = input?.state || input;
 
-      if (
-        !source ||
-        typeof source !== "object" ||
-        !Array.isArray(source.dishes)
-      ) {
-        throw new Error("This file is not a compatible creator project.");
+      if (!source || typeof source !== "object") {
+        throw new Error("This is not a compatible project file.");
       }
 
-      const normalized = clone(DEFAULT_STATE);
+      // Also accept the earlier drink-specific creator structure.
+      const oldFormat = !Array.isArray(source.items) &&
+        Array.isArray(source.dishes);
 
-      Object.keys(DEFAULT_STATE).forEach(key => {
+      if (!Array.isArray(source.items) && !oldFormat) {
+        throw new Error("This file does not contain a compatible item list.");
+      }
+
+      const project = blankProject();
+
+      Object.keys(project).forEach(key => {
         if (
-          typeof DEFAULT_STATE[key] === "string" &&
+          typeof project[key] === "string" &&
           typeof source[key] === "string"
         ) {
-          normalized[key] = source[key];
+          project[key] = source[key];
         }
       });
 
-      ["accent", "gold", "background", "ink"].forEach(key => {
-        if (!/^#[0-9a-f]{6}$/i.test(normalized[key])) {
-          normalized[key] = DEFAULT_STATE[key];
-        }
-      });
+      if (oldFormat) {
+        const mapping = {
+          icon: "heroIcon",
+          secondary: "gold",
+          language: "defaultLanguage",
+          primaryButtonEn: "menuButtonEn",
+          primaryButtonZh: "menuButtonZh",
+          secondaryButtonEn: "heroButtonEn",
+          secondaryButtonZh: "heroButtonZh",
+          collectionTitleEn: "menuTitleEn",
+          collectionTitleZh: "menuTitleZh",
+          collectionDescriptionEn: "menuDescriptionEn",
+          collectionDescriptionZh: "menuDescriptionZh"
+        };
 
-      if (!["both", "en", "zh"].includes(normalized.defaultLanguage)) {
-        normalized.defaultLanguage = "both";
+        Object.entries(mapping).forEach(([newKey, oldKey]) => {
+          if (typeof source[oldKey] === "string") {
+            project[newKey] = source[oldKey];
+          }
+        });
+
+        project.projectName = source.nameEn || "Imported Website";
       }
 
-      normalized.heroMedia = normalizeMedia(source.heroMedia);
+      const defaults = blankProject();
 
-      normalized.dishes = source.dishes
-        .filter(dish => dish && typeof dish === "object")
-        .map(dish => {
-          const result = newDish();
+      ["accent", "secondary", "background", "ink"].forEach(key => {
+        if (!/^#[0-9a-f]{6}$/i.test(project[key])) {
+          project[key] = defaults[key];
+        }
+      });
+
+      if (!["both", "en", "zh"].includes(project.language)) {
+        project.language = "both";
+      }
+
+      if (!["1", "2", "3", "4"].includes(project.columns)) {
+        project.columns = "3";
+      }
+
+      project.heroMedia = normalizeMedia(source.heroMedia);
+
+      const items = oldFormat ? source.dishes : source.items;
+
+      project.items = items
+        .filter(item => item && typeof item === "object")
+        .map(item => {
+          const normalized = makeItem();
 
           [
             "icon",
@@ -2586,73 +2611,140 @@
             "descriptionEn",
             "descriptionZh"
           ].forEach(key => {
-            if (typeof dish[key] === "string") {
-              result[key] = dish[key];
+            if (typeof item[key] === "string") {
+              normalized[key] = item[key];
             }
           });
 
-          result.media = normalizeMedia(dish.media);
-          return result;
+          normalized.media = normalizeMedia(item.media);
+          return normalized;
         });
 
-      return normalized;
+      return project;
+    }
+
+    // ==========================================================
+    // SAVE, LOAD, AND EXPORT
+    // ==========================================================
+
+    function filenameBase() {
+      return (
+        (state.projectName || state.nameEn || state.nameZh || "website")
+          .replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-")
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/[. ]+$/g, "")
+          .slice(0, 90) ||
+        "website"
+      );
+    }
+
+    function download(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    }
+
+    function uploadsInProgress() {
+      if (!pendingUploads) return false;
+
+      toast("Please wait for the current uploads to finish.");
+      return true;
     }
 
     document.getElementById("saveProject").addEventListener("click", () => {
-      download(
-        JSON.stringify({
-          creator: "Zhang Fei Drinks Website Creator",
-          version: 1,
-          state
-        }, null, 2),
-        filenameBase() + "-project.json",
-        "application/json;charset=utf-8"
-      );
+      if (uploadsInProgress()) return;
 
-      dirty = false;
-      previewStatus.textContent = "Project download requested";
-      toast("Project backup download started.");
+      try {
+        download(
+          JSON.stringify({
+            creator: "General Website Creator",
+            version: 2,
+            state
+          }, null, 2),
+          filenameBase() + "-project.json",
+          "application/json;charset=utf-8"
+        );
+
+        dirty = false;
+
+        status.textContent =
+          "Project download requested · Check that your backup was saved.";
+
+        toast("Project backup download started.");
+      } catch (error) {
+        console.error(error);
+        toast("Could not create the backup. Try reducing uploaded media size.");
+      }
     });
 
     document.getElementById("exportWebsite").addEventListener("click", () => {
-      download(
-        createDocument(state),
-        filenameBase() + ".html",
-        "text/html;charset=utf-8"
-      );
+      if (uploadsInProgress()) return;
 
-      toast("Website export started. Save the project too for future editing.");
+      try {
+        download(
+          createDocument(state),
+          filenameBase() + ".html",
+          "text/html;charset=utf-8"
+        );
+
+        toast("Website download started. Save a project backup for later editing.");
+      } catch (error) {
+        console.error(error);
+        toast("Could not export. Try reducing uploaded media size.");
+      }
     });
 
     const projectFile = document.getElementById("projectFile");
 
     document.getElementById("loadProject").addEventListener("click", () => {
-      if (
-        dirty &&
-        !confirm("Loading a project will replace your unsaved changes. Continue?")
-      ) {
-        return;
-      }
-
+      if (uploadsInProgress()) return;
       projectFile.click();
     });
 
     projectFile.addEventListener("change", async () => {
       const file = projectFile.files?.[0];
+      if (!file) return;
 
-      if (!file) {
+      if (
+        dirty &&
+        !confirm("Replace your current unsaved changes with this project?")
+      ) {
+        projectFile.value = "";
         return;
       }
+
+      const revisionAtStart = revision;
 
       try {
         const text = await file.text();
         const imported = normalizeProject(JSON.parse(text));
 
+        if (
+          revision !== revisionAtStart &&
+          !confirm(
+            "The current project changed while the file was loading. " +
+            "Replace it with the imported project?"
+          )
+        ) {
+          return;
+        }
+
         state = imported;
         dirty = false;
+        revision++;
 
         renderEditor();
         updatePreview();
+
         toast("Project loaded.");
       } catch (error) {
         console.error(error);
@@ -2662,76 +2754,57 @@
       }
     });
 
-    document.getElementById("resetProject").addEventListener("click", () => {
-      if (
-        !confirm(
-          "Reset all text, drinks, colors, and uploads to the " +
-          "张飞饮料店 defaults?"
-        )
-      ) {
-        return;
-      }
+    // ==========================================================
+    // PREVIEW CONTROLS
+    // ==========================================================
 
-      state = clone(DEFAULT_STATE);
-      dirty = true;
+    const desktopButton = document.getElementById("desktop");
+    const mobileButton = document.getElementById("mobile");
 
-      renderEditor();
-      updatePreview();
-      toast("Default content restored.");
-    });
+    function setPreviewMode(mobile) {
+      preview.classList.toggle("mobile", mobile);
 
-    // ============================================================
-    // PREVIEW SIZE CONTROLS
-    // ============================================================
+      desktopButton.classList.toggle("active", !mobile);
+      mobileButton.classList.toggle("active", mobile);
 
-    const desktopButton = document.getElementById("desktopPreview");
-    const mobileButton = document.getElementById("mobilePreview");
+      desktopButton.setAttribute("aria-pressed", String(!mobile));
+      mobileButton.setAttribute("aria-pressed", String(mobile));
+    }
 
-    desktopButton.addEventListener("click", () => {
-      preview.classList.remove("mobile");
-      desktopButton.classList.add("active");
-      mobileButton.classList.remove("active");
-    });
+    desktopButton.addEventListener("click", () => setPreviewMode(false));
+    mobileButton.addEventListener("click", () => setPreviewMode(true));
 
-    mobileButton.addEventListener("click", () => {
-      preview.classList.add("mobile");
-      mobileButton.classList.add("active");
-      desktopButton.classList.remove("active");
-    });
-
-    document.getElementById("refreshPreview").addEventListener(
+    document.getElementById("refresh").addEventListener(
       "click",
       updatePreview
     );
 
-    // ============================================================
-    // NOTIFICATIONS & UNSAVED-CHANGE WARNING
-    // ============================================================
+    // ==========================================================
+    // NOTIFICATIONS AND EXIT WARNING
+    // ==========================================================
 
     function toast(message) {
       const element = document.getElementById("toast");
 
       clearTimeout(toastTimer);
       element.textContent = message;
-      element.classList.add("visible");
+      element.classList.add("show");
 
       toastTimer = setTimeout(() => {
-        element.classList.remove("visible");
-      }, 4000);
+        element.classList.remove("show");
+      }, 4500);
     }
 
     window.addEventListener("beforeunload", event => {
-      if (!dirty) {
-        return;
-      }
+      if (!dirty && !pendingUploads) return;
 
       event.preventDefault();
       event.returnValue = "";
     });
 
-    // ============================================================
+    // ==========================================================
     // START
-    // ============================================================
+    // ==========================================================
 
     renderEditor();
     updatePreview();
